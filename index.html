@@ -22,7 +22,7 @@
     :root{--bg:#08090c;--bg2:#0d0f14;--card:#12151c;--card2:#181c26;--border:#1f2533;--text:#e4e8f1;--text2:#8892a6;--text3:#515c72;--blue:#4a8eff;--bluebg:rgba(74,142,255,0.07);--blueborder:rgba(74,142,255,0.18);--green:#2dd4a0;--greenbg:rgba(45,212,160,0.06);--greenborder:rgba(45,212,160,0.18);--red:#f0576c;--redbg:rgba(240,87,108,0.06);--redborder:rgba(240,87,108,0.18);--gold:#f5a623;--goldbg:rgba(245,166,35,0.06);--goldborder:rgba(245,166,35,0.18);--purple:#a78bfa;--font:'IBM Plex Sans',-apple-system,system-ui,sans-serif;--mono:'IBM Plex Mono','SF Mono',monospace}
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html,body,#root{height:100%}body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}input,select,button,textarea{font-family:inherit}select{appearance:auto}::selection{background:var(--blue);color:#fff}input:focus,select:focus{outline:1px solid var(--blue);outline-offset:-1px}button{transition:all .15s ease;cursor:pointer}button:hover{filter:brightness(1.12)}button:active{transform:scale(.98)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
     @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}.fade-up{animation:fadeUp .3s ease forwards}.s1{animation-delay:.04s;opacity:0}.s2{animation-delay:.08s;opacity:0}
-    @media(max-width:900px){.two-col{grid-template-columns:1fr!important}.result-grid,.rr-grid{grid-template-columns:1fr!important}.preset-grid{grid-template-columns:1fr 1fr!important}.acct-grid{grid-template-columns:1fr 1fr!important}.acct-bar-inner{flex-direction:column!important;align-items:stretch!important}.nav-inner{padding:8px 14px!important}.nav-tabs{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}}
+    @media(max-width:900px){.two-col{grid-template-columns:1fr!important}.result-grid,.rr-grid{grid-template-columns:1fr!important}.preset-grid{grid-template-columns:1fr 1fr!important}.acct-grid{grid-template-columns:1fr 1fr!important}.acct-bar-inner{flex-direction:column!important;align-items:stretch!important}.nav-inner{padding:8px 14px!important}.nav-tabs{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.score-grid-3{grid-template-columns:1fr 1fr!important}.score-grid-4{grid-template-columns:1fr 1fr!important}}
     @media(max-width:480px){.preset-grid,.acct-grid{grid-template-columns:1fr!important}.nav-tabs button{font-size:9px!important;padding:5px 6px!important}}
     .sens-tbl{width:100%;border-collapse:collapse;font-size:11px;font-family:var(--mono)}.sens-tbl th,.sens-tbl td{padding:6px 8px;text-align:right;border-bottom:1px solid var(--border)}.sens-tbl th{color:var(--text3);font-size:9px;text-transform:uppercase;letter-spacing:.08em;font-weight:600}.sens-tbl td:first-child,.sens-tbl th:first-child{text-align:left}
     @media print{body{background:#fff;color:#000}.no-print{display:none!important}}
@@ -392,20 +392,24 @@ function Projector({sendAi,aiLoad,savedProj,setSavedProj}){
 
 /* ═══ MARKET SCORECARD ═══ */
 const SCORE_URL="https://cattlesignal-data-service-production.up.railway.app/scores";
+const PRICES_URL="https://cattlesignal-data-service-production.up.railway.app/prices";
 const scoreColor=(v)=>{
-  if(v<=15)return"#8B0000";if(v<=30)return"#DC143C";if(v<=40)return"#E85D5D";
-  if(v<=48)return"#D4956A";if(v<=52)return"#C4A535";if(v<=60)return"#7DB358";
-  if(v<=75)return"#3DAA5C";if(v<=90)return"#1E8C3E";return"#0D6E2B";
+  if(v<=15)return"#8B0000";if(v<=25)return"#B91C1C";if(v<=35)return"#DC143C";
+  if(v<=42)return"#E85D5D";if(v<=48)return"#D4956A";if(v<=52)return"#C4A535";
+  if(v<=58)return"#A3B236";if(v<=65)return"#7DB358";if(v<=75)return"#3DAA5C";
+  if(v<=85)return"#1E8C3E";if(v<=92)return"#167A34";return"#0D6E2B";
 };
 const confLabel=(v)=>v>=70?"High":v>=45?"Medium":"Low";
 const confColor=(v)=>v>=70?"var(--green)":v>=45?"var(--gold)":"var(--red)";
+/* Simple markdown: **bold**, \n → <br> */
+function renderMd(t){if(!t)return"";return t.replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>").replace(/\n/g,"<br/>")}
 
 function Scorecard(){
   const[data,setData]=useState(null);
   const[loading,setLoading]=useState(true);
   const[err,setErr]=useState("");
   const[selected,setSelected]=useState(null);
-  const[lastFetch,setLastFetch]=useState(null);
+  const[showMethod,setShowMethod]=useState(false);
 
   const fetchScores=async()=>{
     setLoading(true);setErr("");
@@ -415,8 +419,8 @@ function Scorecard(){
       const d=await r.json();
       if(d.scores)setData(d);
       else if(d.refreshing)setErr("Generating scores... refresh in a few seconds.");
+      else if(d.lastError)setErr("Scoring error: "+d.lastError);
       else setErr("No score data available.");
-      setLastFetch(new Date());
     }catch(e){setErr(e.name==="AbortError"?"Timed out generating scores. Try again.":e.message)}
     setLoading(false);
   };
@@ -427,32 +431,36 @@ function Scorecard(){
   const grains=data?.scores?.filter(s=>["ZC","ZS","ZM","ZW"].includes(s.code))||[];
   const energy=data?.scores?.filter(s=>["CL"].includes(s.code))||[];
   const sel=selected?data?.scores?.find(s=>s.code===selected):null;
+  const updatedText=data?.generatedAt?(()=>{const m=Math.round((Date.now()-new Date(data.generatedAt).getTime())/60000);return m<1?"Just now":m+"m ago"})():"";
+  const ds=data?.dataSources||{};
 
-  const ScoreCell=({s})=>{
+  const ScoreCell=({s,wide})=>{
     const bg=scoreColor(s.composite);
     const textCol=s.composite>40&&s.composite<60?"#1a1a1a":"#fff";
+    const showConf=s.confidence<70; // Only show badge if Medium or Low
     return(
       <div onClick={()=>setSelected(selected===s.code?null:s.code)} style={{
         background:bg,borderRadius:10,padding:"14px 12px",cursor:"pointer",
         position:"relative",transition:"all .2s ease",
-        border:selected===s.code?`2px solid ${bg}`:"2px solid transparent",
-        boxShadow:selected===s.code?`0 0 20px ${bg}40`:"none",
+        border:selected===s.code?`2px solid #fff`:"2px solid transparent",
+        boxShadow:selected===s.code?`0 0 24px ${bg}50`:"none",
         transform:selected===s.code?"scale(1.02)":"scale(1)",
+        opacity:loading&&data?.scores?.length?0.7:1,
+        gridColumn:wide?"1 / -1":"auto",
       }}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
           <div style={{fontSize:10,fontWeight:700,color:textCol,opacity:.85,textTransform:"uppercase",letterSpacing:".08em"}}>{s.name}</div>
-          <div style={{fontSize:8,fontWeight:600,color:textCol,opacity:.6,padding:"2px 5px",borderRadius:3,background:"rgba(0,0,0,.2)"}}>{confLabel(s.confidence)}</div>
+          {showConf&&<div style={{fontSize:8,fontWeight:600,color:s.confidence<45?"#fca5a5":"#fcd34d",padding:"2px 5px",borderRadius:3,background:"rgba(0,0,0,.3)"}}>{confLabel(s.confidence)}</div>}
         </div>
-        <div style={{display:"flex",alignItems:"baseline",gap:6}}>
+        <div style={{display:"flex",alignItems:"baseline",gap:4}}>
           <div style={{fontSize:32,fontWeight:800,color:textCol,fontFamily:"var(--mono)",lineHeight:1,letterSpacing:"-.04em"}}>{s.composite}</div>
-          <div style={{fontSize:10,fontWeight:600,color:textCol,opacity:.75}}>/100</div>
+          <div style={{fontSize:11,fontWeight:600,color:textCol,opacity:.5,fontFamily:"var(--mono)"}}>/100</div>
         </div>
         <div style={{fontSize:10,fontWeight:600,color:textCol,opacity:.8,marginTop:4}}>{s.signal}</div>
         <div style={{marginTop:6,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
           <div style={{fontSize:11,fontFamily:"var(--mono)",color:textCol,opacity:.9}}>{s.price?.toFixed(2)||"—"} <span style={{fontSize:8,opacity:.7}}>{s.unit||""}</span></div>
-          <div style={{fontSize:10,fontFamily:"var(--mono)",color:textCol,opacity:.8}}>{s.changePct>=0?"+":""}{s.changePct?.toFixed(2)||0}%</div>
+          <div style={{fontSize:10,fontFamily:"var(--mono)",color:textCol,opacity:.8,fontWeight:600}}>{s.changePct>=0?"+":""}{s.changePct?.toFixed(2)||0}%</div>
         </div>
-        {s.smoothed&&<div style={{position:"absolute",top:4,right:4,fontSize:7,color:textCol,opacity:.5}}>~</div>}
       </div>
     );
   };
@@ -464,24 +472,33 @@ function Scorecard(){
         <div style={{fontSize:12,fontWeight:700,fontFamily:"var(--mono)",color:scoreColor(score)}}>{score}</div>
       </div>
       <div style={{height:6,background:"var(--card2)",borderRadius:3,overflow:"hidden",border:"1px solid var(--border)"}}>
-        <div style={{height:"100%",width:score+"%",background:scoreColor(score),borderRadius:3,transition:"width .6s ease"}}/>
+        <div style={{height:"100%",width:score+"%",background:`linear-gradient(90deg, ${scoreColor(Math.max(0,score-15))}, ${scoreColor(score)})`,borderRadius:3,transition:"width .6s ease"}}/>
       </div>
-      <div style={{fontSize:9,color:"var(--text3)",marginTop:2}}>{note}</div>
+      <div style={{fontSize:9,color:note?.includes("unavailable")?"var(--gold)":"var(--text3)",marginTop:2,fontStyle:note?.includes("unavailable")?"italic":"normal"}}>{note}</div>
     </div>
   );
 
   return(
     <div className="fade-up" style={{maxWidth:960,margin:"0 auto"}}>
       {/* Header */}
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
         <div>
           <div style={{fontSize:18,fontWeight:800,color:"var(--text)"}}>Market Scorecard</div>
           <div style={{fontSize:10,color:"var(--text3)",marginTop:2}}>
-            AI-generated outlook scores · Educational analysis only · {data?.generatedAt?`Updated ${Math.round((Date.now()-new Date(data.generatedAt).getTime())/60000)}m ago`:""}
+            AI-generated outlook scores · Educational analysis only · {updatedText&&`Updated ${updatedText}`}
           </div>
         </div>
         <button onClick={fetchScores} disabled={loading} style={{padding:"6px 14px",borderRadius:6,fontSize:10,fontWeight:700,background:loading?"var(--card2)":"var(--blue)",color:loading?"var(--text3)":"#fff",border:"none"}}>{loading?"Scoring...":"Refresh"}</button>
       </div>
+
+      {/* Data Sources Indicator */}
+      {data?.dataSources&&(
+        <div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>
+          {[["Prices",ds.prices],["COT",ds.cot],["USDA",ds.usda],["Slaughter",ds.slaughter],["Exports",ds.exports]].map(([name,available])=>(
+            <div key={name} style={{fontSize:8,fontWeight:700,padding:"2px 6px",borderRadius:3,background:available?"var(--greenbg)":"var(--card2)",color:available?"var(--green)":"var(--text3)",border:`1px solid ${available?"var(--greenborder)":"var(--border)"}`}}>{available?"✓":"✗"} {name}</div>
+          ))}
+        </div>
+      )}
 
       {err&&<div style={{padding:"10px 14px",background:"var(--redbg)",border:"1px solid var(--redborder)",borderRadius:8,fontSize:11,color:"var(--red)",marginBottom:12}}>{err}</div>}
 
@@ -494,42 +511,43 @@ function Scorecard(){
       )}
 
       {data?.scores&&(<>
-        {/* Livestock Section */}
+        {/* Livestock */}
         <div style={{marginBottom:6}}>
           <div style={{fontSize:9,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".12em",marginBottom:8,paddingLeft:2}}>🐂 Livestock</div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>
+          <div className="score-grid-3" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>
             {livestock.map(s=><ScoreCell key={s.code} s={s}/>)}
           </div>
         </div>
 
-        {/* Grains Section */}
+        {/* Grains */}
         <div style={{marginBottom:6}}>
           <div style={{fontSize:9,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".12em",marginBottom:8,paddingLeft:2,marginTop:16}}>🌾 Grains &amp; Oilseeds</div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
+          <div className="score-grid-4" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
             {grains.map(s=><ScoreCell key={s.code} s={s}/>)}
           </div>
         </div>
 
-        {/* Energy Section */}
+        {/* Energy — full width single card */}
         <div style={{marginBottom:6}}>
           <div style={{fontSize:9,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".12em",marginBottom:8,paddingLeft:2,marginTop:16}}>⛽ Energy</div>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>
-            {energy.map(s=><ScoreCell key={s.code} s={s}/>)}
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+            {energy.map(s=><ScoreCell key={s.code} s={s} wide/>)}
           </div>
         </div>
 
         {/* Detail Card */}
         {sel&&(
           <div className="fade-up" style={{marginTop:16,background:"var(--card)",border:"1px solid var(--border)",borderRadius:12,overflow:"hidden"}}>
-            <div style={{padding:"16px 20px",borderBottom:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div>
+            <div style={{padding:"16px 20px",borderBottom:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+              <div style={{flex:1}}>
                 <div style={{fontSize:16,fontWeight:800}}>{sel.name} ({sel.code})</div>
                 <div style={{fontSize:11,color:"var(--text2)",marginTop:2}}>{sel.summary}</div>
               </div>
-              <div style={{textAlign:"right"}}>
+              <div style={{textAlign:"right",marginLeft:16}}>
                 <div style={{fontSize:28,fontWeight:800,fontFamily:"var(--mono)",color:scoreColor(sel.composite),lineHeight:1}}>{sel.composite}</div>
                 <div style={{fontSize:9,color:confColor(sel.confidence),fontWeight:700,marginTop:2}}>Confidence: {sel.confidence}% ({confLabel(sel.confidence)})</div>
               </div>
+              <button onClick={()=>setSelected(null)} style={{marginLeft:12,padding:"4px 8px",borderRadius:4,fontSize:10,fontWeight:600,background:"var(--card2)",color:"var(--text3)",border:"1px solid var(--border)",cursor:"pointer"}}>✕</button>
             </div>
             <div style={{padding:"16px 20px"}}>
               <div style={{fontSize:10,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".1em",marginBottom:12}}>Factor Breakdown</div>
@@ -539,7 +557,6 @@ function Scorecard(){
               <FactorBar label="Macro (15%)" score={sel.factors?.macro?.score||50} note={sel.factors?.macro?.note||""}/>
               <FactorBar label="Seasonal (15%)" score={sel.factors?.seasonal?.score||50} note={sel.factors?.seasonal?.note||""}/>
             </div>
-            {/* Score History Sparkline */}
             {data.history&&data.history.length>1&&(
               <div style={{padding:"12px 20px",borderTop:"1px solid var(--border)"}}>
                 <div style={{fontSize:9,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".1em",marginBottom:8}}>Recent Score History</div>
@@ -558,8 +575,31 @@ function Scorecard(){
           </div>
         )}
 
+        {/* How Scores Work */}
+        <div style={{marginTop:16}}>
+          <button onClick={()=>setShowMethod(!showMethod)} style={{background:"var(--card)",border:"1px solid var(--border)",borderRadius:8,padding:"10px 14px",width:"100%",textAlign:"left",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <span style={{fontSize:11,fontWeight:700,color:"var(--text2)"}}>How Scores Work</span>
+            <span style={{fontSize:10,color:"var(--text3)"}}>{showMethod?"▲":"▼"}</span>
+          </button>
+          {showMethod&&(
+            <div className="fade-up" style={{background:"var(--card)",border:"1px solid var(--border)",borderTop:"none",borderRadius:"0 0 8px 8px",padding:"14px 16px",fontSize:11,color:"var(--text2)",lineHeight:1.8}}>
+              <p style={{marginBottom:8}}>Each market receives a <strong style={{color:"var(--text)"}}>composite outlook score (0-100)</strong> derived from 5 weighted factors:</p>
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"4px 16px",fontSize:10,marginBottom:8}}>
+                <div><strong style={{color:"var(--text)"}}>Supply (25%)</strong> — Inventory, production, imports</div>
+                <div><strong style={{color:"var(--text)"}}>Demand (20%)</strong> — Consumption, exports, seasonal</div>
+                <div><strong style={{color:"var(--text)"}}>Positioning (15%)</strong> — CFTC COT managed money</div>
+                <div><strong style={{color:"var(--text)"}}>Macro (15%)</strong> — Rates, energy, trade policy</div>
+                <div><strong style={{color:"var(--text)"}}>Seasonal (15%)</strong> — Historical monthly patterns</div>
+                <div><strong style={{color:"var(--text)"}}>Discretionary (10%)</strong> — Unique current factors</div>
+              </div>
+              <p style={{marginBottom:8}}><strong style={{color:"var(--text)"}}>Confidence scores</strong> reflect data completeness. With only price data available (no live USDA, COT, or slaughter data), confidence is capped at 35-50%. When COT data is integrated, confidence increases to 55-70%. Full data integration would allow 80-95%.</p>
+              <p style={{marginBottom:0,fontSize:10,color:"var(--text3)"}}>Scores update every 15 minutes when users are active. No AI calls are made when nobody is using the site. Scores are smoothed to prevent erratic swings — maximum 15-point change per refresh unless a major catalyst is detected.</p>
+            </div>
+          )}
+        </div>
+
         {/* Bottom Disclaimer */}
-        <div style={{marginTop:16,padding:"10px 14px",background:"var(--card)",borderRadius:8,border:"1px solid var(--border)"}}>
+        <div style={{marginTop:12,padding:"10px 14px",background:"var(--card)",borderRadius:8,border:"1px solid var(--border)"}}>
           <div style={{fontSize:9,color:"var(--text3)",lineHeight:1.6}}>Market outlook scores are generated by AI analysis of publicly available data. Scores represent educational market commentary, not predictions or recommendations. Data delayed ~15 min. <a href="/legal.html" style={{color:"var(--blue)"}}>Full disclosures</a></div>
         </div>
       </>)}
@@ -772,7 +812,7 @@ function App(){
               {aiMsgs.map((m,i)=>(
                 <div key={i} className="fade-up" style={{background:"var(--card)",borderRadius:8,border:"1px solid var(--border)",padding:"12px 14px",borderLeft:m.r==="ai"?"2px solid var(--blue)":"2px solid transparent"}}>
                   <div style={{fontSize:9,fontWeight:700,color:m.r==="user"?"var(--text3)":"var(--blue)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:5}}>{m.r==="user"?"You":"AI Analyst"}</div>
-                  <div style={{fontSize:12,lineHeight:1.8,whiteSpace:"pre-wrap"}}>{m.t}</div>
+                  <div style={{fontSize:12,lineHeight:1.8,whiteSpace:"pre-wrap"}} dangerouslySetInnerHTML={{__html:renderMd(m.t)}}></div>
                 </div>
               ))}
               {aiLoad&&<div style={{background:"var(--card)",borderRadius:8,border:"1px solid var(--border)",padding:"14px",borderLeft:"2px solid var(--blue)"}}><div style={{display:"flex",alignItems:"center",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:4,height:4,borderRadius:"50%",background:"var(--blue)",animation:`pulse 1s ease ${i*.15}s infinite`}}/>)}<span style={{fontSize:10,color:"var(--text2)"}}>Analyzing market data...</span></div></div>}
