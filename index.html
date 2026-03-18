@@ -477,7 +477,7 @@ function App(){
       const rem=resp.headers.get("X-Queries-Remaining");if(rem!==null)setRemaining(parseInt(rem));
       const pl=resp.headers.get("X-Plan");if(pl)setPlan(pl);
       const data=await resp.json();
-      const full=data.content?.filter(b=>b.type==="text").map(b=>b.text).join("\n")||"No response.";
+      const full=data.response||data.content?.filter(b=>b.type==="text").map(b=>b.text).join("\n")||"No response.";
       setAiMsgs(p=>[...p,{r:"ai",t:stripRec(full),rec:parseRec(full)}]);
     }catch(e){if(e.name==="AbortError"){setAiErr("Request timed out after 60s. Try again.")}else{setAiMsgs(p=>[...p,{r:"ai",t:"Error: "+e.message}])}}
     finally{setAiLoad(false)}
