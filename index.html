@@ -1,837 +1,501 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CattleSignal — AI-Powered Cattle Market Intelligence</title>
-  <meta name="description" content="AI-powered cattle futures calculator, feeding projection engine, hedge tracker, basis calculator, and USDA report analysis. Built for feedlot operators, ranchers, and agricultural professionals.">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="CattleSignal — AI Cattle Market Intelligence">
-  <meta property="og:description" content="Futures P&L calculator, cattle feeding projections, hedge tracking, basis calculator, and AI market analysis with live market data.">
-  <meta property="og:url" content="https://cattlesignal.com">
-  <meta name="twitter:card" content="summary">
-  <link rel="canonical" href="https://cattlesignal.com">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐂</text></svg>">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐂</text></svg>">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  <style>
-    :root{--bg:#08090c;--bg2:#0d0f14;--card:#12151c;--card2:#181c26;--border:#1f2533;--text:#e4e8f1;--text2:#8892a6;--text3:#515c72;--blue:#4a8eff;--bluebg:rgba(74,142,255,0.07);--blueborder:rgba(74,142,255,0.18);--green:#2dd4a0;--greenbg:rgba(45,212,160,0.06);--greenborder:rgba(45,212,160,0.18);--red:#f0576c;--redbg:rgba(240,87,108,0.06);--redborder:rgba(240,87,108,0.18);--gold:#f5a623;--goldbg:rgba(245,166,35,0.06);--goldborder:rgba(245,166,35,0.18);--purple:#a78bfa;--font:'IBM Plex Sans',-apple-system,system-ui,sans-serif;--mono:'IBM Plex Mono','SF Mono',monospace}
-    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html,body,#root{height:100%}body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}input,select,button,textarea{font-family:inherit}select{appearance:auto}::selection{background:var(--blue);color:#fff}input:focus,select:focus{outline:1px solid var(--blue);outline-offset:-1px}button{transition:all .15s ease;cursor:pointer}button:hover{filter:brightness(1.12)}button:active{transform:scale(.98)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}.fade-up{animation:fadeUp .3s ease forwards}.s1{animation-delay:.04s;opacity:0}.s2{animation-delay:.08s;opacity:0}
-    @media(max-width:900px){.two-col{grid-template-columns:1fr!important}.result-grid,.rr-grid{grid-template-columns:1fr!important}.preset-grid{grid-template-columns:1fr 1fr!important}.acct-grid{grid-template-columns:1fr 1fr!important}.acct-bar-inner{flex-direction:column!important;align-items:stretch!important}.nav-inner{padding:8px 14px!important}.nav-tabs{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.score-grid-3{grid-template-columns:1fr 1fr!important}.score-grid-4{grid-template-columns:1fr 1fr!important}}
-    @media(max-width:480px){.preset-grid,.acct-grid{grid-template-columns:1fr!important}.nav-tabs button{font-size:9px!important;padding:5px 6px!important}}
-    .sens-tbl{width:100%;border-collapse:collapse;font-size:11px;font-family:var(--mono)}.sens-tbl th,.sens-tbl td{padding:6px 8px;text-align:right;border-bottom:1px solid var(--border)}.sens-tbl th{color:var(--text3);font-size:9px;text-transform:uppercase;letter-spacing:.08em;font-weight:600}.sens-tbl td:first-child,.sens-tbl th:first-child{text-align:left}
-    @media print{body{background:#fff;color:#000}.no-print{display:none!important}}
-  </style>
-</head>
-<body>
-<div id="root"></div>
-<script type="text/babel">
-const{useState,useRef,useEffect,useMemo}=React;
-const SUPABASE_URL="https://dvybrdfixbxmhvwpqazf.supabase.co";
-const SUPABASE_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2eWJyZGZpeGJ4bWh2d3BxYXpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NjMzNDAsImV4cCI6MjA4ODQzOTM0MH0.x9ha2D3YtvnUPFWB8PRNLgy6mfN6AQi5rT2yTTYtnno";
-const STRIPE_PK="pk_live_51T8E08RPTndCrfwvkdJP9kL7M8ZEiuR0D0kM7HQbxm1fKqhWCPBEFSzbdLZAuuTpNhYJCWWaaQjpF4QQ64scFgmj00fR1rn0dC";
-const API_BASE="";
-const API_URL="/.netlify/functions/chat";
-const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
+/**
+ * CattleSignal Market Data Service v2.1
+ * Railway: fetches 15-min delayed futures quotes from Yahoo Finance
+ * Serves latest prices as JSON for the Netlify Function to consume
+ *
+ * Markets: GF (Feeder Cattle), LE (Live Cattle), HE (Lean Hogs),
+ *          ZC (Corn), ZS (Soybeans), CL (Crude Oil), ZM (Soybean Meal), ZW (Wheat)
+ *
+ * Yahoo Finance: no API key, ~15-min delayed, unofficial endpoint
+ * Disclaimer required on frontend: "Prices delayed, for informational purposes only"
+ */
 
-/* ═══ AUTH MODAL ═══ */
-function AuthModal({onClose,onAuth}){
-  const[mode,setMode]=useState("login");
-  const[email,setEmail]=useState("");const[pass,setPass]=useState("");
-  const[err,setErr]=useState("");const[loading,setLoading]=useState(false);
-  const submit=async(e)=>{
-    e.preventDefault();setErr("");setLoading(true);
-    try{
-      if(mode==="signup"){
-        const{data,error}=await sb.auth.signUp({email,password:pass});
-        if(error)throw error;
-        if(data.user&&!data.session){setErr("Check your email to confirm your account.");setLoading(false);return}
-        if(data.session)onAuth(data.session);
-      }else{
-        const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
-        if(error)throw error;
-        onAuth(data.session);
-      }
-    }catch(e){setErr(e.message||"Auth failed")}
-    setLoading(false);
-  };
-  return(
-    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.8)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={onClose}>
-      <div onClick={e=>e.stopPropagation()} style={{background:"var(--card)",border:"1px solid var(--border)",borderRadius:12,padding:"32px",width:380,maxWidth:"90vw"}}>
-        <div style={{textAlign:"center",marginBottom:20}}>
-          <div style={{fontSize:28,marginBottom:4}}>🐂</div>
-          <div style={{fontSize:18,fontWeight:700}}>Cattle<span style={{color:"var(--blue)"}}>Signal</span></div>
-          <div style={{fontSize:12,color:"var(--text3)",marginTop:4}}>{mode==="login"?"Sign in to your account":"Create your free account"}</div>
-        </div>
-        <form onSubmit={submit}>
-          <div style={{marginBottom:10}}><input value={email} onChange={e=>setEmail(e.target.value)} type="email" placeholder="Email" required style={{width:"100%",padding:"10px 12px",fontSize:13,border:"1px solid var(--border)",borderRadius:6,background:"var(--bg2)",color:"var(--text)"}}/></div>
-          <div style={{marginBottom:10}}><input value={pass} onChange={e=>setPass(e.target.value)} type="password" placeholder="Password" required minLength={6} style={{width:"100%",padding:"10px 12px",fontSize:13,border:"1px solid var(--border)",borderRadius:6,background:"var(--bg2)",color:"var(--text)"}}/></div>
-          {err&&<div style={{padding:"6px 10px",background:"var(--redbg)",border:"1px solid var(--redborder)",borderRadius:6,fontSize:11,color:"var(--red)",marginBottom:10}}>{err}</div>}
-          <button type="submit" disabled={loading} style={{width:"100%",padding:"11px",borderRadius:7,fontSize:13,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none",opacity:loading?.6:1,marginBottom:12}}>{loading?"...":(mode==="login"?"Sign In":"Create Account")}</button>
-        </form>
-        <div style={{textAlign:"center",fontSize:12,color:"var(--text3)"}}>{mode==="login"?<>No account? <button onClick={()=>{setMode("signup");setErr("")}} style={{background:"none",border:"none",color:"var(--blue)",fontSize:12,cursor:"pointer",textDecoration:"underline"}}>Sign up free</button></>:<>Have an account? <button onClick={()=>{setMode("login");setErr("")}} style={{background:"none",border:"none",color:"var(--blue)",fontSize:12,cursor:"pointer",textDecoration:"underline"}}>Sign in</button></>}</div>
-        <div style={{textAlign:"center",marginTop:8}}><button onClick={onClose} style={{background:"none",border:"none",color:"var(--text3)",fontSize:11,cursor:"pointer"}}>Continue without account →</button></div>
-      </div>
-    </div>
-  );
-}
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-/* ═══ UPGRADE PROMPT ═══ */
-function UpgradePrompt({onUpgrade,onClose,plan,remaining}){
-  return(
-    <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.8)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={onClose}>
-      <div onClick={e=>e.stopPropagation()} style={{background:"var(--card)",border:"1px solid var(--blueborder)",borderRadius:12,padding:"32px",width:400,maxWidth:"90vw",textAlign:"center"}}>
-        <div style={{fontSize:28,marginBottom:8}}>⚡</div>
-        <div style={{fontSize:18,fontWeight:700,marginBottom:8}}>Upgrade to Pro</div>
-        <div style={{fontSize:13,color:"var(--text2)",marginBottom:16,lineHeight:1.6}}>
-          {plan==="free"?"You've used your 3 free AI queries today.":"Get full access to CattleSignal."}<br/>
-          Pro gives you <strong>50 AI queries/day</strong>, USDA auto-analysis, saved projections, PDF export, and live price refresh.
-        </div>
-        <div style={{fontSize:28,fontWeight:700,color:"var(--blue)",marginBottom:4}}>$9<span style={{fontSize:14,color:"var(--text3)"}}>/month</span></div>
-        <div style={{fontSize:11,color:"var(--text3)",marginBottom:16}}>Cancel anytime</div>
-        <button onClick={onUpgrade} style={{width:"100%",padding:"12px",borderRadius:7,fontSize:14,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none",marginBottom:8}}>Upgrade Now →</button>
-        <button onClick={onClose} style={{background:"none",border:"none",color:"var(--text3)",fontSize:11,cursor:"pointer"}}>Maybe later</button>
-      </div>
-    </div>
-  );
-}
-
-const MKT={"Feeder Cattle (GF)":{pp:500,tk:0.025,tv:12.50,sz:"50,000 lbs",hr:"Mon-Fri 8:30a-1:05p CT",ex:"CME Globex",mo:"Jan,Mar,Apr,May,Aug,Sep,Oct,Nov",st:"Cash Settled",mg:4500},"Live Cattle (LE)":{pp:400,tk:0.025,tv:10,sz:"40,000 lbs",hr:"Mon-Fri 8:30a-1:05p CT",ex:"CME Globex",mo:"Feb,Apr,Jun,Aug,Oct,Dec",st:"Physical Delivery",mg:3500},"Lean Hogs (HE)":{pp:400,tk:0.025,tv:10,sz:"40,000 lbs",hr:"Mon-Fri 8:30a-1:05p CT",ex:"CME Globex",mo:"Feb,Apr,May,Jun,Jul,Aug,Oct,Dec",st:"Cash Settled",mg:2500},"Corn (ZC)":{pp:50,tk:0.25,tv:12.50,sz:"5,000 bu",hr:"Sun-Fri 7p-7:45a,8:30a-1:20p CT",ex:"CBOT",mo:"Mar,May,Jul,Sep,Dec",st:"Physical",mg:1500},"Soybeans (ZS)":{pp:50,tk:0.25,tv:12.50,sz:"5,000 bu",hr:"Sun-Fri 7p-7:45a,8:30a-1:20p CT",ex:"CBOT",mo:"Jan,Mar,May,Jul,Aug,Sep,Nov",st:"Physical",mg:2200},"Crude Oil (CL)":{pp:1000,tk:0.01,tv:10,sz:"1,000 bbl",hr:"Sun-Fri 5p-4p CT",ex:"NYMEX",mo:"Monthly",st:"Physical",mg:6500},"Soybean Meal (ZM)":{pp:100,tk:0.10,tv:10,sz:"100 tons",hr:"Sun-Fri 7p-7:45a,8:30a-1:20p CT",ex:"CBOT",mo:"Jan,Mar,May,Jul,Aug,Sep,Oct,Dec",st:"Physical",mg:2000},"Wheat (ZW)":{pp:50,tk:0.25,tv:12.50,sz:"5,000 bu",hr:"Sun-Fri 7p-7:45a,8:30a-1:20p CT",ex:"CBOT",mo:"Mar,May,Jul,Sep,Dec",st:"Physical",mg:1800}};
-
-/* Presets updated Mar 2026 — use "Refresh Prices" to pull current market */
-const PROJ_PRESETS={
-  finisher:{name:"Finisher",inWt:768,outWt:1325,costLb:3.69,saleLb:2.42,feedTon:220,intakePct:0.0275,yardage:0.30,adg:3.0,head:70,gridPrem:0.08,deathPct:0.01,intRate:0.075,processing:18,doctoring:8,trucking:0,lrp:0},
-  grower:{name:"Grower",inWt:750,outWt:850,costLb:3.69,saleLb:3.68,feedTon:215,intakePct:0.035,yardage:0.35,adg:2.85,head:1,gridPrem:0,deathPct:0.01,intRate:0.075,processing:18,doctoring:8,trucking:35,lrp:0},
+// Yahoo Finance futures symbols (front-month continuous)
+const SYMBOLS = {
+  'GF=F': { name: 'Feeder Cattle', code: 'GF', unit: '¢/lb', multiplier: 500 },
+  'LE=F': { name: 'Live Cattle',   code: 'LE', unit: '¢/lb', multiplier: 400 },
+  'HE=F': { name: 'Lean Hogs',     code: 'HE', unit: '¢/lb', multiplier: 400 },
+  'ZC=F': { name: 'Corn',          code: 'ZC', unit: '¢/bu', multiplier: 50 },
+  'ZS=F': { name: 'Soybeans',      code: 'ZS', unit: '¢/bu', multiplier: 50 },
+  'CL=F': { name: 'Crude Oil',     code: 'CL', unit: '$/bbl', multiplier: 1000 },
+  'ZM=F': { name: 'Soybean Meal',  code: 'ZM', unit: '$/ton', multiplier: 100 },
+  'ZW=F': { name: 'Wheat',         code: 'ZW', unit: '¢/bu', multiplier: 50 },
 };
 
-function loadLS(key,fb){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fb}catch{return fb}}
-function saveLS(key,val){try{localStorage.setItem(key,JSON.stringify(val))}catch{}}
+let priceCache = {
+  lastUpdated: null,
+  lastAttempt: null,
+  prices: {},
+  errors: [],
+  source: 'yahoo',
+};
 
-const f$=n=>(n<0?"-":"")+"$"+Math.abs(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
-const fSign=n=>(n>=0?"+":"")+f$(n);
-const fK=n=>n>=10000?"$"+Math.round(n/1000)+"K":n>=1000?"$"+(n/1000).toFixed(1)+"K":f$(n);
-const isNum=v=>v===""||(!isNaN(parseFloat(v))&&isFinite(v));
-function parseRec(t){return null}
-function stripRec(t){return t.replace(/```TRADE_REC[\s\S]*?```/g,"").replace(/TRADE_REC:[\s\S]*$/,"").trim()}
+/**
+ * Fetch quote from Yahoo Finance v8 chart API
+ */
+async function fetchYahooQuote(symbol) {
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d&range=1d`;
+  const res = await fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+    },
+    signal: AbortSignal.timeout(10000),
+  });
 
-function calcProjection(p){
-  const purchaseCost=p.inWt*p.costLb;const saleRevenue=p.outWt*p.saleLb;const grossProfit=saleRevenue-purchaseCost;
-  const lbsGain=p.outWt-p.inWt;const dof=p.adg>0?lbsGain/p.adg:0;const avgWt=(p.inWt+p.outWt)/2;
-  const feedLbsDay=avgWt*p.intakePct;const feedCostDay=(feedLbsDay/2000)*p.feedTon;const feedYardDay=feedCostDay+p.yardage;
-  const cog=p.adg>0?feedYardDay/p.adg:0;const totalFeedYard=feedYardDay*dof;const deathLoss=p.costLb*p.deathPct*p.inWt;
-  const interest=(purchaseCost*p.intRate/365)*dof;const totalFeeding=totalFeedYard+p.processing+p.doctoring+deathLoss+interest+p.lrp+p.trucking;
-  const totalCost=totalFeeding+purchaseCost;const breakeven=p.outWt>0?totalCost/p.outWt:0;const gridValue=p.outWt*p.gridPrem;
-  const profitHead=grossProfit-totalFeeding+gridValue;const roi=totalCost>0?profitHead/totalCost:0;const totalPL=profitHead*p.head;
-  return{purchaseCost,saleRevenue,grossProfit,lbsGain,dof,avgWt,feedLbsDay,feedCostDay,feedYardDay,cog,totalFeedYard,deathLoss,interest,totalFeeding,totalCost,breakeven,gridValue,profitHead,roi,totalPL};
+  if (!res.ok) {
+    throw new Error(`Yahoo returned ${res.status} for ${symbol}`);
+  }
+
+  const data = await res.json();
+  const result = data?.chart?.result?.[0];
+  if (!result) throw new Error(`No chart data for ${symbol}`);
+
+  const meta = result.meta;
+  const quote = result.indicators?.quote?.[0];
+  const closes = quote?.close?.filter(v => v !== null) || [];
+  const highs = quote?.high?.filter(v => v !== null) || [];
+  const lows = quote?.low?.filter(v => v !== null) || [];
+  const opens = quote?.open?.filter(v => v !== null) || [];
+  const volumes = quote?.volume?.filter(v => v !== null) || [];
+
+  const price = meta.regularMarketPrice;
+  const prevClose = meta.chartPreviousClose || meta.previousClose;
+
+  return {
+    price,
+    previousClose: prevClose,
+    open: opens.length > 0 ? opens[0] : null,
+    high: highs.length > 0 ? Math.max(...highs) : null,
+    low: lows.length > 0 ? Math.min(...lows) : null,
+    volume: volumes.length > 0 ? volumes.reduce((a, b) => a + b, 0) : null,
+    change: price - prevClose,
+    changePct: (((price - prevClose) / prevClose) * 100).toFixed(2),
+    marketState: meta.currentTradingPeriod?.regular ? 'regular' : 'closed',
+  };
 }
 
-function Stat({label,value,color,sub,big}){return(<div style={{background:"var(--card2)",border:"1px solid var(--border)",borderRadius:10,padding:big?"16px 12px":"11px 10px",textAlign:"center",minWidth:0}}><div style={{fontSize:9,fontWeight:600,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".1em",marginBottom:big?5:2}}>{label}</div><div style={{fontSize:big?26:18,fontWeight:700,color:color||"var(--text)",fontFamily:"var(--mono)",letterSpacing:"-.03em",lineHeight:1}}>{value}</div>{sub&&<div style={{fontSize:9,color:color||"var(--text3)",marginTop:3,fontWeight:500}}>{sub}</div>}</div>)}
-function PF({label,value,onChange,accent,placeholder,suffix,im}){const v=isNum(value);return(<div style={{marginBottom:8}}><div style={{fontSize:9,fontWeight:600,color:accent||"var(--text3)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:2,paddingLeft:1}}>{label}</div><div style={{position:"relative"}}><input value={value} onChange={onChange} placeholder={placeholder} inputMode={im||"decimal"} style={{width:"100%",padding:"10px 11px",paddingRight:suffix?44:11,fontSize:13,fontWeight:500,fontFamily:"var(--mono)",border:`1px solid ${!v?"var(--red)":"var(--border)"}`,borderRadius:6,background:"var(--bg2)",color:"var(--text)"}}/>{suffix&&<span style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",fontSize:10,color:"var(--text3)",fontFamily:"var(--mono)"}}>{suffix}</span>}</div></div>)}
-function Tag({children,color}){return<span style={{display:"inline-flex",padding:"2px 7px",borderRadius:4,fontSize:9,fontWeight:700,letterSpacing:".06em",background:color+"10",color,border:`1px solid ${color}25`,textTransform:"uppercase"}}>{children}</span>}
-function SH({icon,title,right}){return<div style={{padding:"11px 16px",borderBottom:"1px solid var(--border)",display:"flex",alignItems:"center",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontSize:13,opacity:.8}}>{icon}</span><span style={{fontSize:13,fontWeight:700,color:"var(--text)"}}>{title}</span></div>{right&&<div>{right}</div>}</div>}
-function ResultRow({val,color}){if(!val)return null;const pos=val.usd>=0;const cl=color||(pos?"var(--green)":"var(--red)");return<div className="result-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:8}}><Stat label="Ticks" value={val.ticks} color={cl}/><Stat label="Points" value={val.pts} color={cl}/><Stat label="P&L" value={fSign(val.usd)} color={cl}/></div>}
+/**
+ * Refresh all market prices
+ */
+async function refreshPrices() {
+  console.log(`[${new Date().toISOString()}] Refreshing prices via Yahoo Finance...`);
+  const errors = [];
+  const prices = {};
 
-/* ═══ BASIS CALCULATOR ═══ */
-function BasisCalc(){
-  const [cashPrice,setCashPrice]=useState("");
-  const [futuresPrice,setFuturesPrice]=useState("");
-  const [contract,setContract]=useState("Live Cattle (LE)");
-  const [entries,setEntries]=useState(()=>loadLS("cs_basis",[]));
-  const cash=parseFloat(cashPrice)||0;const fut=parseFloat(futuresPrice)||0;
-  const basis=cash&&fut?(cash-fut).toFixed(2):null;
-  const addEntry=()=>{if(!basis)return;const e={id:Date.now(),date:new Date().toLocaleDateString(),contract,cash,futures:fut,basis:parseFloat(basis)};const n=[e,...entries].slice(0,50);setEntries(n);saveLS("cs_basis",n);setCashPrice("");setFuturesPrice("")};
-  return(
-    <div className="fade-up" style={{maxWidth:780,margin:"0 auto"}}>
-      <div style={{background:"var(--card)",borderRadius:10,border:"1px solid var(--border)",overflow:"hidden",marginBottom:12}}>
-        <SH icon="📏" title="Basis Calculator" right={<div style={{fontSize:10,color:"var(--text3)"}}>Basis = Cash - Futures</div>}/>
-        <div style={{padding:"14px 16px"}}>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:12}}>
-            <div><div style={{fontSize:9,fontWeight:600,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:2}}>Contract</div><select value={contract} onChange={e=>setContract(e.target.value)} style={{width:"100%",padding:"10px",fontSize:12,border:"1px solid var(--border)",borderRadius:6,background:"var(--bg2)",color:"var(--text)"}}>{["Live Cattle (LE)","Feeder Cattle (GF)","Lean Hogs (HE)"].map(m=><option key={m}>{m}</option>)}</select></div>
-            <PF label="Cash Price ($/cwt)" value={cashPrice} onChange={e=>setCashPrice(e.target.value)} suffix="$/cwt"/>
-            <PF label="Futures Price" value={futuresPrice} onChange={e=>setFuturesPrice(e.target.value)} suffix="$/cwt"/>
-          </div>
-          {basis!==null&&(
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:12}}>
-              <Stat label="Basis" value={(parseFloat(basis)>=0?"+":"")+basis} color={parseFloat(basis)>=0?"var(--green)":"var(--red)"} big/>
-              <Stat label="Cash" value={"$"+cash.toFixed(2)} color="var(--text)" big/>
-              <Stat label="Futures" value={"$"+fut.toFixed(2)} color="var(--blue)" big/>
-            </div>
-          )}
-          <button onClick={addEntry} disabled={!basis} style={{padding:"8px 16px",borderRadius:6,fontSize:11,fontWeight:700,background:basis?"var(--blue)":"var(--card2)",color:basis?"#fff":"var(--text3)",border:"none",width:"100%"}}>Log Basis Entry</button>
-        </div>
-      </div>
-      {entries.length>0&&(
-        <div style={{background:"var(--card)",borderRadius:10,border:"1px solid var(--border)",overflow:"hidden"}}>
-          <SH icon="📊" title="Basis History" right={<button onClick={()=>{setEntries([]);saveLS("cs_basis",[])}} style={{padding:"3px 8px",borderRadius:4,fontSize:9,fontWeight:600,background:"var(--card2)",color:"var(--text3)",border:"1px solid var(--border)"}}>Clear</button>}/>
-          <div style={{padding:"8px 16px"}}>
-            <table className="sens-tbl"><thead><tr><th style={{textAlign:"left"}}>Date</th><th>Contract</th><th>Cash</th><th>Futures</th><th>Basis</th></tr></thead>
-            <tbody>{entries.map(e=><tr key={e.id}><td style={{color:"var(--text2)"}}>{e.date}</td><td style={{color:"var(--text2)"}}>{e.contract.split("(")[0].trim()}</td><td>${e.cash.toFixed(2)}</td><td>${e.futures.toFixed(2)}</td><td style={{color:e.basis>=0?"var(--green)":"var(--red)",fontWeight:700}}>{(e.basis>=0?"+":"")+e.basis.toFixed(2)}</td></tr>)}</tbody></table>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ═══ HEDGE P&L TRACKER ═══ */
-function HedgeTracker(){
-  const [hedges,setHedges]=useState(()=>loadLS("cs_hedges",[]));
-  const [showForm,setShowForm]=useState(false);
-  const [h,setH]=useState({name:"",market:"Live Cattle (LE)",dir:"short",contracts:"1",entryPrice:"",exitPrice:"",notes:""});
-  const set=(k,v)=>setH(x=>({...x,[k]:v}));
-  const addHedge=()=>{const mkt=MKT[h.market];if(!h.name||!h.entryPrice||!mkt)return;const n={...h,id:Date.now(),entryPrice:parseFloat(h.entryPrice),exitPrice:h.exitPrice?parseFloat(h.exitPrice):null,contracts:parseInt(h.contracts)||1,status:h.exitPrice?"closed":"open",date:new Date().toLocaleDateString()};const list=[n,...hedges];setHedges(list);saveLS("cs_hedges",list);setH({name:"",market:"Live Cattle (LE)",dir:"short",contracts:"1",entryPrice:"",exitPrice:"",notes:""});setShowForm(false)};
-  const closeHedge=(id,exitPrice)=>{const ep=parseFloat(exitPrice);if(isNaN(ep))return;const list=hedges.map(x=>x.id===id?{...x,exitPrice:ep,status:"closed"}:x);setHedges(list);saveLS("cs_hedges",list)};
-  const removeHedge=(id)=>{const list=hedges.filter(x=>x.id!==id);setHedges(list);saveLS("cs_hedges",list)};
-  const calcPL=(hg)=>{if(!hg.exitPrice)return null;const mkt=MKT[hg.market];if(!mkt)return null;const d=hg.dir==="short"?hg.entryPrice-hg.exitPrice:hg.exitPrice-hg.entryPrice;return d*mkt.pp*hg.contracts};
-  const totalOpen=hedges.filter(x=>x.status==="open").length;
-  const totalPL=hedges.reduce((s,hg)=>{const pl=calcPL(hg);return s+(pl||0)},0);
-  return(
-    <div className="fade-up" style={{maxWidth:960,margin:"0 auto"}}>
-      <div style={{background:"var(--card)",borderRadius:10,border:"1px solid var(--border)",overflow:"hidden"}}>
-        <SH icon="🛡️" title="Hedge P&L Tracker" right={<div style={{display:"flex",gap:6,alignItems:"center"}}><Tag color="var(--blue)">{totalOpen} open</Tag><Tag color={totalPL>=0?"var(--green)":"var(--red)"}>{fSign(totalPL)} total</Tag><button onClick={()=>setShowForm(!showForm)} style={{padding:"4px 10px",borderRadius:4,fontSize:10,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none"}}>{showForm?"Cancel":"+ New Hedge"}</button></div>}/>
-        {showForm&&(
-          <div style={{padding:"14px 16px",borderBottom:"1px solid var(--border)",background:"var(--bg2)"}}>
-            <div style={{display:"grid",gridTemplateColumns:"2fr 2fr 1fr 1fr",gap:8,marginBottom:8}}>
-              <PF label="Name (e.g. Pen 12 Apr LE)" value={h.name} onChange={e=>set("name",e.target.value)}/>
-              <div><div style={{fontSize:9,fontWeight:600,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:2}}>Market</div><select value={h.market} onChange={e=>set("market",e.target.value)} style={{width:"100%",padding:"10px",fontSize:12,border:"1px solid var(--border)",borderRadius:6,background:"var(--bg2)",color:"var(--text)"}}>{Object.keys(MKT).map(m=><option key={m}>{m}</option>)}</select></div>
-              <div><div style={{fontSize:9,fontWeight:600,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:2}}>Side</div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4}}>{["short","long"].map(d=><button key={d} onClick={()=>set("dir",d)} style={{padding:"9px",borderRadius:6,fontSize:10,fontWeight:700,background:h.dir===d?(d==="short"?"var(--redbg)":"var(--greenbg)"):"var(--bg2)",color:h.dir===d?(d==="short"?"var(--red)":"var(--green)"):"var(--text3)",border:`1px solid ${h.dir===d?(d==="short"?"var(--redborder)":"var(--greenborder)"):"var(--border)"}`}}>{d==="short"?"SHORT":"LONG"}</button>)}</div></div>
-              <PF label="Contracts" value={h.contracts} onChange={e=>set("contracts",e.target.value)} im="numeric"/>
-            </div>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 2fr auto",gap:8,alignItems:"end"}}>
-              <PF label="Entry Price" value={h.entryPrice} onChange={e=>set("entryPrice",e.target.value)}/>
-              <PF label="Exit (optional)" value={h.exitPrice} onChange={e=>set("exitPrice",e.target.value)}/>
-              <PF label="Notes" value={h.notes} onChange={e=>set("notes",e.target.value)}/>
-              <button onClick={addHedge} disabled={!h.name||!h.entryPrice} style={{padding:"10px 16px",borderRadius:6,fontSize:11,fontWeight:700,background:h.name&&h.entryPrice?"var(--blue)":"var(--card2)",color:h.name&&h.entryPrice?"#fff":"var(--text3)",border:"none",marginBottom:8,whiteSpace:"nowrap"}}>Add</button>
-            </div>
-          </div>
-        )}
-        <div style={{padding:"8px 16px",overflowX:"auto"}}>
-          {hedges.length===0?<div style={{textAlign:"center",padding:"24px",color:"var(--text3)",fontSize:11}}>No hedges logged. Click "+ New Hedge" to start tracking your futures positions alongside physical cattle.</div>:(
-            <table className="sens-tbl"><thead><tr><th style={{textAlign:"left"}}>Name</th><th>Market</th><th>Side</th><th>Qty</th><th>Entry</th><th>Exit</th><th>P&L</th><th>Status</th><th></th></tr></thead>
-            <tbody>{hedges.map(hg=>{const pl=calcPL(hg);return(
-              <tr key={hg.id}><td style={{color:"var(--text)",fontWeight:600,textAlign:"left"}}>{hg.name}{hg.notes&&<div style={{fontSize:9,color:"var(--text3)",fontWeight:400}}>{hg.notes}</div>}</td><td style={{color:"var(--text2)"}}>{hg.market.match(/\((\w+)\)/)?.[1]||""}</td><td style={{color:hg.dir==="short"?"var(--red)":"var(--green)",fontWeight:700}}>{hg.dir==="short"?"SHORT":"LONG"}</td><td>{hg.contracts}</td><td style={{fontFamily:"var(--mono)"}}>{hg.entryPrice?.toFixed(2)}</td><td style={{fontFamily:"var(--mono)"}}>{hg.exitPrice?hg.exitPrice.toFixed(2):<input placeholder="Close..." onKeyDown={e=>{if(e.key==="Enter"&&e.target.value)closeHedge(hg.id,e.target.value)}} onBlur={e=>{if(e.target.value)closeHedge(hg.id,e.target.value)}} style={{width:70,padding:"3px 5px",fontSize:10,border:"1px solid var(--border)",borderRadius:3,background:"var(--bg2)",color:"var(--text)",fontFamily:"var(--mono)"}}/>}</td><td style={{color:pl===null?"var(--text3)":pl>=0?"var(--green)":"var(--red)",fontWeight:700}}>{pl!==null?fSign(pl):"open"}</td><td><Tag color={hg.status==="open"?"var(--blue)":"var(--text3)"}>{hg.status}</Tag></td><td><button onClick={()=>removeHedge(hg.id)} style={{background:"none",border:"none",color:"var(--text3)",fontSize:11,cursor:"pointer"}}>✕</button></td></tr>
-            )})}</tbody></table>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ═══ USDA REPORT AUTO-ANALYSIS ═══ */
-function USDAReports({sendAi,aiLoad}){
-  const reports=[
-    {l:"📊 Cattle on Feed",p:"Analyze the latest USDA Cattle on Feed report. Search for the most recent release. Cover: placements vs expectations, marketings pace, on-feed inventory, weight group breakdown, implications for feeder and fed cattle prices. Compare to analyst estimates. What are the key takeaways for market participants?",desc:"Monthly (3rd Friday). Placements, marketings, inventory by weight group."},
-    {l:"🐄 Cattle Inventory",p:"Analyze the latest USDA Cattle Inventory report. Search for the most recent data. Cover: total inventory trend, beef cow numbers, replacement heifer retention rate, calf crop estimate, regional shifts. Where are we in the cattle cycle? What's the outlook for expansion/contraction? Trade implications.",desc:"Semi-annual (Jan & Jul). Total herd, cow numbers, calf crop."},
-    {l:"🥩 Cold Storage",p:"Analyze the latest USDA Cold Storage report for beef. Search for the most recent release. Cover: total beef in cold storage vs 5-year average, monthly change, seasonal pattern deviation, implications for wholesale beef prices and packer margins.",desc:"Monthly (~22nd). Frozen beef stocks, seasonal build/draw."},
-    {l:"📈 Weekly Market Wrap",p:"Full cattle market briefing: fed cattle cash trade this week, boxed beef cutout trend (Choice/Select spread), packer margins, feeder cattle auction tone, COT positioning update, upcoming USDA reports. What are the key takeaways for cattle market participants?",desc:"Live data. Cash trade, cutouts, packer margins, fund positioning."},
-    {l:"🌾 Crop Progress",p:"Analyze latest USDA Crop Progress for corn and soybeans. Cover: planting/harvest progress vs average, condition ratings, yield implications, impact on feed costs for cattle feeders. What's the corn basis outlook and how might it affect feeding margins?",desc:"Weekly (season). Crop conditions, planting/harvest pace."},
-    {l:"🌍 Export Sales",p:"Analyze the latest USDA Export Sales report for beef. Cover: net sales by destination, shipments pace vs USDA forecast, Japan/Korea/China/Mexico trends, impact on domestic supplies and prices. Any trade policy catalysts?",desc:"Weekly (Thursday). Beef export commitments by country."},
-  ];
-  return(
-    <div className="fade-up" style={{maxWidth:880,margin:"0 auto"}}>
-      <div style={{background:"var(--card)",borderRadius:10,border:"1px solid var(--border)",overflow:"hidden"}}>
-        <SH icon="📋" title="USDA Report Auto-Analysis" right={<Tag color="var(--purple)">AI-POWERED</Tag>}/>
-        <div style={{padding:"14px 16px"}}>
-          <div style={{fontSize:11,color:"var(--text2)",marginBottom:14,lineHeight:1.6}}>Select a report and the AI will search for the latest release, analyze the data, compare to expectations, and break down the market implications — in real time.</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-            {reports.map((r,i)=>(
-              <button key={i} onClick={()=>sendAi(r.p)} disabled={aiLoad} style={{padding:"14px 16px",borderRadius:8,textAlign:"left",background:"var(--bg2)",border:"1px solid var(--border)",opacity:aiLoad?.5:1}}>
-                <div style={{fontSize:12,fontWeight:700,color:aiLoad?"var(--text3)":"var(--text)",marginBottom:4}}>{r.l}</div>
-                <div style={{fontSize:10,color:"var(--text3)",lineHeight:1.4}}>{r.desc}</div>
-              </button>
-            ))}
-          </div>
-          {aiLoad&&<div style={{marginTop:12,padding:"10px",background:"var(--bluebg)",border:"1px solid var(--blueborder)",borderRadius:6,display:"flex",alignItems:"center",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:4,height:4,borderRadius:"50%",background:"var(--blue)",animation:`pulse 1s ease ${i*.15}s infinite`}}/>)}<span style={{fontSize:10,color:"var(--blue)"}}>Searching USDA data & analyzing...</span></div>}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ═══ PROJECTOR WITH SAVE & PDF ═══ */
-function Projector({sendAi,aiLoad,savedProj,setSavedProj}){
-  const [preset,setPreset]=useState("finisher");
-  const [p,setP]=useState({...PROJ_PRESETS.finisher});
-  const [sensVar,setSensVar]=useState("saleLb");
-  const [subTab,setSubTab]=useState("proj");
-  const [saveName,setSaveName]=useState("");
-  const [refreshing,setRefreshing]=useState(false);
-  const [lastRefresh,setLastRefresh]=useState(null);
-  const set=(k,v)=>setP(x=>({...x,[k]:v}));
-  const loadPreset=k=>{setPreset(k);setP({...PROJ_PRESETS[k]})};
-  const pn=v=>parseFloat(v)||0;
-
-  const refreshPrices=async()=>{
-    setRefreshing(true);
-    try{
-      const controller=new AbortController();setTimeout(()=>controller.abort(),60000);
-      const resp=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:[{role:"user",content:`Search for current cattle market prices and respond ONLY with this exact JSON format, no other text:\n{"feederCwt":000.00,"fedCwt":000.00,"cornBu":0.00,"feedTon":000}\nfeederCwt = CME Feeder Cattle Index or front-month GF futures $/cwt\nfedCwt = cash fed cattle price $/cwt (southern plains)\ncornBu = nearby corn futures $/bushel\nfeedTon = estimated feedlot mixed ration cost $/ton (use cornBu * 45 as rough estimate)\nUse today's actual market data from your web search. Numbers only, no commentary.`}]}),signal:controller.signal});
-      if(!resp.ok){setRefreshing(false);return}
-      const data=await resp.json();
-      const txt=data.content?.filter(b=>b.type==="text").map(b=>b.text).join("")||"";
-      const m=txt.match(/\{[\s\S]*?\}/);
-      if(m){
-        const prices=JSON.parse(m[0]);
-        if(prices.feederCwt)set("costLb",(prices.feederCwt/100).toFixed(4));
-        if(prices.fedCwt)set("saleLb",(prices.fedCwt/100).toFixed(4));
-        if(prices.feedTon)set("feedTon",String(Math.round(prices.feedTon)));
-        setLastRefresh(new Date().toLocaleTimeString());
-        setPreset("custom");
+  for (const [symbol, info] of Object.entries(SYMBOLS)) {
+    try {
+      const quote = await fetchYahooQuote(symbol);
+      prices[info.code] = {
+        ...info,
+        ...quote,
+        symbol,
+        fetchedAt: new Date().toISOString(),
+      };
+      console.log(`  ✅ ${info.code} (${info.name}): ${quote.price} (${quote.changePct}%)`);
+    } catch (err) {
+      errors.push({ symbol, code: info.code, error: err.message });
+      console.error(`  ❌ ${info.code}: ${err.message}`);
+      if (priceCache.prices[info.code]) {
+        prices[info.code] = { ...priceCache.prices[info.code], stale: true };
       }
-    }catch(e){console.error("Refresh failed:",e)}
-    setRefreshing(false);
+    }
+    // 500ms between requests to avoid throttling
+    await new Promise(r => setTimeout(r, 500));
+  }
+
+  priceCache = {
+    lastUpdated: new Date().toISOString(),
+    lastAttempt: new Date().toISOString(),
+    prices,
+    errors,
+    marketsCount: Object.keys(prices).length,
+    errorsCount: errors.length,
+    source: 'yahoo',
   };
 
-  const pp={inWt:pn(p.inWt),outWt:pn(p.outWt),costLb:pn(p.costLb),saleLb:pn(p.saleLb),feedTon:pn(p.feedTon),intakePct:pn(p.intakePct),yardage:pn(p.yardage),adg:pn(p.adg)||1,head:pn(p.head)||1,gridPrem:pn(p.gridPrem),deathPct:pn(p.deathPct),intRate:pn(p.intRate),processing:pn(p.processing),doctoring:pn(p.doctoring),trucking:pn(p.trucking),lrp:pn(p.lrp)};
-  const r=calcProjection(pp);
+  console.log(`[${new Date().toISOString()}] Done: ${Object.keys(prices).length} markets, ${errors.length} errors`);
+  return priceCache;
+}
 
-  const sensOpts=[{k:"saleLb",label:"Sale Price",step:0.05,count:11},{k:"costLb",label:"Purchase",step:0.05,count:11},{k:"feedTon",label:"Feed Cost",step:5,count:11},{k:"adg",label:"ADG",step:0.1,count:9},{k:"outWt",label:"Out Wt",step:25,count:9}];
-  const sensOpt=sensOpts.find(s=>s.k===sensVar)||sensOpts[0];
-  const sensData=useMemo(()=>{
-    const base=pp[sensVar];const half=Math.floor(sensOpt.count/2);
-    return Array.from({length:sensOpt.count},(_,i)=>{
-      const val=parseFloat((base+(i-half)*sensOpt.step).toFixed(4));
-      const res=calcProjection({...pp,[sensVar]:val});
-      return{val,profit:res.profitHead,breakeven:res.breakeven,roi:res.roi,totalPL:res.totalPL,isBase:i===half};
+/**
+ * System prompt snippet for Claude AI injection
+ */
+function generateSystemPromptSnippet() {
+  if (!priceCache.lastUpdated) {
+    return '⚠️ No market data available. Use recent knowledge for price context.';
+  }
+
+  const lines = ['═══ MARKET DATA (delayed ~15 min) ═══'];
+  lines.push(`Last updated: ${priceCache.lastUpdated}`);
+  lines.push('');
+
+  for (const [code, data] of Object.entries(priceCache.prices)) {
+    if (!data.price) continue;
+    const dir = data.change >= 0 ? '▲' : '▼';
+    const staleTag = data.stale ? ' [STALE]' : '';
+    lines.push(`${data.name} (${code}): ${data.price.toFixed(2)} ${data.unit} ${dir} ${Math.abs(data.change).toFixed(2)} (${data.changePct}%)${staleTag}`);
+    if (data.high && data.low) {
+      lines.push(`  Range: ${data.low.toFixed(2)}-${data.high.toFixed(2)} | Vol: ${(data.volume || 0).toLocaleString()}`);
+    }
+  }
+
+  lines.push('');
+  lines.push('Use these prices as context for market analysis. Prices are delayed ~15 min.');
+  return lines.join('\n');
+}
+
+// ─── ROUTES ───
+
+app.get('/', (req, res) => {
+  res.json({
+    service: 'CattleSignal Market Data',
+    version: '3.0.0',
+    source: 'yahoo',
+    status: priceCache.lastUpdated ? 'ok' : 'no_data',
+    lastUpdated: priceCache.lastUpdated,
+    marketsLoaded: Object.keys(priceCache.prices).length,
+    errors: priceCache.errorsCount || 0,
+    scoring: {
+      enabled: !!ANTHROPIC_API_KEY,
+      lastScored: scoreCache.lastUpdated,
+      cacheAge: scoreCache.lastUpdated ? Math.round((Date.now() - new Date(scoreCache.lastUpdated).getTime()) / 1000) : null,
+    },
+  });
+});
+
+app.get('/prices', (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.json(priceCache);
+});
+
+app.get('/prompt-snippet', (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Content-Type', 'text/plain');
+  res.send(generateSystemPromptSnippet());
+});
+
+app.get('/prices/:code', (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  const code = req.params.code.toUpperCase();
+  const market = priceCache.prices[code];
+  if (!market) {
+    return res.status(404).json({ error: `Market ${code} not found`, available: Object.keys(priceCache.prices) });
+  }
+  res.json(market);
+});
+
+app.post('/refresh', async (req, res) => {
+  try {
+    const result = await refreshPrices();
+    res.json({ status: 'refreshed', ...result });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─── MARKET SCORECARD (AI-powered, cached, on-demand) ───
+
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const SCORE_MODEL = 'claude-haiku-4-5-20251001';
+const SCORE_MAX_AGE = 15 * 60 * 1000; // 15 min cache
+
+let scoreCache = {
+  lastUpdated: null,
+  scores: null,
+  refreshing: false,
+  lastError: null,
+};
+
+let scoreHistory = []; // Keep last 48 entries (~12 hours at 15-min intervals)
+
+// Try to load COT data from the prompt-snippet (which includes COT if available)
+async function fetchCOTContext() {
+  try {
+    const res = await fetch('https://cattlesignal-data-service-production.up.railway.app/prompt-snippet', {
+      signal: AbortSignal.timeout(3000),
     });
-  },[p,sensVar]);
-
-  const saveProjection=()=>{if(!saveName.trim())return;const entry={id:Date.now(),name:saveName.trim(),params:{...p},date:new Date().toLocaleDateString()};const list=[entry,...savedProj];setSavedProj(list);saveLS("cs_projections",list);setSaveName("")};
-  const loadProjection=(entry)=>{setP({...entry.params});setPreset("custom");setSubTab("proj")};
-  const deleteProjection=(id)=>{const list=savedProj.filter(x=>x.id!==id);setSavedProj(list);saveLS("cs_projections",list)};
-
-  const exportPDF=()=>{
-    const html=`<html><head><title>${saveName||"Projection"} - CattleSignal</title><style>body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;color:#333}h1{color:#1a1a2e;border-bottom:2px solid #4a8eff;padding-bottom:8px}h2{color:#2d5f8a;margin-top:20px}table{width:100%;border-collapse:collapse;margin:10px 0}td{padding:6px 12px;border-bottom:1px solid #eee}td:last-child{text-align:right;font-family:monospace;font-weight:600}.green{color:#27ae60}.red{color:#e74c3c}.meta{color:#888;font-size:12px;text-align:right}@media print{body{margin:20px}}</style></head><body>
-    <div style="display:flex;justify-content:space-between;align-items:center"><h1>CattleSignal Projection</h1><div class="meta">${new Date().toLocaleDateString()}</div></div>
-    <h2>Inputs</h2><table>
-    <tr><td>Head Count</td><td>${pp.head}</td></tr><tr><td>In Weight / Out Weight</td><td>${pp.inWt} / ${pp.outWt} lbs</td></tr>
-    <tr><td>Purchase Price</td><td>$${pp.costLb}/lb</td></tr><tr><td>Sale Price</td><td>$${pp.saleLb}/lb</td></tr>
-    <tr><td>Feed Cost</td><td>$${pp.feedTon}/ton</td></tr><tr><td>ADG</td><td>${pp.adg} lbs/day</td></tr>
-    <tr><td>Days on Feed</td><td>${r.dof.toFixed(0)}</td></tr></table>
-    <h2>Results</h2><table>
-    <tr><td>Purchase Cost / Head</td><td>${f$(r.purchaseCost)}</td></tr>
-    <tr><td>Feed & Yard / Head</td><td>${f$(r.totalFeedYard)}</td></tr>
-    <tr><td>Total Feeding Cost / Head</td><td>${f$(r.totalFeeding)}</td></tr>
-    <tr><td>Total Cost / Head</td><td>${f$(r.totalCost)}</td></tr>
-    <tr><td>Cost of Gain</td><td>$${r.cog.toFixed(4)}/lb</td></tr>
-    <tr><td><strong>Breakeven</strong></td><td><strong>$${r.breakeven.toFixed(4)}/lb</strong></td></tr>
-    <tr><td><strong>Profit / Head</strong></td><td class="${r.profitHead>=0?"green":"red"}"><strong>${f$(r.profitHead)}</strong></td></tr>
-    <tr><td><strong>ROI</strong></td><td class="${r.roi>=0?"green":"red"}"><strong>${(r.roi*100).toFixed(2)}%</strong></td></tr>
-    <tr><td><strong>Total P&L (${pp.head} hd)</strong></td><td class="${r.totalPL>=0?"green":"red"}"><strong>${fSign(r.totalPL)}</strong></td></tr>
-    </table><p style="margin-top:30px;font-size:10px;color:#999">Generated by CattleSignal (cattlesignal.com) &middot; Not investment advice &middot; Educational purposes only</p></body></html>`;
-    const blob=new Blob([html],{type:"text/html"});const url=URL.createObjectURL(blob);
-    const ifr=document.createElement("iframe");ifr.style.display="none";ifr.src=url;document.body.appendChild(ifr);
-    ifr.onload=()=>{ifr.contentWindow.print();setTimeout(()=>{document.body.removeChild(ifr);URL.revokeObjectURL(url)},1000)};
-  };
-
-  const projSummary=`Cattle Projection Summary:\nIn: ${pp.inWt}lb @ $${pp.costLb}/lb -> Out: ${pp.outWt}lb @ $${pp.saleLb}/lb\n${pp.head} head, ${r.dof.toFixed(0)} DOF, ADG ${pp.adg}, Feed $${pp.feedTon}/ton\nCost of Gain: $${r.cog.toFixed(4)}/lb, Breakeven: $${r.breakeven.toFixed(4)}/lb\nProfit/hd: ${f$(r.profitHead)}, ROI: ${(r.roi*100).toFixed(2)}%, Total P&L: ${f$(r.totalPL)}\nAnalyze this projection. Key risks, opportunities, and how breakeven compares to current futures and cash. Suggest improvements.`;
-
-  return(
-    <div className="fade-up">
-      <div style={{display:"flex",gap:4,marginBottom:14,flexWrap:"wrap"}}>
-        {[{k:"proj",l:"📋 Projection"},{k:"sens",l:"📊 Sensitivity"},{k:"saved",l:"💾 Saved ("+savedProj.length+")"},{k:"ai",l:"🤖 AI Analysis"}].map(t=>(
-          <button key={t.k} onClick={()=>setSubTab(t.k)} style={{padding:"8px 14px",borderRadius:7,fontSize:11,fontWeight:600,background:subTab===t.k?"var(--blue)":"var(--card)",color:subTab===t.k?"#fff":"var(--text2)",border:subTab===t.k?"none":"1px solid var(--border)"}}>{t.l}</button>
-        ))}
-      </div>
-      <div style={{display:"flex",gap:5,marginBottom:14,flexWrap:"wrap",alignItems:"center"}}>
-        {Object.entries(PROJ_PRESETS).map(([k,v])=>(<button key={k} onClick={()=>loadPreset(k)} style={{padding:"7px 14px",borderRadius:7,fontSize:11,fontWeight:600,background:preset===k?"var(--blue)":"var(--card)",color:preset===k?"#fff":"var(--text2)",border:preset===k?"none":"1px solid var(--border)"}}>{v.name}</button>))}
-        <button onClick={()=>setPreset("custom")} style={{padding:"7px 14px",borderRadius:7,fontSize:11,fontWeight:600,background:preset==="custom"?"var(--blue)":"var(--card)",color:preset==="custom"?"#fff":"var(--text2)",border:preset==="custom"?"none":"1px solid var(--border)"}}>Custom</button>
-        <button onClick={refreshPrices} disabled={refreshing||aiLoad} style={{padding:"7px 14px",borderRadius:7,fontSize:11,fontWeight:600,background:refreshing?"var(--card2)":"var(--goldbg)",color:refreshing?"var(--text3)":"var(--gold)",border:"1px solid "+(refreshing?"var(--border)":"var(--goldborder)")}}>{refreshing?"⏳ Fetching...":"🔄 Refresh Prices"}</button>
-        {lastRefresh&&<span style={{fontSize:9,color:"var(--text3)"}}>Updated {lastRefresh}</span>}
-        <div style={{flex:1}}/>
-        <input value={saveName} onChange={e=>setSaveName(e.target.value)} placeholder="Name this projection..." style={{padding:"7px 10px",fontSize:11,border:"1px solid var(--border)",borderRadius:6,background:"var(--bg2)",color:"var(--text)",width:180}}/>
-        <button onClick={saveProjection} disabled={!saveName.trim()} style={{padding:"7px 12px",borderRadius:6,fontSize:10,fontWeight:700,background:saveName.trim()?"var(--green)":"var(--card2)",color:saveName.trim()?"#fff":"var(--text3)",border:"none"}}>💾 Save</button>
-        <button onClick={exportPDF} style={{padding:"7px 12px",borderRadius:6,fontSize:10,fontWeight:700,background:"var(--purple)",color:"#fff",border:"none"}}>📄 PDF</button>
-      </div>
-
-      {subTab==="proj"&&(
-        <div className="two-col" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,alignItems:"start"}}>
-          <div style={{background:"var(--card)",borderRadius:12,border:"1px solid var(--border)",overflow:"hidden"}}>
-            <SH icon="🐄" title="Cattle Inputs"/>
-            <div style={{padding:"12px 16px"}}><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-              <PF label="In Weight" value={p.inWt} onChange={e=>set("inWt",e.target.value)} suffix="lbs"/>
-              <PF label="Out Weight" value={p.outWt} onChange={e=>set("outWt",e.target.value)} suffix="lbs"/>
-              <PF label="Cost / lb" value={p.costLb} onChange={e=>set("costLb",e.target.value)} suffix="$/lb"/>
-              <PF label="Sale Price" value={p.saleLb} onChange={e=>set("saleLb",e.target.value)} suffix="$/lb" accent="var(--green)"/>
-              <PF label="Feed Cost" value={p.feedTon} onChange={e=>set("feedTon",e.target.value)} suffix="$/ton"/>
-              <PF label="Intake" value={p.intakePct} onChange={e=>set("intakePct",e.target.value)} suffix="BW"/>
-              <PF label="Yardage / day" value={p.yardage} onChange={e=>set("yardage",e.target.value)} suffix="$/day"/>
-              <PF label="ADG" value={p.adg} onChange={e=>set("adg",e.target.value)} suffix="lbs/d"/>
-              <PF label="Head Count" value={p.head} onChange={e=>set("head",e.target.value)} im="numeric"/>
-              <PF label="Grid Premium" value={p.gridPrem} onChange={e=>set("gridPrem",e.target.value)} suffix="$/lb"/>
-              <PF label="Death Loss" value={p.deathPct} onChange={e=>set("deathPct",e.target.value)} suffix="rate"/>
-              <PF label="Interest Rate" value={p.intRate} onChange={e=>set("intRate",e.target.value)} suffix="rate"/>
-              <PF label="Processing" value={p.processing} onChange={e=>set("processing",e.target.value)} suffix="$"/>
-              <PF label="Doctoring" value={p.doctoring} onChange={e=>set("doctoring",e.target.value)} suffix="$"/>
-              <PF label="Trucking" value={p.trucking} onChange={e=>set("trucking",e.target.value)} suffix="$"/>
-              <PF label="LRP" value={p.lrp} onChange={e=>set("lrp",e.target.value)} suffix="$"/>
-            </div></div>
-          </div>
-          <div>
-            <div style={{background:"var(--card)",borderRadius:12,border:"1px solid var(--border)",overflow:"hidden",marginBottom:12}}><SH icon="💰" title="Projection Results"/><div style={{padding:"14px 16px"}}><div className="result-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:10}}><Stat label="Profit / Head" value={f$(r.profitHead)} color={r.profitHead>=0?"var(--green)":"var(--red)"} big/><Stat label="Breakeven" value={"$"+r.breakeven.toFixed(4)} color="var(--blue)" big sub="per lb out"/><Stat label="ROI" value={(r.roi*100).toFixed(2)+"%"} color={r.roi>=0?"var(--green)":"var(--red)"} big/></div><div className="result-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}><Stat label={`Total P&L (${pp.head} hd)`} value={fSign(r.totalPL)} color={r.totalPL>=0?"var(--green)":"var(--red)"}/><Stat label="Grid Value" value={f$(r.gridValue)} color="var(--purple)"/></div></div></div>
-            <div style={{background:"var(--card)",borderRadius:12,border:"1px solid var(--border)",overflow:"hidden",marginBottom:12}}><SH icon="📊" title="Cost Breakdown (per head)"/><div style={{padding:"10px 16px"}}>{[{l:"Purchase Cost",v:f$(r.purchaseCost),c:"var(--text)"},{l:"Sale Revenue",v:f$(r.saleRevenue),c:"var(--green)"},{l:"Gross Profit",v:fSign(r.grossProfit),c:r.grossProfit>=0?"var(--green)":"var(--red)"},{l:"",sep:1},{l:"Lbs Gain",v:r.lbsGain.toFixed(0)+" lbs",c:"var(--text2)"},{l:"Days on Feed",v:r.dof.toFixed(1),c:"var(--text2)"},{l:"Cost of Gain",v:"$"+r.cog.toFixed(4)+"/lb",c:"var(--blue)"},{l:"",sep:1},{l:"Feed & Yardage",v:f$(r.totalFeedYard),c:"var(--text)"},{l:"Death Loss",v:f$(r.deathLoss),c:"var(--gold)"},{l:"Interest",v:f$(r.interest),c:"var(--text3)"},{l:"Processing+Doc+Truck",v:f$(pp.processing+pp.doctoring+pp.trucking),c:"var(--text3)"},{l:"",sep:1},{l:"Total Feeding",v:f$(r.totalFeeding),c:"var(--gold)",bold:1},{l:"Total Cost",v:f$(r.totalCost),c:"var(--red)",bold:1}].map((d,i)=>d.sep?<div key={i} style={{borderBottom:"1px solid var(--border)",margin:"4px 0"}}/>:<div key={i} style={{display:"flex",justifyContent:"space-between",padding:"4px 0"}}><span style={{fontSize:11,color:"var(--text3)",fontWeight:d.bold?600:400}}>{d.l}</span><span style={{fontSize:11,fontWeight:d.bold?700:600,color:d.c,fontFamily:"var(--mono)"}}>{d.v}</span></div>)}</div></div>
-            <div style={{padding:"8px 14px",background:"var(--card)",borderRadius:8,border:"1px solid var(--border)",fontSize:9,color:"var(--text3)",lineHeight:1.5}}>⚠ PROJECTION ONLY — not a guarantee. Consult a livestock advisor.</div>
-          </div>
-        </div>
-      )}
-
-      {subTab==="sens"&&(<div className="fade-up"><div style={{background:"var(--card)",borderRadius:12,border:"1px solid var(--border)",overflow:"hidden"}}><div style={{padding:"12px 16px",borderBottom:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:8}}><div style={{fontSize:13,fontWeight:700}}>📊 Sensitivity Analysis</div><div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{sensOpts.map(s=>(<button key={s.k} onClick={()=>setSensVar(s.k)} style={{padding:"5px 10px",borderRadius:5,fontSize:10,fontWeight:600,background:sensVar===s.k?"var(--blue)":"var(--bg2)",color:sensVar===s.k?"#fff":"var(--text2)",border:`1px solid ${sensVar===s.k?"var(--blue)":"var(--border)"}`}}>{s.label}</button>))}</div></div><div style={{padding:"12px 16px",overflowX:"auto"}}><table className="sens-tbl"><thead><tr><th>{sensOpt.label}</th><th>Profit/Hd</th><th>Breakeven</th><th>ROI</th><th>Total P&L ({pp.head} hd)</th></tr></thead><tbody>{sensData.map((d,i)=>(<tr key={i} style={{background:d.isBase?"var(--bluebg)":"transparent"}}><td style={{color:d.isBase?"var(--blue)":"var(--text2)",fontWeight:d.isBase?700:400}}>{sensVar==="outWt"?d.val.toFixed(0):d.val.toFixed(sensOpt.step<1?sensOpt.step<0.1?4:2:0)} {d.isBase?"◄":""}</td><td style={{color:d.profit>=0?"var(--green)":"var(--red)"}}>{f$(d.profit)}</td><td style={{color:"var(--text2)"}}>{"$"+d.breakeven.toFixed(4)}</td><td style={{color:d.roi>=0?"var(--green)":"var(--red)"}}>{(d.roi*100).toFixed(2)}%</td><td style={{color:d.totalPL>=0?"var(--green)":"var(--red)",fontWeight:600}}>{fSign(d.totalPL)}</td></tr>))}</tbody></table></div></div></div>)}
-
-      {subTab==="saved"&&(<div className="fade-up"><div style={{background:"var(--card)",borderRadius:12,border:"1px solid var(--border)",overflow:"hidden"}}><SH icon="💾" title="Saved Projections"/><div style={{padding:"12px 16px"}}>{savedProj.length===0?<div style={{textAlign:"center",padding:"24px",color:"var(--text3)",fontSize:11}}>No saved projections. Name your projection above and click Save.</div>:<div style={{display:"grid",gap:8}}>{savedProj.map(sp=>{const spp={inWt:pn(sp.params.inWt),outWt:pn(sp.params.outWt),costLb:pn(sp.params.costLb),saleLb:pn(sp.params.saleLb),feedTon:pn(sp.params.feedTon),intakePct:pn(sp.params.intakePct),yardage:pn(sp.params.yardage),adg:pn(sp.params.adg)||1,head:pn(sp.params.head)||1,gridPrem:pn(sp.params.gridPrem),deathPct:pn(sp.params.deathPct),intRate:pn(sp.params.intRate),processing:pn(sp.params.processing),doctoring:pn(sp.params.doctoring),trucking:pn(sp.params.trucking),lrp:pn(sp.params.lrp)};const sr=calcProjection(spp);return(<div key={sp.id} style={{padding:"12px 16px",background:"var(--bg2)",borderRadius:8,border:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,flexWrap:"wrap"}}><div><div style={{fontSize:13,fontWeight:700,marginBottom:2}}>{sp.name}</div><div style={{fontSize:10,color:"var(--text3)"}}>{sp.date} | {spp.head} hd | {spp.inWt}-{spp.outWt}lb | ${spp.costLb}/lb in | ${spp.saleLb}/lb out</div></div><div style={{display:"flex",gap:8,alignItems:"center"}}><div style={{textAlign:"right"}}><div style={{fontSize:14,fontWeight:700,fontFamily:"var(--mono)",color:sr.profitHead>=0?"var(--green)":"var(--red)"}}>{f$(sr.profitHead)}/hd</div><div style={{fontSize:10,color:"var(--text3)"}}>BE ${sr.breakeven.toFixed(4)}</div></div><button onClick={()=>loadProjection(sp)} style={{padding:"6px 12px",borderRadius:5,fontSize:10,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none"}}>Load</button><button onClick={()=>deleteProjection(sp.id)} style={{padding:"6px 8px",borderRadius:5,fontSize:10,background:"var(--card)",color:"var(--text3)",border:"1px solid var(--border)"}}>✕</button></div></div>)})}</div>}</div></div></div>)}
-
-      {subTab==="ai"&&(<div className="fade-up" style={{maxWidth:780}}><div style={{background:"var(--card)",borderRadius:12,border:"1px solid var(--border)",padding:"16px 18px"}}><div style={{fontSize:13,fontWeight:700,marginBottom:10}}>🤖 AI Projection Analysis</div><div style={{padding:"10px 14px",background:"var(--bg2)",borderRadius:8,border:"1px solid var(--border)",fontSize:11,color:"var(--text2)",marginBottom:12,fontFamily:"var(--mono)",lineHeight:1.7,whiteSpace:"pre-wrap"}}>{`${pp.head} head | ${pp.inWt}-${pp.outWt} lbs | Buy $${pp.costLb}/lb | Sell $${pp.saleLb}/lb\nDOF ${r.dof.toFixed(0)} | ADG ${pp.adg} | Feed $${pp.feedTon}/ton | COG $${r.cog.toFixed(4)}/lb\nBreakeven $${r.breakeven.toFixed(4)}/lb | Profit ${f$(r.profitHead)}/hd | ROI ${(r.roi*100).toFixed(2)}%`}</div><button onClick={()=>sendAi(projSummary)} disabled={aiLoad} style={{padding:"10px 18px",borderRadius:7,fontSize:12,fontWeight:700,background:aiLoad?"var(--card2)":"var(--blue)",color:aiLoad?"var(--text3)":"#fff",border:"none",width:"100%"}}>{aiLoad?"Analyzing...":"Analyze This Projection with AI"}</button></div></div>)}
-    </div>
-  );
+    if (!res.ok) return null;
+    const text = await res.text();
+    // Check if COT data is present in the snippet
+    if (text.includes('COT') || text.includes('Managed Money')) return text;
+    return null;
+  } catch { return null; }
 }
 
-/* ═══ MARKET SCORECARD ═══ */
-const SCORE_URL="https://cattlesignal-data-service-production.up.railway.app/scores";
-const PRICES_URL="https://cattlesignal-data-service-production.up.railway.app/prices";
-const scoreColor=(v)=>{
-  if(v<=15)return"#8B0000";if(v<=25)return"#B91C1C";if(v<=35)return"#DC143C";
-  if(v<=42)return"#E85D5D";if(v<=48)return"#D4956A";if(v<=52)return"#C4A535";
-  if(v<=58)return"#A3B236";if(v<=65)return"#7DB358";if(v<=75)return"#3DAA5C";
-  if(v<=85)return"#1E8C3E";if(v<=92)return"#167A34";return"#0D6E2B";
-};
-const confLabel=(v)=>v>=70?"High":v>=45?"Medium":"Low";
-const confColor=(v)=>v>=70?"var(--green)":v>=45?"var(--gold)":"var(--red)";
-/* Simple markdown: **bold**, \n → <br> */
-function renderMd(t){if(!t)return"";return t.replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>").replace(/\n/g,"<br/>")}
+function buildScoringPrompt(prices, cotData) {
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Chicago' });
+  const month = today.toLocaleString('en-US', { month: 'long', timeZone: 'America/Chicago' });
 
-function Scorecard(){
-  const[data,setData]=useState(null);
-  const[loading,setLoading]=useState(true);
-  const[err,setErr]=useState("");
-  const[selected,setSelected]=useState(null);
-  const[showMethod,setShowMethod]=useState(false);
+  const priceLines = Object.entries(prices).map(([code, d]) => {
+    if (!d.price) return null;
+    const dir = d.change >= 0 ? '+' : '';
+    return `${d.name} (${code}): ${d.price.toFixed(2)} ${d.unit} ${dir}${d.change.toFixed(2)} (${d.changePct}%) | Range: ${(d.low||0).toFixed(2)}-${(d.high||0).toFixed(2)} | Vol: ${(d.volume||0).toLocaleString()}`;
+  }).filter(Boolean).join('\n');
 
-  const fetchScores=async()=>{
-    setLoading(true);setErr("");
-    try{
-      const r=await fetch(SCORE_URL,{signal:AbortSignal.timeout(45000)});
-      if(!r.ok)throw new Error("Score service returned "+r.status);
-      const d=await r.json();
-      if(d.scores)setData(d);
-      else if(d.refreshing)setErr("Generating scores... refresh in a few seconds.");
-      else if(d.lastError)setErr("Scoring error: "+d.lastError);
-      else setErr("No score data available.");
-    }catch(e){setErr(e.name==="AbortError"?"Timed out generating scores. Try again.":e.message)}
-    setLoading(false);
-  };
+  const cotSection = cotData
+    ? `\nCOT POSITIONING DATA (from CFTC weekly report):\n${cotData}\nCOT_AVAILABLE: true`
+    : `\nCOT POSITIONING DATA: NOT AVAILABLE. You do not have current COT data. Score the positioning factor as 50 (neutral) and set positioning confidence to LOW.\nCOT_AVAILABLE: false`;
 
-  useEffect(()=>{fetchScores()},[]);
+  const dataSources = [
+    'Price data: YES (15-min delayed Yahoo Finance)',
+    `COT data: ${cotData ? 'YES' : 'NO — unavailable, do not guess'}`,
+    'USDA reports: NO — not available in this request, do not guess specific numbers',
+    'Slaughter data: NO — not available, do not guess',
+    'Export data: NO — not available, do not guess',
+  ].join('\n');
 
-  const livestock=data?.scores?.filter(s=>["GF","LE","HE"].includes(s.code))||[];
-  const grains=data?.scores?.filter(s=>["ZC","ZS","ZM","ZW"].includes(s.code))||[];
-  const energy=data?.scores?.filter(s=>["CL"].includes(s.code))||[];
-  const sel=selected?data?.scores?.find(s=>s.code===selected):null;
-  const updatedText=data?.generatedAt?(()=>{const m=Math.round((Date.now()-new Date(data.generatedAt).getTime())/60000);return m<1?"Just now":m+"m ago"})():"";
-  const ds=data?.dataSources||{};
+  return `You are a cattle and commodity market scoring engine. Today is ${dateStr}. The current month is ${month}. It is ${month.includes('Mar') || month.includes('Apr') || month.includes('May') ? 'SPRING' : month.includes('Jun') || month.includes('Jul') || month.includes('Aug') ? 'SUMMER' : month.includes('Sep') || month.includes('Oct') || month.includes('Nov') ? 'FALL' : 'WINTER'} in the Northern Hemisphere.
 
-  const ScoreCell=({s,wide})=>{
-    const bg=scoreColor(s.composite);
-    const textCol=s.composite>40&&s.composite<60?"#1a1a1a":"#fff";
-    const showConf=s.confidence<70; // Only show badge if Medium or Low
-    return(
-      <div onClick={()=>setSelected(selected===s.code?null:s.code)} style={{
-        background:bg,borderRadius:10,padding:"14px 12px",cursor:"pointer",
-        position:"relative",transition:"all .2s ease",
-        border:selected===s.code?`2px solid #fff`:"2px solid transparent",
-        boxShadow:selected===s.code?`0 0 24px ${bg}50`:"none",
-        transform:selected===s.code?"scale(1.02)":"scale(1)",
-        opacity:loading&&data?.scores?.length?0.7:1,
-        gridColumn:wide?"1 / -1":"auto",
-      }}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:8}}>
-          <div style={{fontSize:10,fontWeight:700,color:textCol,opacity:.85,textTransform:"uppercase",letterSpacing:".08em"}}>{s.name}</div>
-          {showConf&&<div style={{fontSize:8,fontWeight:600,color:s.confidence<45?"#fca5a5":"#fcd34d",padding:"2px 5px",borderRadius:3,background:"rgba(0,0,0,.3)"}}>{confLabel(s.confidence)}</div>}
-        </div>
-        <div style={{display:"flex",alignItems:"baseline",gap:4}}>
-          <div style={{fontSize:32,fontWeight:800,color:textCol,fontFamily:"var(--mono)",lineHeight:1,letterSpacing:"-.04em"}}>{s.composite}</div>
-          <div style={{fontSize:11,fontWeight:600,color:textCol,opacity:.5,fontFamily:"var(--mono)"}}>/100</div>
-        </div>
-        <div style={{fontSize:10,fontWeight:600,color:textCol,opacity:.8,marginTop:4}}>{s.signal}</div>
-        <div style={{marginTop:6,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-          <div style={{fontSize:11,fontFamily:"var(--mono)",color:textCol,opacity:.9}}>{s.price?.toFixed(2)||"—"} <span style={{fontSize:8,opacity:.7}}>{s.unit||""}</span></div>
-          <div style={{fontSize:10,fontFamily:"var(--mono)",color:textCol,opacity:.8,fontWeight:600}}>{s.changePct>=0?"+":""}{s.changePct?.toFixed(2)||0}%</div>
-        </div>
-      </div>
-    );
-  };
+AVAILABLE DATA SOURCES:
+${dataSources}
 
-  const FactorBar=({label,score,note})=>(
-    <div style={{marginBottom:10}}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:3}}>
-        <div style={{fontSize:10,fontWeight:700,color:"var(--text)",textTransform:"uppercase",letterSpacing:".06em"}}>{label}</div>
-        <div style={{fontSize:12,fontWeight:700,fontFamily:"var(--mono)",color:scoreColor(score)}}>{score}</div>
-      </div>
-      <div style={{height:6,background:"var(--card2)",borderRadius:3,overflow:"hidden",border:"1px solid var(--border)"}}>
-        <div style={{height:"100%",width:score+"%",background:`linear-gradient(90deg, ${scoreColor(Math.max(0,score-15))}, ${scoreColor(score)})`,borderRadius:3,transition:"width .6s ease"}}/>
-      </div>
-      <div style={{fontSize:9,color:note?.includes("unavailable")?"var(--gold)":"var(--text3)",marginTop:2,fontStyle:note?.includes("unavailable")?"italic":"normal"}}>{note}</div>
-    </div>
-  );
+CURRENT MARKET DATA (15-min delayed):
+${priceLines}
+${cotSection}
 
-  return(
-    <div className="fade-up" style={{maxWidth:960,margin:"0 auto"}}>
-      {/* Header */}
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
-        <div>
-          <div style={{fontSize:18,fontWeight:800,color:"var(--text)"}}>Market Scorecard</div>
-          <div style={{fontSize:10,color:"var(--text3)",marginTop:2}}>
-            AI-generated outlook scores · Educational analysis only · {updatedText&&`Updated ${updatedText}`}
-          </div>
-        </div>
-        <button onClick={fetchScores} disabled={loading} style={{padding:"6px 14px",borderRadius:6,fontSize:10,fontWeight:700,background:loading?"var(--card2)":"var(--blue)",color:loading?"var(--text3)":"#fff",border:"none"}}>{loading?"Scoring...":"Refresh"}</button>
-      </div>
+CRITICAL RULES:
+1. Only cite data you actually have above. Do NOT fabricate USDA numbers, slaughter rates, export figures, or COT positions.
+2. If you lack data for a factor, score it 50 (neutral) and note "Data unavailable" in the note field.
+3. Seasonal patterns must reflect the ACTUAL current month (${month}), not a hallucinated season.
+4. Confidence score must reflect data completeness honestly:
+   - All 5 data sources available: 80-95
+   - Price + COT only: 55-70
+   - Price only (current state): 35-50
+   - Missing or stale prices: 15-30
+5. Factor notes must be under 15 words and must NOT cite specific numbers you don't have.
 
-      {/* Data Sources Indicator */}
-      {data?.dataSources&&(
-        <div style={{display:"flex",gap:8,marginBottom:12,flexWrap:"wrap"}}>
-          {[["Prices",ds.prices],["COT",ds.cot],["USDA",ds.usda],["Slaughter",ds.slaughter],["Exports",ds.exports]].map(([name,available])=>(
-            <div key={name} style={{fontSize:8,fontWeight:700,padding:"2px 6px",borderRadius:3,background:available?"var(--greenbg)":"var(--card2)",color:available?"var(--green)":"var(--text3)",border:`1px solid ${available?"var(--greenborder)":"var(--border)"}`}}>{available?"✓":"✗"} {name}</div>
-          ))}
-        </div>
-      )}
+For each of these 8 markets, produce a composite outlook score from 0-100:
+0-15 = Strongly Bearish, 16-30 = Bearish, 31-45 = Slightly Bearish, 46-55 = Neutral, 56-70 = Slightly Bullish, 71-85 = Bullish, 86-100 = Strongly Bullish
 
-      {err&&<div style={{padding:"10px 14px",background:"var(--redbg)",border:"1px solid var(--redborder)",borderRadius:8,fontSize:11,color:"var(--red)",marginBottom:12}}>{err}</div>}
+Score each market on 5 factors (each 0-100):
+1. supply: Supply fundamentals based on known conditions
+2. demand: Demand strength based on known conditions
+3. positioning: COT/managed money (use 50 if COT unavailable)
+4. macro: Macro environment (interest rates, energy costs, trade policy)
+5. seasonal: Seasonal pattern for ${month} specifically
 
-      {loading&&!data&&(
-        <div style={{textAlign:"center",padding:"60px 20px"}}>
-          <div style={{fontSize:24,marginBottom:12,animation:"pulse 1.5s ease infinite"}}>📊</div>
-          <div style={{fontSize:13,color:"var(--text2)"}}>Generating market scores...</div>
-          <div style={{fontSize:10,color:"var(--text3)",marginTop:4}}>First load takes 10-15 seconds</div>
-        </div>
-      )}
+Composite = supply 25% + demand 20% + positioning 15% + macro 15% + seasonal 15% + 10% discretionary.
 
-      {data?.scores&&(<>
-        {/* Livestock */}
-        <div style={{marginBottom:6}}>
-          <div style={{fontSize:9,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".12em",marginBottom:8,paddingLeft:2}}>🐂 Livestock</div>
-          <div className="score-grid-3" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8}}>
-            {livestock.map(s=><ScoreCell key={s.code} s={s}/>)}
-          </div>
-        </div>
+CRITICAL: Respond with ONLY valid JSON, no markdown, no backticks, no preamble. Exact structure:
 
-        {/* Grains */}
-        <div style={{marginBottom:6}}>
-          <div style={{fontSize:9,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".12em",marginBottom:8,paddingLeft:2,marginTop:16}}>🌾 Grains &amp; Oilseeds</div>
-          <div className="score-grid-4" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
-            {grains.map(s=><ScoreCell key={s.code} s={s}/>)}
-          </div>
-        </div>
-
-        {/* Energy — full width single card */}
-        <div style={{marginBottom:6}}>
-          <div style={{fontSize:9,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".12em",marginBottom:8,paddingLeft:2,marginTop:16}}>⛽ Energy</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
-            {energy.map(s=><ScoreCell key={s.code} s={s} wide/>)}
-          </div>
-        </div>
-
-        {/* Detail Card */}
-        {sel&&(
-          <div className="fade-up" style={{marginTop:16,background:"var(--card)",border:"1px solid var(--border)",borderRadius:12,overflow:"hidden"}}>
-            <div style={{padding:"16px 20px",borderBottom:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
-              <div style={{flex:1}}>
-                <div style={{fontSize:16,fontWeight:800}}>{sel.name} ({sel.code})</div>
-                <div style={{fontSize:11,color:"var(--text2)",marginTop:2}}>{sel.summary}</div>
-              </div>
-              <div style={{textAlign:"right",marginLeft:16}}>
-                <div style={{fontSize:28,fontWeight:800,fontFamily:"var(--mono)",color:scoreColor(sel.composite),lineHeight:1}}>{sel.composite}</div>
-                <div style={{fontSize:9,color:confColor(sel.confidence),fontWeight:700,marginTop:2}}>Confidence: {sel.confidence}% ({confLabel(sel.confidence)})</div>
-              </div>
-              <button onClick={()=>setSelected(null)} style={{marginLeft:12,padding:"4px 8px",borderRadius:4,fontSize:10,fontWeight:600,background:"var(--card2)",color:"var(--text3)",border:"1px solid var(--border)",cursor:"pointer"}}>✕</button>
-            </div>
-            <div style={{padding:"16px 20px"}}>
-              <div style={{fontSize:10,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".1em",marginBottom:12}}>Factor Breakdown</div>
-              <FactorBar label="Supply (25%)" score={sel.factors?.supply?.score||50} note={sel.factors?.supply?.note||""}/>
-              <FactorBar label="Demand (20%)" score={sel.factors?.demand?.score||50} note={sel.factors?.demand?.note||""}/>
-              <FactorBar label="Positioning (15%)" score={sel.factors?.positioning?.score||50} note={sel.factors?.positioning?.note||""}/>
-              <FactorBar label="Macro (15%)" score={sel.factors?.macro?.score||50} note={sel.factors?.macro?.note||""}/>
-              <FactorBar label="Seasonal (15%)" score={sel.factors?.seasonal?.score||50} note={sel.factors?.seasonal?.note||""}/>
-            </div>
-            {data.history&&data.history.length>1&&(
-              <div style={{padding:"12px 20px",borderTop:"1px solid var(--border)"}}>
-                <div style={{fontSize:9,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".1em",marginBottom:8}}>Recent Score History</div>
-                <div style={{display:"flex",alignItems:"flex-end",gap:3,height:40}}>
-                  {data.history.map((h,i)=>{
-                    const s=h.scores?.find(x=>x.code===sel.code);
-                    if(!s)return null;
-                    return <div key={i} style={{flex:1,height:Math.max(4,s.composite*0.4),background:scoreColor(s.composite),borderRadius:2,opacity:i===data.history.length-1?1:.5,transition:"height .3s ease"}} title={`${s.composite}/100 at ${new Date(h.timestamp).toLocaleTimeString()}`}/>;
-                  })}
-                </div>
-              </div>
-            )}
-            <div style={{padding:"10px 20px",borderTop:"1px solid var(--border)",background:"var(--bg2)"}}>
-              <div style={{fontSize:9,color:"var(--text3)",lineHeight:1.6}}>Scores are AI-generated from publicly available market data for educational purposes only. Not financial advice. <a href="/legal.html#ai" style={{color:"var(--blue)"}}>AI Disclosure</a></div>
-            </div>
-          </div>
-        )}
-
-        {/* How Scores Work */}
-        <div style={{marginTop:16}}>
-          <button onClick={()=>setShowMethod(!showMethod)} style={{background:"var(--card)",border:"1px solid var(--border)",borderRadius:8,padding:"10px 14px",width:"100%",textAlign:"left",cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <span style={{fontSize:11,fontWeight:700,color:"var(--text2)"}}>How Scores Work</span>
-            <span style={{fontSize:10,color:"var(--text3)"}}>{showMethod?"▲":"▼"}</span>
-          </button>
-          {showMethod&&(
-            <div className="fade-up" style={{background:"var(--card)",border:"1px solid var(--border)",borderTop:"none",borderRadius:"0 0 8px 8px",padding:"14px 16px",fontSize:11,color:"var(--text2)",lineHeight:1.8}}>
-              <p style={{marginBottom:8}}>Each market receives a <strong style={{color:"var(--text)"}}>composite outlook score (0-100)</strong> derived from 5 weighted factors:</p>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"4px 16px",fontSize:10,marginBottom:8}}>
-                <div><strong style={{color:"var(--text)"}}>Supply (25%)</strong> — Inventory, production, imports</div>
-                <div><strong style={{color:"var(--text)"}}>Demand (20%)</strong> — Consumption, exports, seasonal</div>
-                <div><strong style={{color:"var(--text)"}}>Positioning (15%)</strong> — CFTC COT managed money</div>
-                <div><strong style={{color:"var(--text)"}}>Macro (15%)</strong> — Rates, energy, trade policy</div>
-                <div><strong style={{color:"var(--text)"}}>Seasonal (15%)</strong> — Historical monthly patterns</div>
-                <div><strong style={{color:"var(--text)"}}>Discretionary (10%)</strong> — Unique current factors</div>
-              </div>
-              <p style={{marginBottom:8}}><strong style={{color:"var(--text)"}}>Confidence scores</strong> reflect data completeness. With only price data available (no live USDA, COT, or slaughter data), confidence is capped at 35-50%. When COT data is integrated, confidence increases to 55-70%. Full data integration would allow 80-95%.</p>
-              <p style={{marginBottom:0,fontSize:10,color:"var(--text3)"}}>Scores update every 15 minutes when users are active. No AI calls are made when nobody is using the site. Scores are smoothed to prevent erratic swings — maximum 15-point change per refresh unless a major catalyst is detected.</p>
-            </div>
-          )}
-        </div>
-
-        {/* Bottom Disclaimer */}
-        <div style={{marginTop:12,padding:"10px 14px",background:"var(--card)",borderRadius:8,border:"1px solid var(--border)"}}>
-          <div style={{fontSize:9,color:"var(--text3)",lineHeight:1.6}}>Market outlook scores are generated by AI analysis of publicly available data. Scores represent educational market commentary, not predictions or recommendations. Data delayed ~15 min. <a href="/legal.html" style={{color:"var(--blue)"}}>Full disclosures</a></div>
-        </div>
-      </>)}
-    </div>
-  );
+{"scores":[{"code":"GF","name":"Feeder Cattle","price":0,"change":0,"changePct":0,"composite":0,"confidence":0,"signal":"Bullish","summary":"One sentence.","factors":{"supply":{"score":0,"note":"brief"},"demand":{"score":0,"note":"brief"},"positioning":{"score":0,"note":"brief"},"macro":{"score":0,"note":"brief"},"seasonal":{"score":0,"note":"brief"}}}],"generatedAt":"ISO timestamp","marketStatus":"open or closed","dataSources":{"prices":true,"cot":${cotData ? 'true' : 'false'},"usda":false,"slaughter":false,"exports":false}}`;
 }
 
-/* ═══ MAIN APP ═══ */
-function App(){
-  const [page,setPage]=useState("score");
-  const [market,setMarket]=useState("Feeder Cattle (GF)");const [dir,setDir]=useState("bullish");
-  const [entry,setEntry]=useState("");const [target,setTarget]=useState("");const [stop,setStop]=useState("");
-  const [qty,setQty]=useState("1");const [customExit,setCustomExit]=useState("");const [acctSize,setAcctSize]=useState("");
-  const [showSpecs,setShowSpecs]=useState(false);
-  const [aiMsgs,setAiMsgs]=useState([]);const [aiIn,setAiIn]=useState("");const [aiLoad,setAiLoad]=useState(false);const [aiErr,setAiErr]=useState("");
-  const [activeTrade,setActiveTrade]=useState(null);
-  const [savedProj,setSavedProj]=useState(()=>loadLS("cs_projections",[]));
-  const chatEnd=useRef(null);
-  /* AUTH STATE */
-  const [session,setSession]=useState(null);
-  const [plan,setPlan]=useState("anon");
-  const [remaining,setRemaining]=useState(null);
-  const [showAuth,setShowAuth]=useState(false);
-  const [showUpgrade,setShowUpgrade]=useState(false);
-  const [authLoading,setAuthLoading]=useState(true);
+async function generateScores() {
+  if (!ANTHROPIC_API_KEY) {
+    console.warn('No ANTHROPIC_API_KEY — cannot generate scores');
+    scoreCache.lastError = 'No API key configured';
+    return null;
+  }
+  if (Object.keys(priceCache.prices).length === 0) {
+    console.warn('No price data — cannot generate scores');
+    scoreCache.lastError = 'No price data available';
+    return null;
+  }
 
-  useEffect(()=>{
-    sb.auth.getSession().then(({data})=>{setSession(data.session);setAuthLoading(false);if(data.session)fetchPlan(data.session)});
-    const{data:listener}=sb.auth.onAuthStateChange((_,s)=>{setSession(s);if(s)fetchPlan(s);else{setPlan("anon");setRemaining(null)}});
-    return()=>listener.subscription.unsubscribe();
-  },[]);
+  console.log(`[${new Date().toISOString()}] Generating market scores...`);
 
-  const fetchPlan=async(s)=>{
-    try{
-      const r=await fetch(API_BASE+"/api/subscription",{headers:{"Authorization":"Bearer "+s.access_token}});
-      if(r.ok){const d=await r.json();setPlan(d.plan);setRemaining(d.remaining)}
-    }catch{}
-  };
+  try {
+    // Try to get COT data
+    const cotData = await fetchCOTContext();
+    console.log(`  COT data: ${cotData ? 'available' : 'unavailable'}`);
 
-  const handleAuth=(s)=>{setSession(s);setShowAuth(false);fetchPlan(s)};
-  const handleLogout=async()=>{await sb.auth.signOut();setSession(null);setPlan("anon");setRemaining(null)};
-  const handleUpgrade=async()=>{
-    if(!session)return setShowAuth(true);
-    try{const r=await fetch(API_BASE+"/api/checkout",{method:"POST",headers:{"Authorization":"Bearer "+session.access_token,"Content-Type":"application/json"}});const d=await r.json();if(d.url)window.location.href=d.url;}catch(e){setAiErr("Checkout failed: "+e.message)}
-    setShowUpgrade(false);
-  };
-  const handlePortal=async()=>{
-    if(!session)return;
-    try{const r=await fetch(API_BASE+"/api/portal",{method:"POST",headers:{"Authorization":"Bearer "+session.access_token,"Content-Type":"application/json"}});const d=await r.json();if(d.url)window.location.href=d.url;}catch{}
-  };
+    const prompt = buildScoringPrompt(priceCache.prices, cotData);
 
-  // Check URL params for post-checkout
-  useEffect(()=>{
-    const p=new URLSearchParams(window.location.search);
-    if(p.get("upgraded")==="true"&&session){fetchPlan(session);window.history.replaceState({},"","/");}
-    if(p.get("canceled")==="true")window.history.replaceState({},"","/");
-  },[session]);
+    // Try Haiku first, fall back to Sonnet if Haiku fails
+    let model = SCORE_MODEL;
+    let res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: 2000,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+      signal: AbortSignal.timeout(30000),
+    });
 
-  useEffect(()=>{chatEnd.current?.scrollIntoView({behavior:"smooth"})},[aiMsgs,aiLoad]);
-  const loadAiTrade=tr=>{};
+    // Fallback to Sonnet if Haiku fails
+    if (!res.ok && model !== 'claude-sonnet-4-20250514') {
+      console.warn(`  Haiku failed (${res.status}), falling back to Sonnet`);
+      model = 'claude-sonnet-4-20250514';
+      res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': ANTHROPIC_API_KEY,
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 2000,
+          messages: [{ role: 'user', content: prompt }],
+        }),
+        signal: AbortSignal.timeout(30000),
+      });
+    }
 
-  const mkt=MKT[market]||MKT["Feeder Cattle (GF)"];
-  const calc=(e,x)=>{const en=parseFloat(e),ex2=parseFloat(x),q=parseInt(qty)||0;if(isNaN(en)||isNaN(ex2)||q<=0)return null;const d=dir==="bullish"?ex2-en:en-ex2;return{ticks:Math.round(d/mkt.tk),pts:parseFloat(d.toFixed(4)),usd:d*mkt.pp*q}};
-  const tgtR=calc(entry,target),stpR=calc(entry,stop),custR=customExit?calc(entry,customExit):null;
-  const rr=tgtR&&stpR&&Math.abs(stpR.usd)>0?(tgtR.usd/Math.abs(stpR.usd)).toFixed(1):null;
-  const acctN=parseFloat(acctSize?.replace(/,/g,""))||0;const nQty=parseInt(qty)||1;
-  const marginTotal=mkt.mg*nQty;const riskAmt=stpR?Math.abs(stpR.usd):0;
-  const riskPct=acctN>0&&riskAmt>0?((riskAmt/acctN)*100):0;const marginPct=acctN>0?((marginTotal/acctN)*100):0;
-  const stopDist=Math.abs(parseFloat(entry)-parseFloat(stop))||0;const riskPerContract=stopDist*mkt.pp;
-  const maxContracts=acctN>0&&riskPerContract>0?Math.max(1,Math.floor((acctN*0.02)/riskPerContract)):null;
-  const returnOnAcct=acctN>0&&tgtR?((tgtR.usd/acctN)*100).toFixed(1):null;
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`Anthropic ${res.status}: ${err.slice(0, 200)}`);
+    }
 
-  const sendAi=async(text)=>{
-    if(!text.trim()||aiLoad)return;setAiErr("");
-    // Gate: require at least free account for AI
-    if(!session){setShowAuth(true);return}
-    let msg=text.trim().slice(0,1000);
-    if(acctN>0)msg+=`\n[Account: $${acctN.toLocaleString()}, 2% risk rule]`;
-    setAiMsgs(p=>[...p,{r:"user",t:text.trim()}]);setAiIn("");setAiLoad(true);
-    if(page!=="ai")setPage("ai");
-    try{
-      const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),60000);
-      const headers={"Content-Type":"application/json"};
-      if(session)headers["Authorization"]="Bearer "+session.access_token;
-      const resp=await fetch(API_URL,{method:"POST",headers,body:JSON.stringify({messages:[...aiMsgs.map(m=>({role:m.r==="user"?"user":"assistant",content:m.t})),{role:"user",content:msg}]}),signal:controller.signal});
-      clearTimeout(timeout);
-      if(resp.status===401){const d=await resp.json();if(d.requireAuth){setShowAuth(true)}else{setAiErr(d.error||"Auth error")}setAiLoad(false);return}
-      if(resp.status===429){const d=await resp.json();if(d.requireUpgrade||d.plan==="free"){setShowUpgrade(true)}else{setAiErr(d.error||"Rate limit")}setAiLoad(false);return}
-      if(resp.status===502||resp.status===504){setAiErr("Timed out. Try a shorter question.");setAiLoad(false);return}
-      if(!resp.ok){setAiErr("Error "+resp.status);setAiLoad(false);return}
-      // Update remaining from headers
-      const rem=resp.headers.get("X-Queries-Remaining");if(rem!==null)setRemaining(parseInt(rem));
-      const pl=resp.headers.get("X-Plan");if(pl)setPlan(pl);
-      const data=await resp.json();
-      const full=data.response||data.content?.filter(b=>b.type==="text").map(b=>b.text).join("\n")||"No response.";
-      setAiMsgs(p=>[...p,{r:"ai",t:stripRec(full),rec:parseRec(full)}]);
-    }catch(e){if(e.name==="AbortError"){setAiErr("Request timed out after 60s. Try again.")}else{setAiMsgs(p=>[...p,{r:"ai",t:"Error: "+e.message}])}}
-    finally{setAiLoad(false)}
-  };
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '';
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
 
-  const presets=[
-    {l:"📊 Market Overview",p:"Comprehensive cattle and commodity market overview. Cover supply/demand fundamentals, macro environment, COT positioning, and seasonal patterns. What are the key factors driving each market right now?"},
-    {l:"🐂 Cattle Outlook",p:"Feeder and live cattle market analysis. Cover inventory levels, packer margins, slaughter rates, boxed beef trends, and import/export dynamics. What is the current supply and demand picture?"},
-    {l:"🌽 Feed Cost Analysis",p:"Feed cost analysis: corn basis, soybean meal, DDGs, hay. How are current feed costs affecting cattle feeding margins? What are the key drivers of feed prices right now?"},
-    {l:"📈 COT Breakdown",p:"Commitments of Traders analysis for cattle and grain markets. What are managed money positions signaling? How have positions changed week-over-week and what does that historically indicate?"},
-    {l:"⚡ Risk Factors",p:"What are the biggest risk factors in cattle markets right now? Cover screwworm status, trade policy, weather/drought, packer capacity, and any emerging threats or catalysts."},
-    {l:"📋 USDA Preview",p:"Preview upcoming USDA reports and their potential market impact. What data is expected and how might it affect cattle and grain markets based on historical patterns?"},
-  ];
+    // Inject current prices into scores
+    parsed.scores = parsed.scores.map(s => {
+      const priceData = priceCache.prices[s.code];
+      if (priceData) {
+        s.price = priceData.price;
+        s.change = priceData.change;
+        s.changePct = Number(priceData.changePct);
+        s.unit = priceData.unit;
+      }
+      // Clamp scores
+      s.composite = Math.max(0, Math.min(100, Math.round(s.composite)));
+      s.confidence = Math.max(0, Math.min(100, Math.round(s.confidence)));
+      Object.values(s.factors || {}).forEach(f => {
+        f.score = Math.max(0, Math.min(100, Math.round(f.score)));
+      });
+      // Derive signal label from composite
+      if (s.composite <= 15) s.signal = 'Strongly Bearish';
+      else if (s.composite <= 30) s.signal = 'Bearish';
+      else if (s.composite <= 45) s.signal = 'Slightly Bearish';
+      else if (s.composite <= 55) s.signal = 'Neutral';
+      else if (s.composite <= 70) s.signal = 'Slightly Bullish';
+      else if (s.composite <= 85) s.signal = 'Bullish';
+      else s.signal = 'Strongly Bullish';
+      return s;
+    });
 
-  const [showAiDisclosure,setShowAiDisclosure]=useState(()=>!localStorage.getItem("cs_ai_disclosed"));
-  const dismissAiDisclosure=()=>{localStorage.setItem("cs_ai_disclosed","1");setShowAiDisclosure(false)};
-  const [showCookie,setShowCookie]=useState(()=>!localStorage.getItem("cs_cookie"));
-  const dismissCookie=()=>{localStorage.setItem("cs_cookie","1");setShowCookie(false)};
+    parsed.generatedAt = new Date().toISOString();
+    parsed.pricesAsOf = priceCache.lastUpdated;
 
-  return(
-    <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",background:"var(--bg)"}}>
-      {/* TRAIGA AI Disclosure Modal */}
-      {showAiDisclosure&&(<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.85)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={dismissAiDisclosure}><div onClick={e=>e.stopPropagation()} style={{background:"var(--card)",border:"1px solid var(--blueborder)",borderRadius:12,padding:"32px",width:440,maxWidth:"90vw",textAlign:"center"}}><div style={{fontSize:32,marginBottom:12}}>🤖</div><div style={{fontSize:18,fontWeight:700,marginBottom:12}}>AI-Powered Analysis</div><div style={{fontSize:13,color:"var(--text2)",lineHeight:1.8,marginBottom:8}}>CattleSignal uses artificial intelligence (powered by Anthropic Claude) to generate market analysis and educational content.</div><div style={{fontSize:12,color:"var(--text2)",lineHeight:1.7,marginBottom:16,padding:"12px",background:"var(--bg2)",borderRadius:8,border:"1px solid var(--border)",textAlign:"left"}}><strong style={{color:"var(--text)"}}>Please understand:</strong><br/>• AI responses are generated automatically and may contain errors<br/>• This is market analysis for educational purposes only<br/>• This is NOT financial advice or a trade recommendation<br/>• CattleSignal is not a registered CTA, investment advisor, or broker-dealer<br/>• Always consult a licensed professional before making trading decisions</div><button onClick={dismissAiDisclosure} style={{padding:"12px 32px",borderRadius:8,fontSize:14,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none"}}>I Understand</button></div></div>)}
-      {/* Cookie Banner */}
-      {showCookie&&(<div style={{position:"fixed",bottom:0,left:0,right:0,zIndex:1500,background:"var(--card)",borderTop:"1px solid var(--border)",padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexWrap:"wrap"}}><div style={{fontSize:11,color:"var(--text2)",flex:1}}>CattleSignal uses cookies and local storage for authentication and to save your preferences. We do not sell personal data or engage in targeted advertising. <a href="/legal.html#privacy" style={{color:"var(--blue)"}}>Privacy Policy</a></div><button onClick={dismissCookie} style={{padding:"6px 16px",borderRadius:6,fontSize:11,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none",whiteSpace:"nowrap"}}>Got It</button></div>)}
-      {/* Persistent Disclaimer Banner */}
-      <div className="no-print" style={{background:"var(--redbg)",borderBottom:"1px solid var(--redborder)",padding:"6px 24px",textAlign:"center"}}><div style={{fontSize:10,color:"var(--red)",fontWeight:500}}>⚠ CattleSignal provides market analysis and educational content only. Not financial advice. Not a registered CTA or investment advisor. <a href="/legal.html#risk" style={{color:"var(--red)",textDecoration:"underline"}}>Risk Disclosure</a></div></div>
-      <nav className="no-print" style={{background:"var(--card)",borderBottom:"1px solid var(--border)",position:"sticky",top:0,zIndex:100}}>
-        <div className="nav-inner" style={{maxWidth:1220,margin:"0 auto",padding:"0 24px",display:"flex",alignItems:"center",justifyContent:"space-between",height:48}}>
-          <div style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer"}} onClick={()=>setPage("score")}>
-            <span style={{fontSize:18}}>🐂</span><span style={{fontSize:14,fontWeight:700}}>Cattle<span style={{color:"var(--blue)"}}>Signal</span></span>
-          </div>
-          <div className="nav-tabs" style={{display:"flex",gap:3,alignItems:"center"}}>
-            {[{k:"score",l:"📈 Scorecard"},{k:"calc",l:"📋 Calculator"},{k:"proj",l:"🐄 Projector"},{k:"basis",l:"📏 Basis"},{k:"hedge",l:"🛡️ Hedges"},{k:"usda",l:"📊 USDA"},{k:"ai",l:"🤖 AI Analyst"}].map(t=>(
-              <button key={t.k} onClick={()=>setPage(t.k)} style={{padding:"7px 10px",borderRadius:6,fontSize:11,fontWeight:600,background:page===t.k?"var(--blue)":"transparent",color:page===t.k?"#fff":"var(--text2)",border:`1px solid ${page===t.k?"var(--blue)":"transparent"}`}}>{t.l}</button>
-            ))}
-            <div style={{width:1,height:20,background:"var(--border)",margin:"0 4px"}}/>
-            {session?(
-              <div style={{display:"flex",gap:4,alignItems:"center"}}>
-                <span style={{fontSize:9,fontWeight:700,padding:"3px 7px",borderRadius:4,background:plan==="pro"?"var(--greenbg)":"var(--card2)",color:plan==="pro"?"var(--green)":"var(--text3)",border:`1px solid ${plan==="pro"?"var(--greenborder)":"var(--border)"}`}}>{plan==="pro"?"PRO":"FREE"}</span>
-                {remaining!==null&&<span style={{fontSize:9,color:"var(--text3)",fontFamily:"var(--mono)"}}>{remaining} left</span>}
-                {plan==="free"&&<button onClick={()=>setShowUpgrade(true)} style={{padding:"5px 8px",borderRadius:5,fontSize:9,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none"}}>Upgrade</button>}
-                {plan==="pro"&&<button onClick={handlePortal} style={{padding:"5px 8px",borderRadius:5,fontSize:9,fontWeight:600,background:"var(--card2)",color:"var(--text3)",border:"1px solid var(--border)"}}>Manage</button>}
-                <button onClick={handleLogout} style={{padding:"5px 8px",borderRadius:5,fontSize:9,fontWeight:600,background:"var(--card2)",color:"var(--text3)",border:"1px solid var(--border)"}}>Logout</button>
-              </div>
-            ):(
-              <button onClick={()=>setShowAuth(true)} style={{padding:"6px 12px",borderRadius:6,fontSize:11,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none"}}>{authLoading?"...":"Sign In"}</button>
-            )}
-          </div>
-        </div>
-      </nav>
+    // Apply smoothing: score can't move more than 15 points from previous
+    if (scoreCache.scores?.scores) {
+      const prev = {};
+      scoreCache.scores.scores.forEach(s => prev[s.code] = s.composite);
+      parsed.scores.forEach(s => {
+        if (prev[s.code] !== undefined) {
+          const diff = s.composite - prev[s.code];
+          if (Math.abs(diff) > 15) {
+            s.composite = prev[s.code] + (diff > 0 ? 15 : -15);
+            s.smoothed = true;
+          }
+        }
+      });
+    }
 
-      <main style={{maxWidth:1220,margin:"0 auto",padding:"14px 24px 40px",flex:1,width:"100%"}}>
+    // Store in history
+    scoreHistory.push({
+      timestamp: parsed.generatedAt,
+      scores: parsed.scores.map(s => ({ code: s.code, composite: s.composite })),
+    });
+    if (scoreHistory.length > 48) scoreHistory.shift();
 
-        {page==="score"&&<Scorecard/>}
+    console.log(`[${new Date().toISOString()}] Scores generated: ${parsed.scores.map(s => `${s.code}:${s.composite}`).join(', ')}`);
+    return parsed;
 
-        {page==="calc"&&(<>
-          {false?(null):(
-            <div className="fade-up" style={{background:"linear-gradient(135deg, var(--card), var(--card2))",border:"1px solid var(--blueborder)",borderRadius:12,padding:"24px",marginBottom:12,textAlign:"center"}}>
-              <div style={{fontSize:28,marginBottom:8}}>📊</div><div style={{fontSize:16,fontWeight:700,marginBottom:6}}>AI Market Analysis</div>
-              <div style={{fontSize:12,color:"var(--text2)",marginBottom:16,maxWidth:500,margin:"0 auto 16px"}}>AI analyst reviews live market data, USDA reports, and fundamentals to provide educational market commentary.</div>
-              <div style={{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap"}}>
-                <button onClick={()=>sendAi(presets[0].p)} disabled={aiLoad} style={{padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none",opacity:aiLoad?.5:1}}>{aiLoad?"⏳ Analyzing...":"📊 Market Overview"}</button>
-                <button onClick={()=>setPage("ai")} style={{padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,background:"transparent",color:"var(--blue)",border:"1px solid var(--blueborder)"}}>Browse All Analysis →</button>
-              </div>
-            </div>
-          )}
-          <div className="fade-up s1" style={{background:"var(--card)",border:"1px solid var(--border)",borderRadius:8,padding:"10px 16px",marginBottom:12}}>
-            <div className="acct-bar-inner" style={{display:"flex",alignItems:"center",gap:12}}>
-              <div style={{flex:"0 0 auto"}}><div style={{fontSize:8,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".1em",marginBottom:2}}>Account Size</div><div style={{position:"relative",display:"inline-block"}}><span style={{position:"absolute",left:9,top:"50%",transform:"translateY(-50%)",fontSize:12,color:"var(--text3)",fontFamily:"var(--mono)"}}>$</span><input value={acctSize} onChange={e=>setAcctSize(e.target.value)} placeholder="25,000" inputMode="decimal" style={{padding:"8px 10px 8px 20px",fontSize:13,fontWeight:600,fontFamily:"var(--mono)",width:150,border:"1px solid var(--border)",borderRadius:6,background:"var(--bg2)",color:"var(--text)"}}/></div></div>
-              {acctN>0&&entry&&(<div className="acct-grid" style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,flex:1}}>
-                <div><div style={{fontSize:8,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".1em"}}>Margin</div><div style={{fontSize:14,fontWeight:700,fontFamily:"var(--mono)"}}>{fK(marginTotal)}</div><div style={{fontSize:8,color:marginPct>50?"var(--red)":"var(--text3)",fontFamily:"var(--mono)"}}>{marginPct.toFixed(1)}%</div></div>
-                <div><div style={{fontSize:8,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".1em"}}>Risk at Stop</div><div style={{fontSize:14,fontWeight:700,color:riskPct>5?"var(--red)":riskPct>2?"var(--gold)":"var(--green)",fontFamily:"var(--mono)"}}>{f$(riskAmt)}</div><div style={{fontSize:8,color:riskPct>2?"var(--gold)":"var(--text3)",fontFamily:"var(--mono)"}}>{riskPct.toFixed(1)}%</div></div>
-                <div><div style={{fontSize:8,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".1em"}}>2% Max</div><div style={{fontSize:14,fontWeight:700,color:"var(--blue)",fontFamily:"var(--mono)"}}>{maxContracts||"—"}</div><div style={{fontSize:8,color:"var(--text3)"}}>contracts</div></div>
-                <div><div style={{fontSize:8,fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".1em"}}>Return</div><div style={{fontSize:14,fontWeight:700,color:returnOnAcct>0?"var(--green)":"var(--text)",fontFamily:"var(--mono)"}}>{returnOnAcct?"+"+returnOnAcct+"%":"—"}</div><div style={{fontSize:8,color:"var(--text3)"}}>if target</div></div>
-              </div>)}
-            </div>
-            {acctN>0&&riskAmt>0&&riskPct>2&&<div style={{marginTop:6,padding:"5px 10px",background:"var(--goldbg)",border:"1px solid var(--goldborder)",borderRadius:5,fontSize:9,color:"var(--gold)"}}>⚠ Risk {riskPct.toFixed(1)}% exceeds 2% rule.{maxContracts?" Max "+maxContracts+" contract"+(maxContracts>1?"s":""):""}</div>}
-          </div>
-          <div className="two-col fade-up s2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14,alignItems:"start"}}>
-            <div style={{background:"var(--card)",borderRadius:10,border:"1px solid var(--border)",overflow:"hidden"}}><SH icon="📋" title="Order"/><div style={{padding:"12px 16px"}}>
-              <div style={{marginBottom:8}}><div style={{fontSize:9,fontWeight:600,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:2}}>Market</div><select value={market} onChange={e=>setMarket(e.target.value)} style={{width:"100%",padding:"10px",fontSize:12,fontWeight:600,border:"1px solid var(--border)",borderRadius:6,background:"var(--bg2)",color:"var(--text)"}}>{Object.keys(MKT).map(m=><option key={m}>{m}</option>)}</select></div>
-              <div style={{marginBottom:8}}><div style={{fontSize:9,fontWeight:600,color:"var(--text3)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:2}}>Direction</div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:4}}>{["bullish","bearish"].map(d=><button key={d} onClick={()=>setDir(d)} style={{padding:"9px",borderRadius:6,fontSize:11,fontWeight:700,background:dir===d?(d==="bullish"?"var(--greenbg)":"var(--redbg)"):"var(--bg2)",color:dir===d?(d==="bullish"?"var(--green)":"var(--red)"):"var(--text3)",border:`1px solid ${dir===d?(d==="bullish"?"var(--greenborder)":"var(--redborder)"):"var(--border)"}`}}>{d==="bullish"?"▲ LONG":"▼ SHORT"}</button>)}</div></div>
-              <PF label={`Entry (${dir==="bullish"?"Buy":"Sell"})`} value={entry} onChange={e=>setEntry(e.target.value)} placeholder="Enter price"/>
-              <PF label="Target" value={target} onChange={e=>setTarget(e.target.value)} accent="var(--green)"/>
-              <PF label="Stop" value={stop} onChange={e=>setStop(e.target.value)} accent="var(--red)"/>
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}}><PF label="Contracts" value={qty} onChange={e=>setQty(e.target.value)} im="numeric"/><PF label="Custom Exit" value={customExit} onChange={e=>setCustomExit(e.target.value)}/></div>
-            </div></div>
-            <div>
-              <div style={{background:"var(--card)",borderRadius:10,border:"1px solid var(--border)",overflow:"hidden",marginBottom:10}}><SH icon="💰" title="P&L"/><div style={{padding:"12px 16px"}}>{tgtR&&(<><div style={{fontSize:9,fontWeight:700,color:"var(--green)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:4}}>▲ TARGET ({target})</div><ResultRow val={tgtR}/></>)}{stpR&&(<><div style={{fontSize:9,fontWeight:700,color:"var(--red)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:4}}>▼ STOP ({stop})</div><ResultRow val={stpR}/></>)}{custR&&(<><div style={{fontSize:9,fontWeight:700,color:"var(--blue)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:4}}>◆ CUSTOM ({customExit})</div><ResultRow val={custR} color="var(--blue)"/></>)}{!tgtR&&!stpR&&<div style={{textAlign:"center",padding:"24px 0",color:"var(--text3)",fontSize:11}}>Enter prices or get an AI recommendation</div>}</div></div>
-              {rr&&<div style={{background:"var(--card)",borderRadius:10,border:"1px solid var(--border)",overflow:"hidden",marginBottom:10}}><SH icon="⚖️" title="Risk / Reward"/><div style={{padding:"12px 16px"}}><div className="rr-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6}}><Stat label="Profit" value={fSign(tgtR.usd)} color="var(--green)" big/><Stat label="Risk" value={"-"+f$(Math.abs(stpR.usd))} color="var(--red)" big/><Stat label="R:R" value={"1:"+rr} color={parseFloat(rr)>=2?"var(--green)":"var(--gold)"} big sub={parseFloat(rr)>=2?"Good":"Low"}/></div></div></div>}
-              <button onClick={()=>setShowSpecs(!showSpecs)} style={{width:"100%",padding:"8px 14px",borderRadius:7,fontSize:10,fontWeight:600,background:"var(--card)",color:"var(--text3)",border:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span>📄 {market} Specs</span><span style={{transform:showSpecs?"rotate(180deg)":"none",transition:".2s",fontSize:9}}>▼</span></button>
-              {showSpecs&&<div style={{background:"var(--card)",borderRadius:"0 0 7px 7px",border:"1px solid var(--border)",borderTop:"none",padding:"8px 14px"}}>{[{l:"Size",v:mkt.sz},{l:"Tick",v:mkt.tk+" = "+f$(mkt.tv)},{l:"Point",v:f$(mkt.pp)},{l:"Margin",v:"~"+f$(mkt.mg)},{l:"Months",v:mkt.mo},{l:"Hours",v:mkt.hr},{l:"Exchange",v:mkt.ex},{l:"Settlement",v:mkt.st}].map((d,i)=><div key={i} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:i<7?"1px solid var(--border)":"none"}}><span style={{fontSize:10,color:"var(--text3)"}}>{d.l}</span><span style={{fontSize:10,fontWeight:600,color:"var(--text2)",fontFamily:"var(--mono)"}}>{d.v}</span></div>)}</div>}
-            </div>
-          </div>
-          <div style={{marginTop:14,padding:"8px 14px",background:"var(--card)",borderRadius:7,border:"1px solid var(--border)"}}><div style={{fontSize:9,color:"var(--text3)",lineHeight:1.5}}><span style={{color:"var(--red)",fontWeight:700}}>⚠ IMPORTANT:</span> CattleSignal provides market analysis and educational content only. It is not a registered investment advisor, commodity trading advisor (CTA), or broker-dealer. Nothing on this platform constitutes financial advice or a recommendation to buy or sell any commodity, futures contract, or option. Trading commodities involves substantial risk of loss. <a href="/legal.html" style={{color:"var(--blue)",textDecoration:"none"}}>Full legal disclosures →</a></div></div>
-        </>)}
-
-        {page==="proj"&&<Projector sendAi={sendAi} aiLoad={aiLoad} savedProj={savedProj} setSavedProj={setSavedProj}/>}
-        {page==="basis"&&<BasisCalc/>}
-        {page==="hedge"&&<HedgeTracker/>}
-        {page==="usda"&&<USDAReports sendAi={sendAi} aiLoad={aiLoad}/>}
-
-        {page==="ai"&&(
-          <div style={{maxWidth:780,margin:"0 auto"}} className="fade-up">
-            <div style={{background:"var(--card)",borderRadius:10,border:"1px solid var(--border)",overflow:"hidden",marginBottom:12}}>
-              <div style={{padding:"12px 16px",borderBottom:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontSize:13}}>🤖</span><span style={{fontSize:13,fontWeight:700}}>AI Market Analyst</span></div><div style={{display:"flex",gap:6,alignItems:"center"}}>{aiMsgs.length>0&&<button onClick={()=>{setAiMsgs([]);setAiErr("")}} style={{padding:"4px 8px",borderRadius:4,fontSize:9,fontWeight:600,background:"var(--card2)",color:"var(--text3)",border:"1px solid var(--border)"}}>Clear</button>}<Tag color={plan==="pro"?"var(--green)":"var(--text3)"}>{plan==="pro"?"PRO":"FREE"}</Tag>{remaining!==null&&<span style={{fontSize:9,color:"var(--text3)",fontFamily:"var(--mono)"}}>{remaining}/{plan==="pro"?"50":"3"}</span>}</div></div>
-              <div style={{padding:"12px 16px"}}>
-                {acctN>0&&<div style={{padding:"6px 10px",background:"var(--bluebg)",border:"1px solid var(--blueborder)",borderRadius:6,fontSize:10,color:"var(--blue)",fontWeight:500,marginBottom:8,fontFamily:"var(--mono)"}}>Account: ${acctN.toLocaleString()} | 2% risk rule active</div>}
-                {aiErr&&<div style={{padding:"6px 10px",background:"var(--redbg)",border:"1px solid var(--redborder)",borderRadius:6,fontSize:10,color:"var(--red)",fontWeight:500,marginBottom:8,display:"flex",justifyContent:"space-between",alignItems:"center"}}><span>{aiErr}</span><button onClick={()=>setAiErr("")} style={{background:"none",border:"none",color:"var(--red)",fontSize:12,cursor:"pointer"}}>✕</button></div>}
-                <div className="preset-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:5}}>{presets.map((q,i)=><button key={i} onClick={()=>sendAi(q.p)} disabled={aiLoad} style={{padding:"8px 10px",borderRadius:6,fontSize:10,fontWeight:600,textAlign:"left",background:"var(--bg2)",color:aiLoad?"var(--text3)":"var(--text)",border:"1px solid var(--border)",opacity:aiLoad?.5:1}}>{q.l}</button>)}</div>
-              </div>
-            </div>
-            <div style={{display:"flex",flexDirection:"column",gap:8}}>
-              {aiMsgs.map((m,i)=>(
-                <div key={i} className="fade-up" style={{background:"var(--card)",borderRadius:8,border:"1px solid var(--border)",padding:"12px 14px",borderLeft:m.r==="ai"?"2px solid var(--blue)":"2px solid transparent"}}>
-                  <div style={{fontSize:9,fontWeight:700,color:m.r==="user"?"var(--text3)":"var(--blue)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:5}}>{m.r==="user"?"You":"AI Analyst"}</div>
-                  <div style={{fontSize:12,lineHeight:1.8,whiteSpace:"pre-wrap"}} dangerouslySetInnerHTML={{__html:renderMd(m.t)}}></div>
-                </div>
-              ))}
-              {aiLoad&&<div style={{background:"var(--card)",borderRadius:8,border:"1px solid var(--border)",padding:"14px",borderLeft:"2px solid var(--blue)"}}><div style={{display:"flex",alignItems:"center",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:4,height:4,borderRadius:"50%",background:"var(--blue)",animation:`pulse 1s ease ${i*.15}s infinite`}}/>)}<span style={{fontSize:10,color:"var(--text2)"}}>Analyzing market data...</span></div></div>}
-              <div ref={chatEnd}/>
-            </div>
-            <div style={{position:"sticky",bottom:0,paddingTop:10,background:"linear-gradient(transparent,var(--bg) 20%)"}}><div style={{display:"flex",gap:5}}><input value={aiIn} onChange={e=>setAiIn(e.target.value)} maxLength={1000} onKeyDown={e=>{if(e.key==="Enter"){e.preventDefault();sendAi(aiIn)}}} placeholder="Ask about cattle markets..." style={{flex:1,padding:"10px 12px",borderRadius:7,fontSize:12,border:"1px solid var(--border)",background:"var(--card)",color:"var(--text)"}}/><button onClick={()=>sendAi(aiIn)} disabled={!aiIn.trim()||aiLoad} style={{padding:"10px 16px",borderRadius:7,fontSize:11,fontWeight:700,background:aiIn.trim()&&!aiLoad?"var(--blue)":"var(--card2)",color:aiIn.trim()&&!aiLoad?"#fff":"var(--text3)",border:"none"}}>SEND</button></div></div>
-          </div>
-        )}
-      </main>
-
-      {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onAuth={handleAuth}/>}
-      {showUpgrade&&<UpgradePrompt onUpgrade={handleUpgrade} onClose={()=>setShowUpgrade(false)} plan={plan} remaining={remaining}/>}
-
-      <footer className="no-print" style={{borderTop:"1px solid var(--border)",padding:"10px 24px",textAlign:"center",background:"var(--card)"}}><div style={{fontSize:9,color:"var(--text3)",lineHeight:1.8}}>© {new Date().getFullYear()} Creed Holt LLC · CattleSignal provides market analysis and educational content only · Not a registered investment advisor, CTA, or broker-dealer · <a href="/legal.html" style={{color:"var(--blue)",textDecoration:"none"}}>Legal Disclosures</a> · <a href="/legal.html#risk" style={{color:"var(--blue)",textDecoration:"none"}}>Risk Disclosure</a> · <a href="/legal.html#privacy" style={{color:"var(--blue)",textDecoration:"none"}}>Privacy</a><br/>AI-generated analysis is for educational purposes only. Not financial advice. <a href="/legal.html#ai" style={{color:"var(--text3)",textDecoration:"underline"}}>AI Disclosure</a></div></footer>
-    </div>
-  );
+  } catch (err) {
+    console.error('Score generation failed:', err.message);
+    scoreCache.lastError = err.message;
+    return null;
+  }
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
-</script>
-</body>
-</html>
+app.get('/scores', async (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+
+  // If cache is fresh, serve it
+  if (scoreCache.scores && scoreCache.lastUpdated) {
+    const age = Date.now() - new Date(scoreCache.lastUpdated).getTime();
+    if (age < SCORE_MAX_AGE) {
+      return res.json({
+        ...scoreCache.scores,
+        cached: true,
+        cacheAge: Math.round(age / 1000),
+        history: scoreHistory.slice(-12), // Last 3 hours
+      });
+    }
+  }
+
+  // If already refreshing, serve stale or empty
+  if (scoreCache.refreshing) {
+    if (scoreCache.scores) {
+      return res.json({
+        ...scoreCache.scores,
+        cached: true,
+        stale: true,
+        refreshing: true,
+        history: scoreHistory.slice(-12),
+      });
+    }
+    return res.json({ scores: null, refreshing: true, message: 'Generating scores...' });
+  }
+
+  // Generate fresh scores
+  scoreCache.refreshing = true;
+  try {
+    const scores = await generateScores();
+    if (scores) {
+      scoreCache.scores = scores;
+      scoreCache.lastUpdated = new Date().toISOString();
+      scoreCache.lastError = null;
+    }
+    scoreCache.refreshing = false;
+    return res.json({
+      ...(scoreCache.scores || { scores: null }),
+      cached: false,
+      history: scoreHistory.slice(-12),
+      lastError: scoreCache.lastError || null,
+    });
+  } catch (err) {
+    scoreCache.refreshing = false;
+    scoreCache.lastError = err.message;
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// ─── CRON SCHEDULE ───
+const FIFTEEN_MINUTES = 15 * 60 * 1000;
+
+function isMarketHours() {
+  const now = new Date();
+  const ct = new Date(now.toLocaleString('en-US', { timeZone: 'America/Chicago' }));
+  const day = ct.getDay();
+  const hour = ct.getHours();
+  if (day === 6) return false;
+  if (day === 0 && hour < 17) return false;
+  if (day === 5 && hour >= 16) return false;
+  if (hour === 16) return false;
+  return true;
+}
+
+setInterval(async () => {
+  if (isMarketHours()) {
+    try { await refreshPrices(); }
+    catch (err) { console.error('Auto-refresh failed:', err.message); }
+  } else {
+    console.log(`[${new Date().toISOString()}] Market closed — skipping`);
+  }
+}, FIFTEEN_MINUTES);
+
+// Initial fetch on startup (always, even if market closed — shows last known prices)
+refreshPrices().catch(err => console.error('Initial fetch failed:', err.message));
+
+app.listen(PORT, () => {
+  console.log(`CattleSignal Market Data v2.1 on port ${PORT}`);
+  console.log(`Source: Yahoo Finance (no API key required)`);
+});
