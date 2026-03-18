@@ -592,7 +592,7 @@ function Scorecard(){
                 <div><strong style={{color:"var(--text)"}}>Seasonal (15%)</strong> — Historical monthly patterns</div>
                 <div><strong style={{color:"var(--text)"}}>Discretionary (10%)</strong> — Unique current factors</div>
               </div>
-              <p style={{marginBottom:8}}><strong style={{color:"var(--text)"}}>Confidence scores</strong> reflect data completeness. With only price data available (no live USDA, COT, or slaughter data), confidence is capped at 35-50%. When COT data is integrated, confidence increases to 55-70%. Full data integration would allow 80-95%.</p>
+              <p style={{marginBottom:8}}><strong style={{color:"var(--text)"}}>Confidence scores</strong> reflect data completeness. More data sources = higher confidence. Check the badges at the top of the scorecard to see which sources are currently active. Full integration of all 5 sources (prices, COT, USDA Cattle on Feed, slaughter, and export sales) enables 80-95% confidence.</p>
               <p style={{marginBottom:0,fontSize:10,color:"var(--text3)"}}>Scores update every 15 minutes when users are active. No AI calls are made when nobody is using the site. Scores are smoothed to prevent erratic swings — maximum 15-point change per refresh unless a major catalyst is detected.</p>
             </div>
           )}
