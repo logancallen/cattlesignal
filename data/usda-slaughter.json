@@ -1,0 +1,722 @@
+{
+  "fetchedAt": "2026-03-18T22:22:15.837Z",
+  "source": "USDA NASS QuickStats",
+  "reportType": "Livestock Slaughter",
+  "latestWeek": {
+    "year": 2026,
+    "period": "WEEK #08",
+    "freq": "WEEKLY",
+    "value": 6500,
+    "unit": "HEAD",
+    "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+    "weekEnding": "2026-02-28"
+  },
+  "prevWeek": {
+    "year": 2026,
+    "period": "WEEK #08",
+    "freq": "WEEKLY",
+    "value": 932,
+    "unit": "LB / HEAD, DRESSED BASIS",
+    "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+    "weekEnding": "2026-02-28"
+  },
+  "latestMonth": {
+    "year": 2026,
+    "period": "JAN",
+    "freq": "MONTHLY",
+    "value": 30300,
+    "unit": "HEAD",
+    "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+    "weekEnding": ""
+  },
+  "weekly": [
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 6500,
+      "unit": "HEAD",
+      "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 932,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 1900,
+      "unit": "HEAD",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 203,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 345,
+      "unit": "LB / HEAD, LIVE BASIS",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, LIVE BASIS",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 97300,
+      "unit": "HEAD",
+      "desc": "CATTLE, COWS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 675,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, COWS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 39300,
+      "unit": "HEAD",
+      "desc": "CATTLE, COWS, (EXCL MILK), SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 57900,
+      "unit": "HEAD",
+      "desc": "CATTLE, COWS, MILK, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 528600,
+      "unit": "HEAD",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 896,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 1471,
+      "unit": "LB / HEAD, LIVE BASIS",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, LIVE BASIS",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 164900,
+      "unit": "HEAD",
+      "desc": "CATTLE, HEIFERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 891,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, HEIFERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 259900,
+      "unit": "HEAD",
+      "desc": "CATTLE, STEERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #08",
+      "freq": "WEEKLY",
+      "value": 981,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, STEERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-28"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 7600,
+      "unit": "HEAD",
+      "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 928,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 2000,
+      "unit": "HEAD",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 207,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 352,
+      "unit": "LB / HEAD, LIVE BASIS",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, LIVE BASIS",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 97100,
+      "unit": "HEAD",
+      "desc": "CATTLE, COWS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 665,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, COWS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 38700,
+      "unit": "HEAD",
+      "desc": "CATTLE, COWS, (EXCL MILK), SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 58300,
+      "unit": "HEAD",
+      "desc": "CATTLE, COWS, MILK, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 517100,
+      "unit": "HEAD",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 895,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 1468,
+      "unit": "LB / HEAD, LIVE BASIS",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, LIVE BASIS",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 165700,
+      "unit": "HEAD",
+      "desc": "CATTLE, HEIFERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 896,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, HEIFERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 246800,
+      "unit": "HEAD",
+      "desc": "CATTLE, STEERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #07",
+      "freq": "WEEKLY",
+      "value": 983,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, STEERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-21"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 7300,
+      "unit": "HEAD",
+      "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 924,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 2000,
+      "unit": "HEAD",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 195,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 332,
+      "unit": "LB / HEAD, LIVE BASIS",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, LIVE BASIS",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 100100,
+      "unit": "HEAD",
+      "desc": "CATTLE, COWS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 667,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, COWS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 40000,
+      "unit": "HEAD",
+      "desc": "CATTLE, COWS, (EXCL MILK), SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 60100,
+      "unit": "HEAD",
+      "desc": "CATTLE, COWS, MILK, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 543600,
+      "unit": "HEAD",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 896,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 1469,
+      "unit": "LB / HEAD, LIVE BASIS",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, LIVE BASIS",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 173000,
+      "unit": "HEAD",
+      "desc": "CATTLE, HEIFERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 893,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, HEIFERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 263100,
+      "unit": "HEAD",
+      "desc": "CATTLE, STEERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #06",
+      "freq": "WEEKLY",
+      "value": 984,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, STEERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-14"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #05",
+      "freq": "WEEKLY",
+      "value": 6200,
+      "unit": "HEAD",
+      "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-07"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #05",
+      "freq": "WEEKLY",
+      "value": 928,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-07"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #05",
+      "freq": "WEEKLY",
+      "value": 1800,
+      "unit": "HEAD",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": "2026-02-07"
+    },
+    {
+      "year": 2026,
+      "period": "WEEK #05",
+      "freq": "WEEKLY",
+      "value": 189,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": "2026-02-07"
+    }
+  ],
+  "monthly": [
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 30300,
+      "unit": "HEAD",
+      "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 927,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 7900,
+      "unit": "HEAD",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 194,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 330,
+      "unit": "LB / HEAD, LIVE BASIS",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, LIVE BASIS",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 600,
+      "unit": "HEAD",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, NFI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 396,
+      "unit": "LB / HEAD, LIVE BASIS",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, NFI - SLAUGHTERED, MEASURED IN LB / HEAD, LIVE BASIS",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 424500,
+      "unit": "HEAD",
+      "desc": "CATTLE, COWS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 658,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, COWS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 177700,
+      "unit": "HEAD",
+      "desc": "CATTLE, COWS, (EXCL MILK), SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 246800,
+      "unit": "HEAD",
+      "desc": "CATTLE, COWS, MILK, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 2333800,
+      "unit": "HEAD",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 896,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 1468,
+      "unit": "LB / HEAD, LIVE BASIS",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, LIVE BASIS",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 44800,
+      "unit": "HEAD",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, NFI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 1260,
+      "unit": "LB / HEAD, LIVE BASIS",
+      "desc": "CATTLE, GE 500 LBS, SLAUGHTER, COMMERCIAL, NFI - SLAUGHTERED, MEASURED IN LB / HEAD, LIVE BASIS",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 741200,
+      "unit": "HEAD",
+      "desc": "CATTLE, HEIFERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 893,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, HEIFERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 1137800,
+      "unit": "HEAD",
+      "desc": "CATTLE, STEERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": ""
+    },
+    {
+      "year": 2026,
+      "period": "JAN",
+      "freq": "MONTHLY",
+      "value": 985,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, STEERS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": ""
+    },
+    {
+      "year": 2025,
+      "period": "DEC",
+      "freq": "MONTHLY",
+      "value": 34200,
+      "unit": "HEAD",
+      "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": ""
+    },
+    {
+      "year": 2025,
+      "period": "DEC",
+      "freq": "MONTHLY",
+      "value": 909,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, BULLS, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": ""
+    },
+    {
+      "year": 2025,
+      "period": "DEC",
+      "freq": "MONTHLY",
+      "value": 10300,
+      "unit": "HEAD",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN HEAD",
+      "weekEnding": ""
+    },
+    {
+      "year": 2025,
+      "period": "DEC",
+      "freq": "MONTHLY",
+      "value": 194,
+      "unit": "LB / HEAD, DRESSED BASIS",
+      "desc": "CATTLE, CALVES, SLAUGHTER, COMMERCIAL, FI - SLAUGHTERED, MEASURED IN LB / HEAD, DRESSED BASIS",
+      "weekEnding": ""
+    }
+  ],
+  "rawCount": 1236,
+  "promptSnippet": "═══ USDA LIVESTOCK SLAUGHTER ═══\nWeekly FI Slaughter: 7K head, WEEK #08 2026 (WoW: 597.4%)\nMonthly Slaughter: 30K head, JAN 2026\n"
+}
