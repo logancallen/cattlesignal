@@ -1,98 +1,78 @@
 /**
- * Fetch USDA Export Sales data from FAS API
+ * Fetch USDA Export Sales from FAS API
  * Outputs: data/usda-exports.json
- * No API key required for FAS
  */
 const fs = require('fs');
 
 async function fetchExports() {
-  const year = new Date().getFullYear();
+  const yr = new Date().getFullYear();
   let exports = [];
+  let source = '';
 
-  // Try multiple FAS API endpoints and years
-  const urls = [
-    `https://apps.fas.usda.gov/OpenData/api/esr/exports/commodityCode/0100/allCountries/marketYear/${year}`,
-    `https://apps.fas.usda.gov/OpenData/api/esr/exports/commodityCode/0100/allCountries/marketYear/${year - 1}`,
-    `https://apps.fas.usda.gov/OpenData/api/esr/exports/commodityCode/0200/allCountries/marketYear/${year}`,
-    `https://apps.fas.usda.gov/OpenData/api/esr/exports/commodityCode/0200/allCountries/marketYear/${year - 1}`,
+  // FAS ESR API endpoints to try
+  // Beef/veal commodity codes: 0100, 0200 (variety meats)
+  // Also try the cumulative exports endpoint
+  const attempts = [
+    { url: `https://apps.fas.usda.gov/OpenData/api/esr/exports/commodityCode/0100/allCountries/marketYear/${yr}`, label: 'beef MY current' },
+    { url: `https://apps.fas.usda.gov/OpenData/api/esr/exports/commodityCode/0100/allCountries/marketYear/${yr-1}`, label: 'beef MY prev' },
+    { url: `https://apps.fas.usda.gov/OpenData/api/esr/exports/commodityCode/0100`, label: 'beef latest' },
+    { url: `https://apps.fas.usda.gov/OpenData/api/esr/exports/allCommodities/allCountries/marketYear/${yr}`, label: 'all commodities' },
   ];
 
-  for (const url of urls) {
-    console.log(`Trying: ${url}`);
+  for (const a of attempts) {
+    console.log(`Trying ${a.label}: ${a.url}`);
     try {
-      const res = await fetch(url, {
-        headers: { 'Accept': 'application/json', 'User-Agent': 'CattleSignal/1.0' },
+      const res = await fetch(a.url, {
+        headers: { 'Accept': 'application/json' },
         signal: AbortSignal.timeout(15000),
       });
-      console.log(`  Status: ${res.status}`);
-      if (res.ok) {
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          exports = data;
-          console.log(`  Got ${data.length} records`);
+      if (!res.ok) { console.log(`  ${res.status}`); continue; }
+      const ct = res.headers.get('content-type') || '';
+      if (!ct.includes('json')) { console.log(`  Not JSON: ${ct}`); continue; }
+      const d = await res.json();
+      if (Array.isArray(d) && d.length > 0) {
+        // Filter for beef if we got all commodities
+        const beef = a.label.includes('all') ? d.filter(r => (r.commodityCode || '') === '0100') : d;
+        if (beef.length > 0) {
+          exports = beef;
+          source = a.label;
+          console.log(`  Got ${beef.length} records`);
           break;
-        } else if (data && typeof data === 'object') {
-          console.log(`  Response type: ${typeof data}, keys: ${Object.keys(data).slice(0,5).join(',')}`);
         }
-      } else {
-        const text = await res.text();
-        console.log(`  Error: ${text.slice(0, 200)}`);
       }
-    } catch (err) {
-      console.warn(`  ${err.message}`);
-    }
+      console.log(`  Empty or wrong format`);
+    } catch (err) { console.log(`  ${err.message}`); }
   }
 
-  // Also try the ESR data release dates
-  let lastRelease = null;
-  try {
-    const dRes = await fetch('https://apps.fas.usda.gov/OpenData/api/esr/dataReleaseDates', {
-      headers: { 'Accept': 'application/json' },
-      signal: AbortSignal.timeout(10000),
-    });
-    if (dRes.ok) {
-      const dates = await dRes.json();
-      if (Array.isArray(dates) && dates.length > 0) {
-        lastRelease = dates[dates.length - 1];
-        console.log(`Last ESR release: ${JSON.stringify(lastRelease)}`);
-      }
-    }
-  } catch (err) { console.warn(`Release dates: ${err.message}`); }
-
-  // Aggregate
-  const byCountry = {};
-  for (const row of exports) {
-    const country = row.countryDescription || row.countryName || row.countryCode || 'Unknown';
-    if (!byCountry[country]) byCountry[country] = { netSales: 0, exports: 0, outstanding: 0 };
-    byCountry[country].netSales += row.netSales || 0;
-    byCountry[country].exports += row.currentExports || row.exports || row.weeklyExports || 0;
-    byCountry[country].outstanding += row.outstandingSales || row.accumulatedExports || 0;
+  // Aggregate by country
+  const byC = {};
+  for (const r of exports) {
+    const c = r.countryDescription || r.countryName || 'Unknown';
+    if (!byC[c]) byC[c] = { netSales: 0, exports: 0 };
+    byC[c].netSales += r.netSales || r.currentNetSales || 0;
+    byC[c].exports += r.currentExports || r.weeklyExports || r.accumulatedExports || 0;
   }
 
-  const topDestinations = Object.entries(byCountry)
-    .map(([country, d]) => ({ country, ...d }))
-    .sort((a, b) => b.exports - a.exports)
-    .slice(0, 10);
+  const top = Object.entries(byC).map(([c, d]) => ({ country: c, ...d }))
+    .sort((a, b) => b.exports - a.exports).slice(0, 10);
+  const totalExp = top.reduce((s, d) => s + d.exports, 0);
+  const totalSales = top.reduce((s, d) => s + d.netSales, 0);
 
-  const totalExports = topDestinations.reduce((s, d) => s + d.exports, 0);
-  const totalNetSales = topDestinations.reduce((s, d) => s + d.netSales, 0);
-
-  let snippet = '═══ USDA BEEF EXPORT SALES ═══\n';
-  if (totalExports > 0) {
-    snippet += `Total Beef Exports: ${(totalExports / 1000).toFixed(0)}K MT\n`;
-    snippet += `Net Sales: ${(totalNetSales / 1000).toFixed(0)}K MT\n`;
-    snippet += `Top: ${topDestinations.slice(0, 5).map(d => `${d.country} (${(d.exports/1000).toFixed(0)}K)`).join(', ')}\n`;
+  let sn = '═══ USDA BEEF EXPORT SALES ═══\n';
+  if (totalExp > 0) {
+    sn += `Total Exports: ${(totalExp/1000).toFixed(0)}K MT | Net Sales: ${(totalSales/1000).toFixed(0)}K MT\n`;
+    sn += `Top: ${top.slice(0,5).map(d=>`${d.country} (${(d.exports/1000).toFixed(0)}K)`).join(', ')}\n`;
   } else {
-    snippet += 'Export data unavailable from FAS API.\n';
+    sn += 'Export data unavailable from FAS API.\n';
   }
 
   fs.writeFileSync('data/usda-exports.json', JSON.stringify({
-    fetchedAt: new Date().toISOString(), source: 'USDA FAS ESR',
-    reportType: 'Beef Export Sales', marketingYear: year,
-    totalExports, totalNetSales, topDestinations,
-    rawRecords: exports.length, lastRelease, promptSnippet: snippet,
+    fetchedAt: new Date().toISOString(), source: `USDA FAS ESR (${source || 'none'})`,
+    reportType: 'Beef Export Sales', totalExports: totalExp,
+    totalNetSales: totalSales, topDestinations: top,
+    rawRecords: exports.length, promptSnippet: sn,
   }, null, 2));
-  console.log('Wrote data/usda-exports.json\n' + snippet);
+  console.log('Wrote data/usda-exports.json\n' + sn);
 }
 
-fetchExports().catch(err => { console.error('Export failed:', err.message); process.exit(1); });
+fetchExports().catch(e => { console.error('FAIL:', e.message); process.exit(1); });
