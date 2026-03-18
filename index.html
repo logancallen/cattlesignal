@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CattleSignal — AI-Powered Cattle Market Intelligence</title>
-  <meta name="description" content="AI-powered cattle futures calculator, feeding projection engine, hedge tracker, basis calculator, and USDA report auto-analysis. Built for feedlot operators, ranchers, and cattle futures traders.">
+  <meta name="description" content="AI-powered cattle futures calculator, feeding projection engine, hedge tracker, basis calculator, and USDA report analysis. Built for feedlot operators, ranchers, and agricultural professionals.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="CattleSignal — AI Cattle Market Intelligence">
-  <meta property="og:description" content="Futures P&L calculator, cattle feeding projections, hedge tracking, basis calculator, and AI trade recommendations with live market data.">
+  <meta property="og:description" content="Futures P&L calculator, cattle feeding projections, hedge tracking, basis calculator, and AI market analysis with live market data.">
   <meta property="og:url" content="https://cattlesignal.com">
   <meta name="twitter:card" content="summary">
   <link rel="canonical" href="https://cattlesignal.com">
@@ -35,8 +35,8 @@ const{useState,useRef,useEffect,useMemo}=React;
 const SUPABASE_URL="https://dvybrdfixbxmhvwpqazf.supabase.co";
 const SUPABASE_ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2eWJyZGZpeGJ4bWh2d3BxYXpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4NjMzNDAsImV4cCI6MjA4ODQzOTM0MH0.x9ha2D3YtvnUPFWB8PRNLgy6mfN6AQi5rT2yTTYtnno";
 const STRIPE_PK="pk_live_51T8E08RPTndCrfwvkdJP9kL7M8ZEiuR0D0kM7HQbxm1fKqhWCPBEFSzbdLZAuuTpNhYJCWWaaQjpF4QQ64scFgmj00fR1rn0dC";
-const API_BASE="https://cattle-signal-api-production.up.railway.app";
-const API_URL=API_BASE+"/api/chat";
+const API_BASE="";
+const API_URL="/.netlify/functions/chat";
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON);
 
 /* ═══ AUTH MODAL ═══ */
@@ -116,8 +116,8 @@ const f$=n=>(n<0?"-":"")+"$"+Math.abs(n).toLocaleString("en-US",{minimumFraction
 const fSign=n=>(n>=0?"+":"")+f$(n);
 const fK=n=>n>=10000?"$"+Math.round(n/1000)+"K":n>=1000?"$"+(n/1000).toFixed(1)+"K":f$(n);
 const isNum=v=>v===""||(!isNaN(parseFloat(v))&&isFinite(v));
-function parseRec(t){const m=t.match(/```TRADE_REC\s*([\s\S]*?)```/);if(!m)return null;try{return JSON.parse(m[1].trim())}catch{return null}}
-function stripRec(t){return t.replace(/```TRADE_REC[\s\S]*?```/g,"").trim()}
+function parseRec(t){return null}
+function stripRec(t){return t.replace(/```TRADE_REC[\s\S]*?```/g,"").replace(/TRADE_REC:[\s\S]*$/,"").trim()}
 
 function calcProjection(p){
   const purchaseCost=p.inWt*p.costLb;const saleRevenue=p.outWt*p.saleLb;const grossProfit=saleRevenue-purchaseCost;
@@ -226,11 +226,11 @@ function HedgeTracker(){
 /* ═══ USDA REPORT AUTO-ANALYSIS ═══ */
 function USDAReports({sendAi,aiLoad}){
   const reports=[
-    {l:"📊 Cattle on Feed",p:"Analyze the latest USDA Cattle on Feed report. Search for the most recent release. Cover: placements vs expectations, marketings pace, on-feed inventory, weight group breakdown, implications for feeder and fed cattle prices. Compare to analyst estimates. What trades does this setup?",desc:"Monthly (3rd Friday). Placements, marketings, inventory by weight group."},
+    {l:"📊 Cattle on Feed",p:"Analyze the latest USDA Cattle on Feed report. Search for the most recent release. Cover: placements vs expectations, marketings pace, on-feed inventory, weight group breakdown, implications for feeder and fed cattle prices. Compare to analyst estimates. What are the key takeaways for market participants?",desc:"Monthly (3rd Friday). Placements, marketings, inventory by weight group."},
     {l:"🐄 Cattle Inventory",p:"Analyze the latest USDA Cattle Inventory report. Search for the most recent data. Cover: total inventory trend, beef cow numbers, replacement heifer retention rate, calf crop estimate, regional shifts. Where are we in the cattle cycle? What's the outlook for expansion/contraction? Trade implications.",desc:"Semi-annual (Jan & Jul). Total herd, cow numbers, calf crop."},
     {l:"🥩 Cold Storage",p:"Analyze the latest USDA Cold Storage report for beef. Search for the most recent release. Cover: total beef in cold storage vs 5-year average, monthly change, seasonal pattern deviation, implications for wholesale beef prices and packer margins.",desc:"Monthly (~22nd). Frozen beef stocks, seasonal build/draw."},
-    {l:"📈 Weekly Market Wrap",p:"Full cattle market briefing: fed cattle cash trade this week, boxed beef cutout trend (Choice/Select spread), packer margins, feeder cattle auction tone, COT positioning update, upcoming USDA reports. End with best trade setup.",desc:"Live data. Cash trade, cutouts, packer margins, fund positioning."},
-    {l:"🌾 Crop Progress",p:"Analyze latest USDA Crop Progress for corn and soybeans. Cover: planting/harvest progress vs average, condition ratings, yield implications, impact on feed costs for cattle feeders. What's the corn basis outlook? Best grain hedge for feedlots.",desc:"Weekly (season). Crop conditions, planting/harvest pace."},
+    {l:"📈 Weekly Market Wrap",p:"Full cattle market briefing: fed cattle cash trade this week, boxed beef cutout trend (Choice/Select spread), packer margins, feeder cattle auction tone, COT positioning update, upcoming USDA reports. What are the key takeaways for cattle market participants?",desc:"Live data. Cash trade, cutouts, packer margins, fund positioning."},
+    {l:"🌾 Crop Progress",p:"Analyze latest USDA Crop Progress for corn and soybeans. Cover: planting/harvest progress vs average, condition ratings, yield implications, impact on feed costs for cattle feeders. What's the corn basis outlook and how might it affect feeding margins?",desc:"Weekly (season). Crop conditions, planting/harvest pace."},
     {l:"🌍 Export Sales",p:"Analyze the latest USDA Export Sales report for beef. Cover: net sales by destination, shipments pace vs USDA forecast, Japan/Korea/China/Mexico trends, impact on domestic supplies and prices. Any trade policy catalysts?",desc:"Weekly (Thursday). Beef export commitments by country."},
   ];
   return(
@@ -238,7 +238,7 @@ function USDAReports({sendAi,aiLoad}){
       <div style={{background:"var(--card)",borderRadius:10,border:"1px solid var(--border)",overflow:"hidden"}}>
         <SH icon="📋" title="USDA Report Auto-Analysis" right={<Tag color="var(--purple)">AI-POWERED</Tag>}/>
         <div style={{padding:"14px 16px"}}>
-          <div style={{fontSize:11,color:"var(--text2)",marginBottom:14,lineHeight:1.6}}>Select a report and the AI will search for the latest release, analyze the data, compare to expectations, and identify trade setups — in real time.</div>
+          <div style={{fontSize:11,color:"var(--text2)",marginBottom:14,lineHeight:1.6}}>Select a report and the AI will search for the latest release, analyze the data, compare to expectations, and break down the market implications — in real time.</div>
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
             {reports.map((r,i)=>(
               <button key={i} onClick={()=>sendAi(r.p)} disabled={aiLoad} style={{padding:"14px 16px",borderRadius:8,textAlign:"left",background:"var(--bg2)",border:"1px solid var(--border)",opacity:aiLoad?.5:1}}>
@@ -442,7 +442,7 @@ function App(){
   },[session]);
 
   useEffect(()=>{chatEnd.current?.scrollIntoView({behavior:"smooth"})},[aiMsgs,aiLoad]);
-  const loadAiTrade=tr=>{const m=Object.keys(MKT).find(k=>k===tr.market)||"Feeder Cattle (GF)";setMarket(m);setDir(tr.dir||"bullish");setEntry(String(tr.entry||""));setTarget(String(tr.target||""));setStop(String(tr.stop||""));setQty(String(tr.qty||1));setCustomExit("");setActiveTrade(tr);setPage("calc")};
+  const loadAiTrade=tr=>{};
 
   const mkt=MKT[market]||MKT["Feeder Cattle (GF)"];
   const calc=(e,x)=>{const en=parseFloat(e),ex2=parseFloat(x),q=parseInt(qty)||0;if(isNaN(en)||isNaN(ex2)||q<=0)return null;const d=dir==="bullish"?ex2-en:en-ex2;return{ticks:Math.round(d/mkt.tk),pts:parseFloat(d.toFixed(4)),usd:d*mkt.pp*q}};
@@ -484,16 +484,27 @@ function App(){
   };
 
   const presets=[
-    {l:"🎯 Best Trade",p:"Single best cattle/commodity futures trade right now. Full analysis: macro, fundamentals, technicals, sentiment, catalysts. Specific entry, target, stop, probability."},
-    {l:"🛡️ Bearish Hedge",p:"Optimal bearish hedge for cattle. Consider: political risk, screwworm, border reopening, fund liquidation. Specific levels and triggers."},
-    {l:"📐 Crush Spread",p:"Cattle crush analysis. Feed costs vs finished value. Best spread trade with contract months and levels."},
-    {l:"📊 Market Brief",p:"Full cattle market briefing: supply, demand, pricing, sentiment, catalysts. End with best trade."},
-    {l:"⚡ Black Swans",p:"Pre-plan trades for: screwworm in TX, border reopens, Trump import expansion/price controls. Specific instruments and levels."},
-    {l:"🌽 Feed Costs",p:"Feed cost analysis: corn basis, meal, DDGs, hay. Impact on feeding margins. Best grain hedge."},
+    {l:"📊 Market Overview",p:"Comprehensive cattle and commodity market overview. Cover supply/demand fundamentals, macro environment, COT positioning, and seasonal patterns. What are the key factors driving each market right now?"},
+    {l:"🐂 Cattle Outlook",p:"Feeder and live cattle market analysis. Cover inventory levels, packer margins, slaughter rates, boxed beef trends, and import/export dynamics. What is the current supply and demand picture?"},
+    {l:"🌽 Feed Cost Analysis",p:"Feed cost analysis: corn basis, soybean meal, DDGs, hay. How are current feed costs affecting cattle feeding margins? What are the key drivers of feed prices right now?"},
+    {l:"📈 COT Breakdown",p:"Commitments of Traders analysis for cattle and grain markets. What are managed money positions signaling? How have positions changed week-over-week and what does that historically indicate?"},
+    {l:"⚡ Risk Factors",p:"What are the biggest risk factors in cattle markets right now? Cover screwworm status, trade policy, weather/drought, packer capacity, and any emerging threats or catalysts."},
+    {l:"📋 USDA Preview",p:"Preview upcoming USDA reports and their potential market impact. What data is expected and how might it affect cattle and grain markets based on historical patterns?"},
   ];
+
+  const [showAiDisclosure,setShowAiDisclosure]=useState(()=>!localStorage.getItem("cs_ai_disclosed"));
+  const dismissAiDisclosure=()=>{localStorage.setItem("cs_ai_disclosed","1");setShowAiDisclosure(false)};
+  const [showCookie,setShowCookie]=useState(()=>!localStorage.getItem("cs_cookie"));
+  const dismissCookie=()=>{localStorage.setItem("cs_cookie","1");setShowCookie(false)};
 
   return(
     <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",background:"var(--bg)"}}>
+      {/* TRAIGA AI Disclosure Modal */}
+      {showAiDisclosure&&(<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.85)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={dismissAiDisclosure}><div onClick={e=>e.stopPropagation()} style={{background:"var(--card)",border:"1px solid var(--blueborder)",borderRadius:12,padding:"32px",width:440,maxWidth:"90vw",textAlign:"center"}}><div style={{fontSize:32,marginBottom:12}}>🤖</div><div style={{fontSize:18,fontWeight:700,marginBottom:12}}>AI-Powered Analysis</div><div style={{fontSize:13,color:"var(--text2)",lineHeight:1.8,marginBottom:8}}>CattleSignal uses artificial intelligence (powered by Anthropic Claude) to generate market analysis and educational content.</div><div style={{fontSize:12,color:"var(--text2)",lineHeight:1.7,marginBottom:16,padding:"12px",background:"var(--bg2)",borderRadius:8,border:"1px solid var(--border)",textAlign:"left"}}><strong style={{color:"var(--text)"}}>Please understand:</strong><br/>• AI responses are generated automatically and may contain errors<br/>• This is market analysis for educational purposes only<br/>• This is NOT financial advice or a trade recommendation<br/>• CattleSignal is not a registered CTA, investment advisor, or broker-dealer<br/>• Always consult a licensed professional before making trading decisions</div><button onClick={dismissAiDisclosure} style={{padding:"12px 32px",borderRadius:8,fontSize:14,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none"}}>I Understand</button></div></div>)}
+      {/* Cookie Banner */}
+      {showCookie&&(<div style={{position:"fixed",bottom:0,left:0,right:0,zIndex:1500,background:"var(--card)",borderTop:"1px solid var(--border)",padding:"12px 24px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexWrap:"wrap"}}><div style={{fontSize:11,color:"var(--text2)",flex:1}}>CattleSignal uses cookies and local storage for authentication and to save your preferences. We do not sell personal data or engage in targeted advertising. <a href="/legal.html#privacy" style={{color:"var(--blue)"}}>Privacy Policy</a></div><button onClick={dismissCookie} style={{padding:"6px 16px",borderRadius:6,fontSize:11,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none",whiteSpace:"nowrap"}}>Got It</button></div>)}
+      {/* Persistent Disclaimer Banner */}
+      <div className="no-print" style={{background:"var(--redbg)",borderBottom:"1px solid var(--redborder)",padding:"6px 24px",textAlign:"center"}}><div style={{fontSize:10,color:"var(--red)",fontWeight:500}}>⚠ CattleSignal provides market analysis and educational content only. Not financial advice. Not a registered CTA or investment advisor. <a href="/legal.html#risk" style={{color:"var(--red)",textDecoration:"underline"}}>Risk Disclosure</a></div></div>
       <nav className="no-print" style={{background:"var(--card)",borderBottom:"1px solid var(--border)",position:"sticky",top:0,zIndex:100}}>
         <div className="nav-inner" style={{maxWidth:1220,margin:"0 auto",padding:"0 24px",display:"flex",alignItems:"center",justifyContent:"space-between",height:48}}>
           <div style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer"}} onClick={()=>setPage("calc")}>
@@ -522,12 +533,12 @@ function App(){
       <main style={{maxWidth:1220,margin:"0 auto",padding:"14px 24px 40px",flex:1,width:"100%"}}>
 
         {page==="calc"&&(<>
-          {activeTrade?(<div className="fade-up" style={{background:"var(--card)",border:"1px solid var(--blueborder)",borderRadius:10,padding:"14px 18px",marginBottom:12}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",gap:12,flexWrap:"wrap"}}><div style={{flex:1,minWidth:0}}><div style={{display:"flex",gap:5,marginBottom:5,flexWrap:"wrap"}}><Tag color="var(--blue)">AI TRADE</Tag><Tag color={activeTrade.dir==="bullish"?"var(--green)":"var(--red)"}>{activeTrade.dir==="bullish"?"LONG":"SHORT"}</Tag>{activeTrade.prob&&<Tag color="var(--purple)">{activeTrade.prob}</Tag>}{activeTrade.time&&<Tag color="var(--text3)">{activeTrade.time}</Tag>}</div><div style={{fontSize:14,fontWeight:700,marginBottom:4}}>{activeTrade.label}</div>{activeTrade.thesis&&<div style={{fontSize:12,color:"var(--text2)",lineHeight:1.7}}>{activeTrade.thesis}</div>}</div><button onClick={()=>{setActiveTrade(null);setEntry("");setTarget("");setStop("")}} style={{padding:"6px 12px",borderRadius:6,fontSize:10,fontWeight:600,background:"var(--card2)",color:"var(--text3)",border:"1px solid var(--border)"}}>✕ Clear</button></div></div>):(
+          {false?(null):(
             <div className="fade-up" style={{background:"linear-gradient(135deg, var(--card), var(--card2))",border:"1px solid var(--blueborder)",borderRadius:12,padding:"24px",marginBottom:12,textAlign:"center"}}>
-              <div style={{fontSize:28,marginBottom:8}}>🤖</div><div style={{fontSize:16,fontWeight:700,marginBottom:6}}>Get a Fresh AI Trade Recommendation</div>
-              <div style={{fontSize:12,color:"var(--text2)",marginBottom:16,maxWidth:500,margin:"0 auto 16px"}}>AI analyst searches live market data, USDA reports, and news in real-time to find the best trade.</div>
+              <div style={{fontSize:28,marginBottom:8}}>📊</div><div style={{fontSize:16,fontWeight:700,marginBottom:6}}>AI Market Analysis</div>
+              <div style={{fontSize:12,color:"var(--text2)",marginBottom:16,maxWidth:500,margin:"0 auto 16px"}}>AI analyst reviews live market data, USDA reports, and fundamentals to provide educational market commentary.</div>
               <div style={{display:"flex",gap:8,justifyContent:"center",flexWrap:"wrap"}}>
-                <button onClick={()=>sendAi(presets[0].p)} disabled={aiLoad} style={{padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none",opacity:aiLoad?.5:1}}>{aiLoad?"⏳ Searching...":"🎯 Best Trade Now"}</button>
+                <button onClick={()=>sendAi(presets[0].p)} disabled={aiLoad} style={{padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none",opacity:aiLoad?.5:1}}>{aiLoad?"⏳ Analyzing...":"📊 Market Overview"}</button>
                 <button onClick={()=>setPage("ai")} style={{padding:"10px 20px",borderRadius:8,fontSize:13,fontWeight:600,background:"transparent",color:"var(--blue)",border:"1px solid var(--blueborder)"}}>Browse All Analysis →</button>
               </div>
             </div>
@@ -560,7 +571,7 @@ function App(){
               {showSpecs&&<div style={{background:"var(--card)",borderRadius:"0 0 7px 7px",border:"1px solid var(--border)",borderTop:"none",padding:"8px 14px"}}>{[{l:"Size",v:mkt.sz},{l:"Tick",v:mkt.tk+" = "+f$(mkt.tv)},{l:"Point",v:f$(mkt.pp)},{l:"Margin",v:"~"+f$(mkt.mg)},{l:"Months",v:mkt.mo},{l:"Hours",v:mkt.hr},{l:"Exchange",v:mkt.ex},{l:"Settlement",v:mkt.st}].map((d,i)=><div key={i} style={{display:"flex",justifyContent:"space-between",padding:"4px 0",borderBottom:i<7?"1px solid var(--border)":"none"}}><span style={{fontSize:10,color:"var(--text3)"}}>{d.l}</span><span style={{fontSize:10,fontWeight:600,color:"var(--text2)",fontFamily:"var(--mono)"}}>{d.v}</span></div>)}</div>}
             </div>
           </div>
-          <div style={{marginTop:14,padding:"8px 14px",background:"var(--card)",borderRadius:7,border:"1px solid var(--border)"}}><div style={{fontSize:9,color:"var(--text3)",lineHeight:1.5}}><span style={{color:"var(--red)",fontWeight:700}}>⚠ RISK DISCLOSURE:</span> Futures trading involves substantial risk of loss. All trade recommendations shown are hypothetical and do not represent actual trading. <a href="/legal.html#hypothetical" style={{color:"var(--text3)",textDecoration:"underline"}}>CFTC Rule 4.41 hypothetical disclaimer applies.</a> CattleSignal is not a registered investment advisor, commodity trading advisor (CTA), or broker-dealer. You may lose more than your initial investment. <a href="/legal.html" style={{color:"var(--blue)",textDecoration:"none"}}>Full legal disclosures →</a></div></div>
+          <div style={{marginTop:14,padding:"8px 14px",background:"var(--card)",borderRadius:7,border:"1px solid var(--border)"}}><div style={{fontSize:9,color:"var(--text3)",lineHeight:1.5}}><span style={{color:"var(--red)",fontWeight:700}}>⚠ IMPORTANT:</span> CattleSignal provides market analysis and educational content only. It is not a registered investment advisor, commodity trading advisor (CTA), or broker-dealer. Nothing on this platform constitutes financial advice or a recommendation to buy or sell any commodity, futures contract, or option. Trading commodities involves substantial risk of loss. <a href="/legal.html" style={{color:"var(--blue)",textDecoration:"none"}}>Full legal disclosures →</a></div></div>
         </>)}
 
         {page==="proj"&&<Projector sendAi={sendAi} aiLoad={aiLoad} savedProj={savedProj} setSavedProj={setSavedProj}/>}
@@ -571,7 +582,7 @@ function App(){
         {page==="ai"&&(
           <div style={{maxWidth:780,margin:"0 auto"}} className="fade-up">
             <div style={{background:"var(--card)",borderRadius:10,border:"1px solid var(--border)",overflow:"hidden",marginBottom:12}}>
-              <div style={{padding:"12px 16px",borderBottom:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontSize:13}}>🤖</span><span style={{fontSize:13,fontWeight:700}}>AI Trade Analyst</span></div><div style={{display:"flex",gap:6,alignItems:"center"}}>{aiMsgs.length>0&&<button onClick={()=>{setAiMsgs([]);setAiErr("")}} style={{padding:"4px 8px",borderRadius:4,fontSize:9,fontWeight:600,background:"var(--card2)",color:"var(--text3)",border:"1px solid var(--border)"}}>Clear</button>}<Tag color={plan==="pro"?"var(--green)":"var(--text3)"}>{plan==="pro"?"PRO":"FREE"}</Tag>{remaining!==null&&<span style={{fontSize:9,color:"var(--text3)",fontFamily:"var(--mono)"}}>{remaining}/{plan==="pro"?"50":"3"}</span>}</div></div>
+              <div style={{padding:"12px 16px",borderBottom:"1px solid var(--border)",display:"flex",justifyContent:"space-between",alignItems:"center"}}><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontSize:13}}>🤖</span><span style={{fontSize:13,fontWeight:700}}>AI Market Analyst</span></div><div style={{display:"flex",gap:6,alignItems:"center"}}>{aiMsgs.length>0&&<button onClick={()=>{setAiMsgs([]);setAiErr("")}} style={{padding:"4px 8px",borderRadius:4,fontSize:9,fontWeight:600,background:"var(--card2)",color:"var(--text3)",border:"1px solid var(--border)"}}>Clear</button>}<Tag color={plan==="pro"?"var(--green)":"var(--text3)"}>{plan==="pro"?"PRO":"FREE"}</Tag>{remaining!==null&&<span style={{fontSize:9,color:"var(--text3)",fontFamily:"var(--mono)"}}>{remaining}/{plan==="pro"?"50":"3"}</span>}</div></div>
               <div style={{padding:"12px 16px"}}>
                 {acctN>0&&<div style={{padding:"6px 10px",background:"var(--bluebg)",border:"1px solid var(--blueborder)",borderRadius:6,fontSize:10,color:"var(--blue)",fontWeight:500,marginBottom:8,fontFamily:"var(--mono)"}}>Account: ${acctN.toLocaleString()} | 2% risk rule active</div>}
                 {aiErr&&<div style={{padding:"6px 10px",background:"var(--redbg)",border:"1px solid var(--redborder)",borderRadius:6,fontSize:10,color:"var(--red)",fontWeight:500,marginBottom:8,display:"flex",justifyContent:"space-between",alignItems:"center"}}><span>{aiErr}</span><button onClick={()=>setAiErr("")} style={{background:"none",border:"none",color:"var(--red)",fontSize:12,cursor:"pointer"}}>✕</button></div>}
@@ -583,15 +594,9 @@ function App(){
                 <div key={i} className="fade-up" style={{background:"var(--card)",borderRadius:8,border:"1px solid var(--border)",padding:"12px 14px",borderLeft:m.r==="ai"?"2px solid var(--blue)":"2px solid transparent"}}>
                   <div style={{fontSize:9,fontWeight:700,color:m.r==="user"?"var(--text3)":"var(--blue)",textTransform:"uppercase",letterSpacing:".08em",marginBottom:5}}>{m.r==="user"?"You":"AI Analyst"}</div>
                   <div style={{fontSize:12,lineHeight:1.8,whiteSpace:"pre-wrap"}}>{m.t}</div>
-                  {m.rec?.trades?.map((tr,j)=>(
-                    <div key={j} style={{marginTop:8,padding:"8px 12px",background:"var(--bluebg)",borderRadius:6,border:"1px solid var(--blueborder)",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:6}}>
-                      <div><div style={{fontSize:11,fontWeight:700}}>{tr.label}</div><div style={{fontSize:10,color:"var(--text2)",fontFamily:"var(--mono)"}}>{tr.market} {tr.dir==="bullish"?"▲":"▼"} {tr.entry}→{tr.target} | Stop {tr.stop}</div></div>
-                      <button onClick={()=>loadAiTrade(tr)} style={{padding:"5px 10px",borderRadius:4,fontSize:9,fontWeight:700,background:"var(--blue)",color:"#fff",border:"none"}}>LOAD →</button>
-                    </div>
-                  ))}
                 </div>
               ))}
-              {aiLoad&&<div style={{background:"var(--card)",borderRadius:8,border:"1px solid var(--border)",padding:"14px",borderLeft:"2px solid var(--blue)"}}><div style={{display:"flex",alignItems:"center",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:4,height:4,borderRadius:"50%",background:"var(--blue)",animation:`pulse 1s ease ${i*.15}s infinite`}}/>)}<span style={{fontSize:10,color:"var(--text2)"}}>Searching live market data & analyzing...</span></div></div>}
+              {aiLoad&&<div style={{background:"var(--card)",borderRadius:8,border:"1px solid var(--border)",padding:"14px",borderLeft:"2px solid var(--blue)"}}><div style={{display:"flex",alignItems:"center",gap:6}}>{[0,1,2].map(i=><div key={i} style={{width:4,height:4,borderRadius:"50%",background:"var(--blue)",animation:`pulse 1s ease ${i*.15}s infinite`}}/>)}<span style={{fontSize:10,color:"var(--text2)"}}>Analyzing market data...</span></div></div>}
               <div ref={chatEnd}/>
             </div>
             <div style={{position:"sticky",bottom:0,paddingTop:10,background:"linear-gradient(transparent,var(--bg) 20%)"}}><div style={{display:"flex",gap:5}}><input value={aiIn} onChange={e=>setAiIn(e.target.value)} maxLength={1000} onKeyDown={e=>{if(e.key==="Enter"){e.preventDefault();sendAi(aiIn)}}} placeholder="Ask about cattle markets..." style={{flex:1,padding:"10px 12px",borderRadius:7,fontSize:12,border:"1px solid var(--border)",background:"var(--card)",color:"var(--text)"}}/><button onClick={()=>sendAi(aiIn)} disabled={!aiIn.trim()||aiLoad} style={{padding:"10px 16px",borderRadius:7,fontSize:11,fontWeight:700,background:aiIn.trim()&&!aiLoad?"var(--blue)":"var(--card2)",color:aiIn.trim()&&!aiLoad?"#fff":"var(--text3)",border:"none"}}>SEND</button></div></div>
@@ -602,7 +607,7 @@ function App(){
       {showAuth&&<AuthModal onClose={()=>setShowAuth(false)} onAuth={handleAuth}/>}
       {showUpgrade&&<UpgradePrompt onUpgrade={handleUpgrade} onClose={()=>setShowUpgrade(false)} plan={plan} remaining={remaining}/>}
 
-      <footer className="no-print" style={{borderTop:"1px solid var(--border)",padding:"10px 24px",textAlign:"center",background:"var(--card)"}}><div style={{fontSize:9,color:"var(--text3)",lineHeight:1.8}}>© {new Date().getFullYear()} CattleSignal · Not a registered investment advisor, CTA, or broker-dealer · <a href="/legal.html" style={{color:"var(--blue)",textDecoration:"none"}}>Legal Disclosures</a> · <a href="/legal.html#risk" style={{color:"var(--blue)",textDecoration:"none"}}>Risk Disclosure</a> · <a href="/legal.html#privacy" style={{color:"var(--blue)",textDecoration:"none"}}>Privacy</a><br/>All trade recommendations are hypothetical. <a href="/legal.html#hypothetical" style={{color:"var(--text3)",textDecoration:"underline"}}>CFTC Rule 4.41 Disclaimer</a></div></footer>
+      <footer className="no-print" style={{borderTop:"1px solid var(--border)",padding:"10px 24px",textAlign:"center",background:"var(--card)"}}><div style={{fontSize:9,color:"var(--text3)",lineHeight:1.8}}>© {new Date().getFullYear()} Creed Holt LLC · CattleSignal provides market analysis and educational content only · Not a registered investment advisor, CTA, or broker-dealer · <a href="/legal.html" style={{color:"var(--blue)",textDecoration:"none"}}>Legal Disclosures</a> · <a href="/legal.html#risk" style={{color:"var(--blue)",textDecoration:"none"}}>Risk Disclosure</a> · <a href="/legal.html#privacy" style={{color:"var(--blue)",textDecoration:"none"}}>Privacy</a><br/>AI-generated analysis is for educational purposes only. Not financial advice. <a href="/legal.html#ai" style={{color:"var(--text3)",textDecoration:"underline"}}>AI Disclosure</a></div></footer>
     </div>
   );
 }
