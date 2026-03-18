@@ -169,8 +169,17 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { message } = JSON.parse(event.body || '{}');
-    if (!message) {
+    const body = JSON.parse(event.body || '{}');
+    // Support both formats: {message: "..."} and {messages: [{role, content}]}
+    let userMessages;
+    if (body.messages && Array.isArray(body.messages)) {
+      userMessages = body.messages.slice(-8).map(m => ({
+        role: m.role === 'user' ? 'user' : 'assistant',
+        content: typeof m.content === 'string' ? m.content.slice(0, 2000) : ''
+      }));
+    } else if (body.message) {
+      userMessages = [{ role: 'user', content: body.message.slice(0, 2000) }];
+    } else {
       return { statusCode: 400, headers, body: JSON.stringify({ error: 'No message provided' }) };
     }
 
@@ -193,7 +202,7 @@ exports.handler = async (event) => {
         model: MODEL,
         max_tokens: MAX_TOKENS,
         system: systemPrompt,
-        messages: [{ role: 'user', content: message }],
+        messages: userMessages,
       }),
     });
 
