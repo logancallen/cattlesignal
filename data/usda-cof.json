@@ -1,0 +1,13 @@
+{
+  "fetchedAt": "2026-03-18T22:12:07.690Z",
+  "source": "USDA NASS QuickStats",
+  "reportType": "Cattle on Feed",
+  "latest": {},
+  "prevYear": {},
+  "history": {
+    "inventory": [],
+    "placements": [],
+    "marketings": []
+  },
+  "promptSnippet": "═══ USDA CATTLE ON FEED (Monthly Report) ═══\n"
+}
