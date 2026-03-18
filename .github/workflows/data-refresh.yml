@@ -1,7 +1,7 @@
 name: Weekly Data Refresh
 on:
   schedule:
-    - cron: '0 8 * * 6'  # Saturday 2am CT (8am UTC)
+    - cron: '0 8 * * 6'
   workflow_dispatch:
 
 permissions:
@@ -17,8 +17,10 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Ensure data directory
-        run: mkdir -p data
+      - name: Clean old data to force fresh fetch
+        run: |
+          rm -f data/usda-cof.json data/usda-slaughter.json data/usda-exports.json
+          mkdir -p data
 
       - name: Fetch CFTC COT Data
         run: node scripts/fetch-cot.js
