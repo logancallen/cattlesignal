@@ -1,0 +1,11 @@
+{
+  "fetchedAt": "2026-03-18T22:36:45.350Z",
+  "source": "USDA NASS",
+  "reportType": "Livestock Slaughter",
+  "error": "NASS HTTP 400",
+  "latestWeek": null,
+  "latestMonth": null,
+  "weekly": [],
+  "monthly": [],
+  "promptSnippet": "═══ USDA LIVESTOCK SLAUGHTER ═══\nData unavailable: NASS HTTP 400\n"
+}
