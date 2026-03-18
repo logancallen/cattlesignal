@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-03-18T22:22:12.755Z",
-  "source": "USDA NASS QuickStats",
+  "fetchedAt": "2026-03-18T22:27:00.797Z",
+  "source": "USDA NASS",
   "reportType": "Cattle on Feed",
   "latest": {
     "inventory": {
@@ -8,36 +8,17 @@
       "period": "FIRST OF FEB",
       "value": 11505000,
       "unit": "HEAD",
-      "desc": "CATTLE, ON FEED - INVENTORY",
-      "freq": "POINT IN TIME"
+      "desc": "CATTLE, ON FEED - INVENTORY"
     },
     "placements": {
       "year": 2026,
       "period": "JAN",
-      "value": 1736000,
+      "value": 365000,
       "unit": "HEAD",
-      "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-      "freq": "MONTHLY"
-    },
-    "marketings": {
-      "year": 2026,
-      "period": "FIRST OF FEB",
-      "value": 11505000,
-      "unit": "HEAD",
-      "desc": "CATTLE, ON FEED - INVENTORY",
-      "freq": "POINT IN TIME"
+      "desc": "CATTLE, 600 TO 699 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
     }
   },
-  "prevYear": {
-    "placements": {
-      "year": 2025,
-      "period": "JAN",
-      "value": 1822000,
-      "unit": "HEAD",
-      "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-      "freq": "MONTHLY"
-    }
-  },
+  "prevYear": {},
   "history": {
     "inventory": [
       {
@@ -45,582 +26,341 @@
         "period": "FIRST OF FEB",
         "value": 11505000,
         "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "JAN",
-        "value": 365000,
-        "unit": "HEAD",
-        "desc": "CATTLE, 600 TO 699 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2026,
-        "period": "JAN",
-        "value": 455000,
-        "unit": "HEAD",
-        "desc": "CATTLE, 700 TO 799 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2026,
-        "period": "JAN",
-        "value": 381000,
-        "unit": "HEAD",
-        "desc": "CATTLE, 800 TO 899 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2026,
-        "period": "JAN",
-        "value": 105000,
-        "unit": "HEAD",
-        "desc": "CATTLE, 900 TO 999 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 17100000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - CAPACITY, MEASURED IN HEAD",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "JAN",
-        "value": 55000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - DISAPPEARANCE, OTHER, MEASURED IN HEAD",
-        "freq": "MONTHLY"
+        "desc": "CATTLE, ON FEED - INVENTORY"
       },
       {
         "year": 2026,
         "period": "FIRST OF JAN",
         "value": 2397900,
         "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, ON FEED - INVENTORY"
       },
       {
         "year": 2026,
         "period": "FIRST OF JAN",
         "value": 11450000,
         "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, ON FEED - INVENTORY"
       },
       {
         "year": 2026,
         "period": "FIRST OF JAN",
         "value": 340000,
         "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, ON FEED - INVENTORY"
       },
       {
         "year": 2026,
         "period": "FIRST OF JAN",
         "value": 890000,
         "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, ON FEED - INVENTORY"
       },
       {
         "year": 2026,
         "period": "FIRST OF JAN",
         "value": 650000,
         "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, ON FEED - INVENTORY"
       },
       {
         "year": 2026,
         "period": "FIRST OF JAN",
         "value": 760000,
         "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, ON FEED - INVENTORY"
       },
       {
         "year": 2026,
         "period": "FIRST OF JAN",
         "value": 2070000,
         "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, ON FEED - INVENTORY"
       },
       {
         "year": 2026,
         "period": "FIRST OF JAN",
         "value": 820000,
         "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, ON FEED - INVENTORY"
       },
       {
         "year": 2026,
         "period": "FIRST OF JAN",
         "value": 4940000,
         "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, ON FEED - INVENTORY"
       },
       {
         "year": 2026,
         "period": "FIRST OF JAN",
         "value": 980000,
         "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, ON FEED - INVENTORY"
       },
       {
         "year": 2026,
         "period": "FIRST OF JAN",
         "value": 13847900,
         "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "JAN",
-        "value": 1736000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2026,
-        "period": "JAN",
-        "value": 1626000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - SALES FOR SLAUGHTER, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2026,
-        "period": "JAN",
-        "value": 70000,
-        "unit": "HEAD",
-        "desc": "CATTLE, GE 1000 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
+        "desc": "CATTLE, ON FEED - INVENTORY"
       },
       {
         "year": 2026,
         "period": "FIRST OF JAN",
         "value": 4435000,
         "unit": "HEAD",
-        "desc": "CATTLE, HEIFERS & HEIFER CALVES, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "JAN",
-        "value": 360000,
-        "unit": "HEAD",
-        "desc": "CATTLE, LT 600 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
+        "desc": "CATTLE, HEIFERS & HEIFER CALVES, ON FEED - INVENTORY"
       },
       {
         "year": 2026,
         "period": "FIRST OF JAN",
         "value": 7015000,
         "unit": "HEAD",
-        "desc": "CATTLE, STEERS & STEER CALVES, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, STEERS & STEER CALVES, ON FEED - INVENTORY"
+      },
+      {
+        "year": 2025,
+        "period": "FIRST OF DEC",
+        "value": 11727000,
+        "unit": "HEAD",
+        "desc": "CATTLE, ON FEED - INVENTORY"
+      },
+      {
+        "year": 2025,
+        "period": "FIRST OF NOV",
+        "value": 11706000,
+        "unit": "HEAD",
+        "desc": "CATTLE, ON FEED - INVENTORY"
+      },
+      {
+        "year": 2025,
+        "period": "FIRST OF OCT",
+        "value": 11418000,
+        "unit": "HEAD",
+        "desc": "CATTLE, ON FEED - INVENTORY"
+      },
+      {
+        "year": 2025,
+        "period": "FIRST OF OCT",
+        "value": 4355000,
+        "unit": "HEAD",
+        "desc": "CATTLE, HEIFERS & HEIFER CALVES, ON FEED - INVENTORY"
+      },
+      {
+        "year": 2025,
+        "period": "FIRST OF OCT",
+        "value": 7063000,
+        "unit": "HEAD",
+        "desc": "CATTLE, STEERS & STEER CALVES, ON FEED - INVENTORY"
+      },
+      {
+        "year": 2025,
+        "period": "FIRST OF SEP",
+        "value": 11080000,
+        "unit": "HEAD",
+        "desc": "CATTLE, ON FEED - INVENTORY"
+      },
+      {
+        "year": 2025,
+        "period": "FIRST OF AUG",
+        "value": 10922000,
+        "unit": "HEAD",
+        "desc": "CATTLE, ON FEED - INVENTORY"
+      },
+      {
+        "year": 2025,
+        "period": "FIRST OF JUL",
+        "value": 11124000,
+        "unit": "HEAD",
+        "desc": "CATTLE, ON FEED - INVENTORY"
+      },
+      {
+        "year": 2025,
+        "period": "FIRST OF JUL",
+        "value": 13000000,
+        "unit": "HEAD",
+        "desc": "CATTLE, ON FEED - INVENTORY"
+      },
+      {
+        "year": 2025,
+        "period": "FIRST OF JUL",
+        "value": 4240000,
+        "unit": "HEAD",
+        "desc": "CATTLE, HEIFERS & HEIFER CALVES, ON FEED - INVENTORY"
       }
     ],
     "placements": [
       {
         "year": 2026,
         "period": "JAN",
-        "value": 1736000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2025,
-        "period": "DEC",
-        "value": 1555000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2025,
-        "period": "NOV",
-        "value": 1594000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2025,
-        "period": "OCT",
-        "value": 2040000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2025,
-        "period": "SEP",
-        "value": 2021000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2025,
-        "period": "AUG",
-        "value": 1780000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2025,
-        "period": "JUL",
-        "value": 1598000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2025,
-        "period": "JUN",
-        "value": 1441000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2025,
-        "period": "MAY",
-        "value": 1887000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2025,
-        "period": "APR",
-        "value": 1613000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2025,
-        "period": "MAR",
-        "value": 1843000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2025,
-        "period": "FEB",
-        "value": 1554000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2025,
-        "period": "JAN",
-        "value": 1822000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2024,
-        "period": "DEC",
-        "value": 1642000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2024,
-        "period": "NOV",
-        "value": 1796000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2024,
-        "period": "OCT",
-        "value": 2266000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2024,
-        "period": "SEP",
-        "value": 2156000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2024,
-        "period": "AUG",
-        "value": 1976000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2024,
-        "period": "JUL",
-        "value": 1702000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2024,
-        "period": "JUN",
-        "value": 1564000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2024,
-        "period": "MAY",
-        "value": 2046000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2024,
-        "period": "APR",
-        "value": 1656000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2024,
-        "period": "MAR",
-        "value": 1752000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2024,
-        "period": "FEB",
-        "value": 1890000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      }
-    ],
-    "marketings": [
-      {
-        "year": 2026,
-        "period": "FIRST OF FEB",
-        "value": 11505000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "JAN",
         "value": 365000,
         "unit": "HEAD",
-        "desc": "CATTLE, 600 TO 699 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
+        "desc": "CATTLE, 600 TO 699 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
       },
       {
         "year": 2026,
         "period": "JAN",
         "value": 455000,
         "unit": "HEAD",
-        "desc": "CATTLE, 700 TO 799 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
+        "desc": "CATTLE, 700 TO 799 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
       },
       {
         "year": 2026,
         "period": "JAN",
         "value": 381000,
         "unit": "HEAD",
-        "desc": "CATTLE, 800 TO 899 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
+        "desc": "CATTLE, 800 TO 899 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
       },
       {
         "year": 2026,
         "period": "JAN",
         "value": 105000,
         "unit": "HEAD",
-        "desc": "CATTLE, 900 TO 999 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 17100000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - CAPACITY, MEASURED IN HEAD",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "JAN",
-        "value": 55000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - DISAPPEARANCE, OTHER, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 2397900,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 11450000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 340000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 890000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 650000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 760000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 2070000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 820000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 4940000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 980000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 13847900,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, 900 TO 999 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
       },
       {
         "year": 2026,
         "period": "JAN",
         "value": 1736000,
         "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2026,
-        "period": "JAN",
-        "value": 1626000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - SALES FOR SLAUGHTER, MEASURED IN HEAD",
-        "freq": "MONTHLY"
+        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD"
       },
       {
         "year": 2026,
         "period": "JAN",
         "value": 70000,
         "unit": "HEAD",
-        "desc": "CATTLE, GE 1000 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
-      },
-      {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 4435000,
-        "unit": "HEAD",
-        "desc": "CATTLE, HEIFERS & HEIFER CALVES, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, GE 1000 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
       },
       {
         "year": 2026,
         "period": "JAN",
         "value": 360000,
         "unit": "HEAD",
-        "desc": "CATTLE, LT 600 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD",
-        "freq": "MONTHLY"
+        "desc": "CATTLE, LT 600 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
       },
       {
-        "year": 2026,
-        "period": "FIRST OF JAN",
-        "value": 7015000,
+        "year": 2025,
+        "period": "DEC",
+        "value": 360000,
         "unit": "HEAD",
-        "desc": "CATTLE, STEERS & STEER CALVES, ON FEED - INVENTORY",
-        "freq": "POINT IN TIME"
+        "desc": "CATTLE, 600 TO 699 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "DEC",
+        "value": 355000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 700 TO 799 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "DEC",
+        "value": 275000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 800 TO 899 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "DEC",
+        "value": 115000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 900 TO 999 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "DEC",
+        "value": 1555000,
+        "unit": "HEAD",
+        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "DEC",
+        "value": 85000,
+        "unit": "HEAD",
+        "desc": "CATTLE, GE 1000 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "DEC",
+        "value": 365000,
+        "unit": "HEAD",
+        "desc": "CATTLE, LT 600 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "NOV",
+        "value": 375000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 600 TO 699 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "NOV",
+        "value": 320000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 700 TO 799 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "NOV",
+        "value": 254000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 800 TO 899 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "NOV",
+        "value": 130000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 900 TO 999 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "NOV",
+        "value": 1594000,
+        "unit": "HEAD",
+        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "NOV",
+        "value": 80000,
+        "unit": "HEAD",
+        "desc": "CATTLE, GE 1000 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "NOV",
+        "value": 435000,
+        "unit": "HEAD",
+        "desc": "CATTLE, LT 600 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "OCT",
+        "value": 420000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 600 TO 699 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "OCT",
+        "value": 445000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 700 TO 799 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2025,
+        "period": "OCT",
+        "value": 385000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 800 TO 899 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
       }
-    ]
+    ],
+    "marketings": []
   },
-  "promptSnippet": "═══ USDA CATTLE ON FEED (Monthly Report) ═══\nOn Feed Inventory: 11505K head, FIRST OF FEB 2026\nPlacements: 1736K head, JAN 2026 (YoY: -4.7%)\nMarketings: 11505K head, FIRST OF FEB 2026\n"
+  "promptSnippet": "═══ USDA CATTLE ON FEED (Monthly Report) ═══\nOn Feed Inventory: 11505K head, FIRST OF FEB 2026\nPlacements: 365K head, JAN 2026\n"
 }

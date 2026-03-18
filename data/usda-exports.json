@@ -1,12 +1,10 @@
 {
-  "fetchedAt": "2026-03-18T22:22:16.161Z",
-  "source": "USDA FAS ESR",
+  "fetchedAt": "2026-03-18T22:27:03.316Z",
+  "source": "USDA FAS ESR (none)",
   "reportType": "Beef Export Sales",
-  "marketingYear": 2026,
   "totalExports": 0,
   "totalNetSales": 0,
   "topDestinations": [],
   "rawRecords": 0,
-  "lastRelease": null,
   "promptSnippet": "═══ USDA BEEF EXPORT SALES ═══\nExport data unavailable from FAS API.\n"
 }
