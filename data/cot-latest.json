@@ -1,20 +1,20 @@
 {
-  "fetchedAt": "2026-03-18T22:40:19.909Z",
-  "reportDate": "2026-03-10T00:00:00.000",
+  "fetchedAt": "2026-03-21T09:02:15.773Z",
+  "reportDate": "2026-03-17T00:00:00.000",
   "markets": {
     "CL": {
       "market": "Crude Oil",
       "latest": {
-        "reportDate": "2026-03-10T00:00:00.000",
+        "reportDate": "2026-03-17T00:00:00.000",
         "marketName": "WTI-PHYSICAL",
-        "openInterest": 2051321,
+        "openInterest": 2081576,
         "managedMoney": {
-          "long": 189998,
-          "short": 97876,
+          "long": 189353,
+          "short": 92982,
           "spreading": 0,
-          "netLong": 92122,
-          "changeLong": 2663,
-          "changeShort": -21074
+          "netLong": 96371,
+          "changeLong": -645,
+          "changeShort": -4894
         },
         "commercial": {
           "long": 0,
@@ -22,10 +22,10 @@
           "netLong": 0
         },
         "swapDealer": {
-          "long": 134059,
-          "short": 623064,
-          "spreading": 93310,
-          "netLong": -489005
+          "long": 128442,
+          "short": 640467,
+          "spreading": 92115,
+          "netLong": -512025
         },
         "otherReportable": {
           "long": 0,
@@ -34,6 +34,35 @@
         }
       },
       "history": [
+        {
+          "reportDate": "2026-03-17T00:00:00.000",
+          "marketName": "WTI-PHYSICAL",
+          "openInterest": 2081576,
+          "managedMoney": {
+            "long": 189353,
+            "short": 92982,
+            "spreading": 0,
+            "netLong": 96371,
+            "changeLong": -645,
+            "changeShort": -4894
+          },
+          "commercial": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          },
+          "swapDealer": {
+            "long": 128442,
+            "short": 640467,
+            "spreading": 92115,
+            "netLong": -512025
+          },
+          "otherReportable": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          }
+        },
         {
           "reportDate": "2026-03-10T00:00:00.000",
           "marketName": "WTI-PHYSICAL",
@@ -120,55 +149,26 @@
             "short": 0,
             "netLong": 0
           }
-        },
-        {
-          "reportDate": "2026-02-17T00:00:00.000",
-          "marketName": "WTI-PHYSICAL",
-          "openInterest": 2087493,
-          "managedMoney": {
-            "long": 183954,
-            "short": 120169,
-            "spreading": 0,
-            "netLong": 63785,
-            "changeLong": -7793,
-            "changeShort": 7568
-          },
-          "commercial": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          },
-          "swapDealer": {
-            "long": 134366,
-            "short": 472326,
-            "spreading": 120938,
-            "netLong": -337960
-          },
-          "otherReportable": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          }
         }
       ],
       "weekOverWeek": {
-        "managedMoneyNetChange": 23737,
-        "openInterestChange": -21712
+        "managedMoneyNetChange": 4249,
+        "openInterestChange": 30255
       }
     },
     "HE": {
       "market": "Lean Hogs",
       "latest": {
-        "reportDate": "2026-03-10T00:00:00.000",
+        "reportDate": "2026-03-17T00:00:00.000",
         "marketName": "LEAN HOGS",
-        "openInterest": 372459,
+        "openInterest": 359264,
         "managedMoney": {
-          "long": 136809,
-          "short": 16199,
+          "long": 129736,
+          "short": 20000,
           "spreading": 0,
-          "netLong": 120610,
-          "changeLong": 2877,
-          "changeShort": -132
+          "netLong": 109736,
+          "changeLong": -7073,
+          "changeShort": 3801
         },
         "commercial": {
           "long": 0,
@@ -176,10 +176,10 @@
           "netLong": 0
         },
         "swapDealer": {
-          "long": 81705,
-          "short": 11754,
-          "spreading": 5130,
-          "netLong": 69951
+          "long": 81508,
+          "short": 11293,
+          "spreading": 3152,
+          "netLong": 70215
         },
         "otherReportable": {
           "long": 0,
@@ -188,6 +188,35 @@
         }
       },
       "history": [
+        {
+          "reportDate": "2026-03-17T00:00:00.000",
+          "marketName": "LEAN HOGS",
+          "openInterest": 359264,
+          "managedMoney": {
+            "long": 129736,
+            "short": 20000,
+            "spreading": 0,
+            "netLong": 109736,
+            "changeLong": -7073,
+            "changeShort": 3801
+          },
+          "commercial": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          },
+          "swapDealer": {
+            "long": 81508,
+            "short": 11293,
+            "spreading": 3152,
+            "netLong": 70215
+          },
+          "otherReportable": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          }
+        },
         {
           "reportDate": "2026-03-10T00:00:00.000",
           "marketName": "LEAN HOGS",
@@ -274,55 +303,26 @@
             "short": 0,
             "netLong": 0
           }
-        },
-        {
-          "reportDate": "2026-02-17T00:00:00.000",
-          "marketName": "LEAN HOGS",
-          "openInterest": 371449,
-          "managedMoney": {
-            "long": 129265,
-            "short": 18047,
-            "spreading": 0,
-            "netLong": 111218,
-            "changeLong": -13834,
-            "changeShort": 3411
-          },
-          "commercial": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          },
-          "swapDealer": {
-            "long": 81654,
-            "short": 11644,
-            "spreading": 3848,
-            "netLong": 70010
-          },
-          "otherReportable": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          }
         }
       ],
       "weekOverWeek": {
-        "managedMoneyNetChange": 3009,
-        "openInterestChange": -4210
+        "managedMoneyNetChange": -10874,
+        "openInterestChange": -13195
       }
     },
     "LE": {
       "market": "Live Cattle",
       "latest": {
-        "reportDate": "2026-03-10T00:00:00.000",
+        "reportDate": "2026-03-17T00:00:00.000",
         "marketName": "LIVE CATTLE",
-        "openInterest": 334594,
+        "openInterest": 334142,
         "managedMoney": {
-          "long": 120510,
-          "short": 14600,
+          "long": 117445,
+          "short": 14302,
           "spreading": 0,
-          "netLong": 105910,
-          "changeLong": -7530,
-          "changeShort": -1396
+          "netLong": 103143,
+          "changeLong": -3065,
+          "changeShort": -298
         },
         "commercial": {
           "long": 0,
@@ -330,10 +330,10 @@
           "netLong": 0
         },
         "swapDealer": {
-          "long": 63803,
-          "short": 5465,
-          "spreading": 1259,
-          "netLong": 58338
+          "long": 64215,
+          "short": 5529,
+          "spreading": 1414,
+          "netLong": 58686
         },
         "otherReportable": {
           "long": 0,
@@ -342,6 +342,35 @@
         }
       },
       "history": [
+        {
+          "reportDate": "2026-03-17T00:00:00.000",
+          "marketName": "LIVE CATTLE",
+          "openInterest": 334142,
+          "managedMoney": {
+            "long": 117445,
+            "short": 14302,
+            "spreading": 0,
+            "netLong": 103143,
+            "changeLong": -3065,
+            "changeShort": -298
+          },
+          "commercial": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          },
+          "swapDealer": {
+            "long": 64215,
+            "short": 5529,
+            "spreading": 1414,
+            "netLong": 58686
+          },
+          "otherReportable": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          }
+        },
         {
           "reportDate": "2026-03-10T00:00:00.000",
           "marketName": "LIVE CATTLE",
@@ -428,55 +457,26 @@
             "short": 0,
             "netLong": 0
           }
-        },
-        {
-          "reportDate": "2026-02-17T00:00:00.000",
-          "marketName": "LIVE CATTLE",
-          "openInterest": 330128,
-          "managedMoney": {
-            "long": 130442,
-            "short": 15390,
-            "spreading": 0,
-            "netLong": 115052,
-            "changeLong": 8498,
-            "changeShort": 85
-          },
-          "commercial": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          },
-          "swapDealer": {
-            "long": 63788,
-            "short": 4194,
-            "spreading": 2102,
-            "netLong": 59594
-          },
-          "otherReportable": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          }
         }
       ],
       "weekOverWeek": {
-        "managedMoneyNetChange": -6134,
-        "openInterestChange": -7581
+        "managedMoneyNetChange": -2767,
+        "openInterestChange": -452
       }
     },
     "GF": {
       "market": "Feeder Cattle",
       "latest": {
-        "reportDate": "2026-03-10T00:00:00.000",
+        "reportDate": "2026-03-17T00:00:00.000",
         "marketName": "FEEDER CATTLE",
-        "openInterest": 72436,
+        "openInterest": 72644,
         "managedMoney": {
-          "long": 24653,
-          "short": 5941,
+          "long": 24691,
+          "short": 5317,
           "spreading": 0,
-          "netLong": 18712,
-          "changeLong": -759,
-          "changeShort": -530
+          "netLong": 19374,
+          "changeLong": 38,
+          "changeShort": -624
         },
         "commercial": {
           "long": 0,
@@ -484,10 +484,10 @@
           "netLong": 0
         },
         "swapDealer": {
-          "long": 5049,
-          "short": 753,
-          "spreading": 1913,
-          "netLong": 4296
+          "long": 5403,
+          "short": 783,
+          "spreading": 2114,
+          "netLong": 4620
         },
         "otherReportable": {
           "long": 0,
@@ -496,6 +496,35 @@
         }
       },
       "history": [
+        {
+          "reportDate": "2026-03-17T00:00:00.000",
+          "marketName": "FEEDER CATTLE",
+          "openInterest": 72644,
+          "managedMoney": {
+            "long": 24691,
+            "short": 5317,
+            "spreading": 0,
+            "netLong": 19374,
+            "changeLong": 38,
+            "changeShort": -624
+          },
+          "commercial": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          },
+          "swapDealer": {
+            "long": 5403,
+            "short": 783,
+            "spreading": 2114,
+            "netLong": 4620
+          },
+          "otherReportable": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          }
+        },
         {
           "reportDate": "2026-03-10T00:00:00.000",
           "marketName": "FEEDER CATTLE",
@@ -582,55 +611,26 @@
             "short": 0,
             "netLong": 0
           }
-        },
-        {
-          "reportDate": "2026-02-17T00:00:00.000",
-          "marketName": "FEEDER CATTLE",
-          "openInterest": 75376,
-          "managedMoney": {
-            "long": 26317,
-            "short": 7561,
-            "spreading": 0,
-            "netLong": 18756,
-            "changeLong": 777,
-            "changeShort": -20
-          },
-          "commercial": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          },
-          "swapDealer": {
-            "long": 4932,
-            "short": 839,
-            "spreading": 1924,
-            "netLong": 4093
-          },
-          "otherReportable": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          }
         }
       ],
       "weekOverWeek": {
-        "managedMoneyNetChange": -229,
-        "openInterestChange": -4763
+        "managedMoneyNetChange": 662,
+        "openInterestChange": 208
       }
     },
     "ZW": {
       "market": "Wheat (SRW)",
       "latest": {
-        "reportDate": "2026-03-10T00:00:00.000",
+        "reportDate": "2026-03-17T00:00:00.000",
         "marketName": "WHEAT-SRW",
-        "openInterest": 464435,
+        "openInterest": 478449,
         "managedMoney": {
-          "long": 95305,
-          "short": 116551,
+          "long": 100946,
+          "short": 112820,
           "spreading": 0,
-          "netLong": -21246,
-          "changeLong": 1639,
-          "changeShort": -2204
+          "netLong": -11874,
+          "changeLong": 5641,
+          "changeShort": -3731
         },
         "commercial": {
           "long": 0,
@@ -638,10 +638,10 @@
           "netLong": 0
         },
         "swapDealer": {
-          "long": 95040,
-          "short": 19892,
-          "spreading": 18954,
-          "netLong": 75148
+          "long": 93973,
+          "short": 19580,
+          "spreading": 20444,
+          "netLong": 74393
         },
         "otherReportable": {
           "long": 0,
@@ -650,6 +650,35 @@
         }
       },
       "history": [
+        {
+          "reportDate": "2026-03-17T00:00:00.000",
+          "marketName": "WHEAT-SRW",
+          "openInterest": 478449,
+          "managedMoney": {
+            "long": 100946,
+            "short": 112820,
+            "spreading": 0,
+            "netLong": -11874,
+            "changeLong": 5641,
+            "changeShort": -3731
+          },
+          "commercial": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          },
+          "swapDealer": {
+            "long": 93973,
+            "short": 19580,
+            "spreading": 20444,
+            "netLong": 74393
+          },
+          "otherReportable": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          }
+        },
         {
           "reportDate": "2026-03-10T00:00:00.000",
           "marketName": "WHEAT-SRW",
@@ -736,55 +765,26 @@
             "short": 0,
             "netLong": 0
           }
-        },
-        {
-          "reportDate": "2026-02-17T00:00:00.000",
-          "marketName": "WHEAT-SRW",
-          "openInterest": 472320,
-          "managedMoney": {
-            "long": 85112,
-            "short": 154679,
-            "spreading": 0,
-            "netLong": -69567,
-            "changeLong": -5173,
-            "changeShort": -21438
-          },
-          "commercial": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          },
-          "swapDealer": {
-            "long": 78333,
-            "short": 7791,
-            "spreading": 20321,
-            "netLong": 70542
-          },
-          "otherReportable": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          }
         }
       ],
       "weekOverWeek": {
-        "managedMoneyNetChange": 3843,
-        "openInterestChange": 17947
+        "managedMoneyNetChange": 9372,
+        "openInterestChange": 14014
       }
     },
     "ZC": {
       "market": "Corn",
       "latest": {
-        "reportDate": "2026-03-10T00:00:00.000",
+        "reportDate": "2026-03-17T00:00:00.000",
         "marketName": "CORN",
-        "openInterest": 1723308,
+        "openInterest": 1773499,
         "managedMoney": {
-          "long": 330320,
-          "short": 131516,
+          "long": 343658,
+          "short": 112770,
           "spreading": 0,
-          "netLong": 198804,
-          "changeLong": 91088,
-          "changeShort": -55473
+          "netLong": 230888,
+          "changeLong": 13338,
+          "changeShort": -18746
         },
         "commercial": {
           "long": 0,
@@ -792,10 +792,10 @@
           "netLong": 0
         },
         "swapDealer": {
-          "long": 330822,
-          "short": 25948,
-          "spreading": 11467,
-          "netLong": 304874
+          "long": 335423,
+          "short": 27172,
+          "spreading": 11535,
+          "netLong": 308251
         },
         "otherReportable": {
           "long": 0,
@@ -804,6 +804,35 @@
         }
       },
       "history": [
+        {
+          "reportDate": "2026-03-17T00:00:00.000",
+          "marketName": "CORN",
+          "openInterest": 1773499,
+          "managedMoney": {
+            "long": 343658,
+            "short": 112770,
+            "spreading": 0,
+            "netLong": 230888,
+            "changeLong": 13338,
+            "changeShort": -18746
+          },
+          "commercial": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          },
+          "swapDealer": {
+            "long": 335423,
+            "short": 27172,
+            "spreading": 11535,
+            "netLong": 308251
+          },
+          "otherReportable": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          }
+        },
         {
           "reportDate": "2026-03-10T00:00:00.000",
           "marketName": "CORN",
@@ -890,55 +919,26 @@
             "short": 0,
             "netLong": 0
           }
-        },
-        {
-          "reportDate": "2026-02-17T00:00:00.000",
-          "marketName": "CORN",
-          "openInterest": 1779922,
-          "managedMoney": {
-            "long": 209903,
-            "short": 252216,
-            "spreading": 0,
-            "netLong": -42313,
-            "changeLong": -4447,
-            "changeShort": -19627
-          },
-          "commercial": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          },
-          "swapDealer": {
-            "long": 291416,
-            "short": 19605,
-            "spreading": 44124,
-            "netLong": 271811
-          },
-          "otherReportable": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          }
         }
       ],
       "weekOverWeek": {
-        "managedMoneyNetChange": 146561,
-        "openInterestChange": 105847
+        "managedMoneyNetChange": 32084,
+        "openInterestChange": 50191
       }
     },
     "ZS": {
       "market": "Soybeans",
       "latest": {
-        "reportDate": "2026-03-10T00:00:00.000",
+        "reportDate": "2026-03-17T00:00:00.000",
         "marketName": "SOYBEANS",
-        "openInterest": 1016277,
+        "openInterest": 980259,
         "managedMoney": {
-          "long": 253566,
-          "short": 42112,
+          "long": 235016,
+          "short": 39795,
           "spreading": 0,
-          "netLong": 211454,
-          "changeLong": 18083,
-          "changeShort": -5880
+          "netLong": 195221,
+          "changeLong": -18550,
+          "changeShort": -2317
         },
         "commercial": {
           "long": 0,
@@ -946,10 +946,10 @@
           "netLong": 0
         },
         "swapDealer": {
-          "long": 157893,
-          "short": 51353,
-          "spreading": 14101,
-          "netLong": 106540
+          "long": 158086,
+          "short": 51691,
+          "spreading": 12984,
+          "netLong": 106395
         },
         "otherReportable": {
           "long": 0,
@@ -958,6 +958,35 @@
         }
       },
       "history": [
+        {
+          "reportDate": "2026-03-17T00:00:00.000",
+          "marketName": "SOYBEANS",
+          "openInterest": 980259,
+          "managedMoney": {
+            "long": 235016,
+            "short": 39795,
+            "spreading": 0,
+            "netLong": 195221,
+            "changeLong": -18550,
+            "changeShort": -2317
+          },
+          "commercial": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          },
+          "swapDealer": {
+            "long": 158086,
+            "short": 51691,
+            "spreading": 12984,
+            "netLong": 106395
+          },
+          "otherReportable": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          }
+        },
         {
           "reportDate": "2026-03-10T00:00:00.000",
           "marketName": "SOYBEANS",
@@ -1044,55 +1073,26 @@
             "short": 0,
             "netLong": 0
           }
-        },
-        {
-          "reportDate": "2026-02-17T00:00:00.000",
-          "marketName": "SOYBEANS",
-          "openInterest": 984660,
-          "managedMoney": {
-            "long": 208613,
-            "short": 49632,
-            "spreading": 0,
-            "netLong": 158981,
-            "changeLong": 38514,
-            "changeShort": -4571
-          },
-          "commercial": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          },
-          "swapDealer": {
-            "long": 153961,
-            "short": 47998,
-            "spreading": 17748,
-            "netLong": 105963
-          },
-          "otherReportable": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          }
         }
       ],
       "weekOverWeek": {
-        "managedMoneyNetChange": 23963,
-        "openInterestChange": 28912
+        "managedMoneyNetChange": -16233,
+        "openInterestChange": -36018
       }
     },
     "ZM": {
       "market": "Soybean Meal",
       "latest": {
-        "reportDate": "2026-03-10T00:00:00.000",
+        "reportDate": "2026-03-17T00:00:00.000",
         "marketName": "SOYBEAN MEAL",
-        "openInterest": 529224,
+        "openInterest": 538682,
         "managedMoney": {
-          "long": 115467,
-          "short": 37899,
+          "long": 124161,
+          "short": 43249,
           "spreading": 0,
-          "netLong": 77568,
-          "changeLong": 6950,
-          "changeShort": -11514
+          "netLong": 80912,
+          "changeLong": 8694,
+          "changeShort": 5350
         },
         "commercial": {
           "long": 0,
@@ -1100,10 +1100,10 @@
           "netLong": 0
         },
         "swapDealer": {
-          "long": 110918,
-          "short": 16611,
-          "spreading": 8078,
-          "netLong": 94307
+          "long": 114313,
+          "short": 16096,
+          "spreading": 5911,
+          "netLong": 98217
         },
         "otherReportable": {
           "long": 0,
@@ -1112,6 +1112,35 @@
         }
       },
       "history": [
+        {
+          "reportDate": "2026-03-17T00:00:00.000",
+          "marketName": "SOYBEAN MEAL",
+          "openInterest": 538682,
+          "managedMoney": {
+            "long": 124161,
+            "short": 43249,
+            "spreading": 0,
+            "netLong": 80912,
+            "changeLong": 8694,
+            "changeShort": 5350
+          },
+          "commercial": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          },
+          "swapDealer": {
+            "long": 114313,
+            "short": 16096,
+            "spreading": 5911,
+            "netLong": 98217
+          },
+          "otherReportable": {
+            "long": 0,
+            "short": 0,
+            "netLong": 0
+          }
+        },
         {
           "reportDate": "2026-03-10T00:00:00.000",
           "marketName": "SOYBEAN MEAL",
@@ -1198,42 +1227,13 @@
             "short": 0,
             "netLong": 0
           }
-        },
-        {
-          "reportDate": "2026-02-17T00:00:00.000",
-          "marketName": "SOYBEAN MEAL",
-          "openInterest": 526303,
-          "managedMoney": {
-            "long": 73813,
-            "short": 76957,
-            "spreading": 0,
-            "netLong": -3144,
-            "changeLong": 3249,
-            "changeShort": -10821
-          },
-          "commercial": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          },
-          "swapDealer": {
-            "long": 120117,
-            "short": 12779,
-            "spreading": 10994,
-            "netLong": 107338
-          },
-          "otherReportable": {
-            "long": 0,
-            "short": 0,
-            "netLong": 0
-          }
         }
       ],
       "weekOverWeek": {
-        "managedMoneyNetChange": 18464,
-        "openInterestChange": 8284
+        "managedMoneyNetChange": 3344,
+        "openInterestChange": 9458
       }
     }
   },
-  "promptSnippet": "═══ CFTC COT POSITIONING (Disaggregated, Futures Only) ═══\nCrude Oil (CL): Managed Money NET LONG 92,122 contracts (WoW: +23,737)\n  OI: 2,051,321 | MM Long: 189,998 | MM Short: 97,876\nLean Hogs (HE): Managed Money NET LONG 120,610 contracts (WoW: +3,009)\n  OI: 372,459 | MM Long: 136,809 | MM Short: 16,199\nLive Cattle (LE): Managed Money NET LONG 105,910 contracts (WoW: -6,134)\n  OI: 334,594 | MM Long: 120,510 | MM Short: 14,600\nFeeder Cattle (GF): Managed Money NET LONG 18,712 contracts (WoW: -229)\n  OI: 72,436 | MM Long: 24,653 | MM Short: 5,941\nWheat (SRW) (ZW): Managed Money NET SHORT 21,246 contracts (WoW: +3,843)\n  OI: 464,435 | MM Long: 95,305 | MM Short: 116,551\nCorn (ZC): Managed Money NET LONG 198,804 contracts (WoW: +146,561)\n  OI: 1,723,308 | MM Long: 330,320 | MM Short: 131,516\nSoybeans (ZS): Managed Money NET LONG 211,454 contracts (WoW: +23,963)\n  OI: 1,016,277 | MM Long: 253,566 | MM Short: 42,112\nSoybean Meal (ZM): Managed Money NET LONG 77,568 contracts (WoW: +18,464)\n  OI: 529,224 | MM Long: 115,467 | MM Short: 37,899\n\nReport date: 2026-03-10T00:00:00.000"
+  "promptSnippet": "═══ CFTC COT POSITIONING (Disaggregated, Futures Only) ═══\nCrude Oil (CL): Managed Money NET LONG 96,371 contracts (WoW: +4,249)\n  OI: 2,081,576 | MM Long: 189,353 | MM Short: 92,982\nLean Hogs (HE): Managed Money NET LONG 109,736 contracts (WoW: -10,874)\n  OI: 359,264 | MM Long: 129,736 | MM Short: 20,000\nLive Cattle (LE): Managed Money NET LONG 103,143 contracts (WoW: -2,767)\n  OI: 334,142 | MM Long: 117,445 | MM Short: 14,302\nFeeder Cattle (GF): Managed Money NET LONG 19,374 contracts (WoW: +662)\n  OI: 72,644 | MM Long: 24,691 | MM Short: 5,317\nWheat (SRW) (ZW): Managed Money NET SHORT 11,874 contracts (WoW: +9,372)\n  OI: 478,449 | MM Long: 100,946 | MM Short: 112,820\nCorn (ZC): Managed Money NET LONG 230,888 contracts (WoW: +32,084)\n  OI: 1,773,499 | MM Long: 343,658 | MM Short: 112,770\nSoybeans (ZS): Managed Money NET LONG 195,221 contracts (WoW: -16,233)\n  OI: 980,259 | MM Long: 235,016 | MM Short: 39,795\nSoybean Meal (ZM): Managed Money NET LONG 80,912 contracts (WoW: +3,344)\n  OI: 538,682 | MM Long: 124,161 | MM Short: 43,249\n\nReport date: 2026-03-17T00:00:00.000"
 }

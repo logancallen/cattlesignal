@@ -1,19 +1,19 @@
 {
-  "fetchedAt": "2026-03-18T22:40:20.280Z",
+  "fetchedAt": "2026-03-21T09:02:17.610Z",
   "source": "USDA NASS",
   "reportType": "Cattle on Feed",
   "latest": {
     "inventory": {
       "year": 2026,
-      "period": "FIRST OF FEB",
-      "value": 11505000,
+      "period": "FIRST OF MAR",
+      "value": 11549000,
       "unit": "HEAD",
       "desc": "CATTLE, ON FEED - INVENTORY"
     },
     "placements": {
       "year": 2026,
-      "period": "JAN",
-      "value": 365000,
+      "period": "FEB",
+      "value": 280000,
       "unit": "HEAD",
       "desc": "CATTLE, 600 TO 699 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
     }
@@ -23,8 +23,15 @@
     "inventory": [
       {
         "year": 2026,
+        "period": "FIRST OF MAR",
+        "value": 11549000,
+        "unit": "HEAD",
+        "desc": "CATTLE, ON FEED - INVENTORY"
+      },
+      {
+        "year": 2026,
         "period": "FIRST OF FEB",
-        "value": 11505000,
+        "value": 11510000,
         "unit": "HEAD",
         "desc": "CATTLE, ON FEED - INVENTORY"
       },
@@ -181,16 +188,58 @@
         "value": 13000000,
         "unit": "HEAD",
         "desc": "CATTLE, ON FEED - INVENTORY"
-      },
-      {
-        "year": 2025,
-        "period": "FIRST OF JUL",
-        "value": 4240000,
-        "unit": "HEAD",
-        "desc": "CATTLE, HEIFERS & HEIFER CALVES, ON FEED - INVENTORY"
       }
     ],
     "placements": [
+      {
+        "year": 2026,
+        "period": "FEB",
+        "value": 280000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 600 TO 699 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2026,
+        "period": "FEB",
+        "value": 445000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 700 TO 799 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2026,
+        "period": "FEB",
+        "value": 396000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 800 TO 899 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2026,
+        "period": "FEB",
+        "value": 130000,
+        "unit": "HEAD",
+        "desc": "CATTLE, 900 TO 999 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2026,
+        "period": "FEB",
+        "value": 1611000,
+        "unit": "HEAD",
+        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2026,
+        "period": "FEB",
+        "value": 55000,
+        "unit": "HEAD",
+        "desc": "CATTLE, GE 1000 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
+      {
+        "year": 2026,
+        "period": "FEB",
+        "value": 305000,
+        "unit": "HEAD",
+        "desc": "CATTLE, LT 600 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
+      },
       {
         "year": 2026,
         "period": "JAN",
@@ -208,7 +257,7 @@
       {
         "year": 2026,
         "period": "JAN",
-        "value": 381000,
+        "value": 386000,
         "unit": "HEAD",
         "desc": "CATTLE, 800 TO 899 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
       },
@@ -222,7 +271,7 @@
       {
         "year": 2026,
         "period": "JAN",
-        "value": 1736000,
+        "value": 1741000,
         "unit": "HEAD",
         "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD"
       },
@@ -309,58 +358,9 @@
         "value": 254000,
         "unit": "HEAD",
         "desc": "CATTLE, 800 TO 899 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
-      },
-      {
-        "year": 2025,
-        "period": "NOV",
-        "value": 130000,
-        "unit": "HEAD",
-        "desc": "CATTLE, 900 TO 999 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
-      },
-      {
-        "year": 2025,
-        "period": "NOV",
-        "value": 1594000,
-        "unit": "HEAD",
-        "desc": "CATTLE, ON FEED - PLACEMENTS, MEASURED IN HEAD"
-      },
-      {
-        "year": 2025,
-        "period": "NOV",
-        "value": 80000,
-        "unit": "HEAD",
-        "desc": "CATTLE, GE 1000 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
-      },
-      {
-        "year": 2025,
-        "period": "NOV",
-        "value": 435000,
-        "unit": "HEAD",
-        "desc": "CATTLE, LT 600 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
-      },
-      {
-        "year": 2025,
-        "period": "OCT",
-        "value": 420000,
-        "unit": "HEAD",
-        "desc": "CATTLE, 600 TO 699 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
-      },
-      {
-        "year": 2025,
-        "period": "OCT",
-        "value": 445000,
-        "unit": "HEAD",
-        "desc": "CATTLE, 700 TO 799 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
-      },
-      {
-        "year": 2025,
-        "period": "OCT",
-        "value": 385000,
-        "unit": "HEAD",
-        "desc": "CATTLE, 800 TO 899 LBS, ON FEED - PLACEMENTS, MEASURED IN HEAD"
       }
     ],
     "marketings": []
   },
-  "promptSnippet": "═══ USDA CATTLE ON FEED (Monthly Report) ═══\nOn Feed Inventory: 11505K head, FIRST OF FEB 2026\nPlacements: 365K head, JAN 2026\n"
+  "promptSnippet": "═══ USDA CATTLE ON FEED (Monthly Report) ═══\nOn Feed Inventory: 11549K head, FIRST OF MAR 2026\nPlacements: 280K head, FEB 2026\n"
 }
